@@ -76,29 +76,33 @@
         </table>
     </div>
 
-    <!-- Wishlist Section -->
-    <div class="order-card">
-        <h4>Your Wishlist</h4>
-        <div class="wishlist-item">
-            <img src="../public/images/sofa.png" alt="Product 1">
-            <div class="wishlist-details">
-                <h6>Product 1</h6>
-                <p class="text-muted">$19.99</p>
-            </div>
-            <button class="btn btn-danger btn-sm" onclick="removeItem('Product 1')">Remove</button>
-            <!-- Pass item name -->
-        </div>
+    <div class="container wishlist-section my-4">
+    <h4 class="mb-4 text-center text-primary">Your Wishlist</h4> <!-- Changed to text-primary -->
 
-        <div class="wishlist-item">
-            <img src="../public/images/sofa.png" alt="Product 2">
-            <div class="wishlist-details">
-                <h6>Product 2</h6>
-                <p class="text-muted">$19.99</p>
+    <div class="row justify-content-center"> <!-- Center the row -->
+        <?php if (!empty($wishlistItems)): ?>
+            <?php foreach ($wishlistItems as $item): ?>
+                <div class="col-md-3 col-sm-6 mb-4"> <!-- Bootstrap column for responsive layout -->
+                    <div class="card wishlist-card">
+                        <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin: auto;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-dark"><?= htmlspecialchars($item['product_name']) ?></h6> <!-- Changed to text-dark -->
+                            <p class="card-text text-muted">$<?= htmlspecialchars($item['price']) ?></p>
+
+                            <!-- Form to remove item from wishlist -->
+                            <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
+                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
+                                <button type="button" class="btn btn-danger btn-sm remove-btn">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12 text-center">
+                <p class="text-muted">No items in your wishlist.</p> <!-- Changed to text-muted -->
             </div>
-            <button class="btn btn-danger btn-sm" onclick="removeItem('Product 2')">Remove</button>
-            <!-- Pass item name -->
-        </div>
-        <!-- Repeat for more wishlist items -->
+        <?php endif; ?>
     </div>
 </div>
 
@@ -199,10 +203,50 @@
 </div>
 <!-- SweetAlert Script -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script>
+$(document).on('click', '.remove-btn', function(event) {
+    var form = $(this).closest('form'); // Get the closest form
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: form.attr('action'), // Get the action URL from the form
+                type: 'POST',
+                data: form.serialize(), // Serialize the form data
+                success: function(response) {
+                    // Optionally handle success (like updating the UI)
+                    Swal.fire(
+                        'Removed!',
+                        'The item has been removed from your wishlist.',
+                        'success'
+                    ).then(() => {
+                        location.reload(); // Reload the page to update the wishlist
+                    });
+                },
+                error: function() {
+                    Swal.fire(
+                        'Error!',
+                        'There was an error removing the item. Please try again.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
+</script>
 <script>
     function updateUserProfile() {
         Swal.fire({
