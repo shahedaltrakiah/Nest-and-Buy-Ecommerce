@@ -274,3 +274,18 @@ h3{
     background-color: #e04848;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+.wishlist-card {
+    transition: transform 0.2s ease; /* Smooth transition */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    border: 1px solid #e0e0e0; /* Border around cards */
+}
+
+.wishlist-card:hover {
+    transform: translateY(-5px); /* Move the card up on hover */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.card-img-top {
+    display: block; /* Center the image */
+    margin: 0 auto; /* Center the image */
+}
