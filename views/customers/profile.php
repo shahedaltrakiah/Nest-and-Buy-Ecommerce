@@ -1,43 +1,38 @@
 <?php require "views/partials/header.php"; ?>
 
-<link href="../public/css/user_profile_style.css" rel="stylesheet">
+<link href="/public/css/user_profile_style.css" rel="stylesheet">
 
 <div class="main-container">
     <!-- Profile Section -->
     <div class="profile-card">
-        <button class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit
-            Profile</button>
+        <button class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
         <div class="profile-info">
-            <img src="../public/images/shahed.jpeg" alt="Profile Picture">
+            <img src="/public/images/<?= htmlspecialchars($customer->profile_image ?? 'default.jpg') ?>" alt="Profile Picture">
             <div>
-                <h3>John Doe</h3>
+                <h3><?php echo htmlspecialchars($customer[0]['first_name ']); ?></h3>
             </div>
         </div>
         <div class="profile-details mt-4">
             <div class="row">
-                <div class="col-md-12">
-                    <label>Username</label>
-                    <input type="text" class="form-control" value="johndoe" readonly>
-                </div>
                 <div class="col-md-6 mt-3">
                     <label>First Name</label>
-                    <input type="text" class="form-control" value="John" readonly>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($customer->first_name) ?>" readonly>
                 </div>
                 <div class="col-md-6 mt-3">
                     <label>Last Name</label>
-                    <input type="text" class="form-control" value="Doe" readonly>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($customer->last_name) ?>" readonly>
                 </div>
                 <div class="col-md-6 mt-3">
                     <label>Email</label>
-                    <input type="email" class="form-control" value="johndoe@example.com" readonly>
+                    <input type="email" class="form-control" value="<?= htmlspecialchars($customer->email) ?>" readonly>
                 </div>
                 <div class="col-md-6 mt-3">
                     <label>Phone Number</label>
-                    <input type="text" class="form-control" value="+962123456789" readonly>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($customer->phone) ?>" readonly>
                 </div>
                 <div class="col-md-12 mt-3">
                     <label>Address</label>
-                    <input type="text" class="form-control" value="123 Main Street, Amman" readonly>
+                    <input type="text" class="form-control" value="<?= htmlspecialchars($customer->address) ?>" readonly>
                 </div>
             </div>
         </div>

@@ -43,4 +43,13 @@ class Customer extends Model
         return $count > 0;
     }
 
+    public function getCustomerById($id)
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM customers WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ); // Fetch as object to use properties in the view
+    }
+
+
 }

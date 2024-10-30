@@ -53,6 +53,7 @@ class CustomerController extends Controller
                         'image_url' => $user['image_url'] ?? 'https://cdn.icon-icons.com/icons2/2030/PNG/512/user_icon_124042.png',
                         'name' => $user['first_name'] . ' ' . $user['last_name']
                     ];
+                    var_dump($_SESSION);
                     header("Location: /customers/index");
                     exit();
                 } else {
@@ -129,8 +130,8 @@ class CustomerController extends Controller
     // Profile page for customer
     public function profile()
     {
-//        $customer = $this->model('Customer')->getCustomerById($_SESSION['customer_id']);
-//        $this->view('customers/profile', ['customer' => $customer]);
+//        $customer = $this->model('Customer')->find($id);
+//        $this->view('customers/profile', ['customers' => $customer]);
         $this->view('customers/profile');
     }
 
