@@ -43,8 +43,14 @@ class Core {
         'customers/product_details' => ['CustomerController@productDetails', 'GET'],
         'customers/cart' => ['CustomerController@cart', 'GET'],
         'customers/checkout' => ['CustomerController@checkout', 'POST'],
-        'customers/profile' => ['CustomerController@profile', ['GET', 'POST']],
+        'customers/profile' => ['CustomerController@profile', 'GET'],
         'customers/logout' => ['CustomerController@logout', 'GET'],
+        'customer/cart'=>['CartController@add','POST'],
+        'customers/test'=> ['CustomerController@test', 'GET'],
+        'customers/cart/checkout' => ['CartController@checkout','POST'],
+        'customers/cart/remove' => ['CartController@remove', ['POST', 'GET']],
+        'customers/cart/remove-coupon'=>['CartController@removeCoupon','POST'],
+        'customers/cart/apply-coupon'=>['CartController@applyCoupon','POST'],
     ];
 
     public function __construct() {

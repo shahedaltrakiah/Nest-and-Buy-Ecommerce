@@ -67,5 +67,19 @@ class Product extends Model {
         // Fetch all product data along with category details
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
-
+    public function getProductById($productId)
+    {
+        $statement = $this->pdo->prepare("
+            SELECT p.*, 
+                   pi.image_url, 
+                   c.category_name 
+            FROM $this->table p
+            LEFT JOIN productimages pi ON p.id = pi.product_id 
+            LEFT JOIN categories c ON p.category_id = c.id 
+            WHERE p.id = :productId
+        ");
+        $statement->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
 }
