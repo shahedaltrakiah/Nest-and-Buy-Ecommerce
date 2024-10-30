@@ -53,7 +53,7 @@ class Core {
         'customers/cart/apply-coupon'=>['CartController@applyCoupon','POST'],
         'customer/profile/add' => ['WishlistController@add', ['POST']],
         'customers/profile/remove' => ['WishlistController@remove', 'POST'],
-        'customers/profile/wishlist'=>['WishlistController@viewWishlist','GET'],
+        'customers/profile/view'=>['WishlistController@viewWishlist','GET'],
     ];
 
     public function __construct() {

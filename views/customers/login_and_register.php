@@ -8,12 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0-alpha1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/css/loginstyle.css"/>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Include SweetAlert CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
-
-    <!-- Include SweetAlert JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-
 </head>
 <body>
 <div class="container" id="container">
@@ -39,7 +33,7 @@
             <input type="email" id="loginEmail" name="email" placeholder="Email"/>
             <input type="password" id="loginPassword" name="password" placeholder="Password"/>
             <a href="#">Forgot your password?</a>
-            <button>Sign In</button>
+            <button type="submit">Sign In</button>
         </form>
     </div>
     <div class="overlay-container">
@@ -73,121 +67,6 @@
             container.classList.remove("right-panel-active");
         });
     });
-
-</script>
-
-<script>
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     // Handle Sign Up Form Submission
-    //     document.getElementById('registerForm').addEventListener('submit', function (event) {
-    //         event.preventDefault(); // Prevent default form submission
-    //
-    //         const formData = new FormData(this); // Get form data
-    //
-    //         fetch('/customers/login_and_register', {
-    //             method: 'POST',
-    //             body: formData
-    //         })
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 if (data.emailTaken) {
-    //                     showAlert({
-    //                         title: 'Invalid Email',
-    //                         text: 'This email is already in use.',
-    //                         icon: 'warning',
-    //                         confirmButtonColor: '#3b5d50'
-    //                     });
-    //                 } else if (data.registrationSuccess) {
-    //                     showAlert({
-    //                         title: 'Success',
-    //                         text: 'Registration successful! You can now log in.',
-    //                         icon: 'success',
-    //                         confirmButtonColor: '#3b5d50'
-    //                     });
-    //                 } else {
-    //                     showAlert({
-    //                         title: 'Error',
-    //                         text: 'Registration failed. Please try again.',
-    //                         icon: 'warning',
-    //                         confirmButtonColor: '#3b5d50'
-    //                     });
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error:', error);
-    //                 showAlert({
-    //                     title: 'Error',
-    //                     text: 'An error occurred. Please try again later.',
-    //                     icon: 'warning',
-    //                     confirmButtonColor: '#3b5d50'
-    //                 });
-    //             });
-    //     });
-    //
-    //     // Handle Sign In Form Submission
-    //     document.getElementById('loginForm').addEventListener('submit', function (event) {
-    //         event.preventDefault(); // Prevent default form submission
-    //
-    //         const formData = new FormData(this); // Get form data
-    //
-    //         fetch('/customers/login_and_register', {
-    //             method: 'POST',
-    //             body: formData
-    //         })
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 if (data.loginSuccess) {
-    //                     showAlert({
-    //                         title: 'Success',
-    //                         text: 'Login successful! Redirecting...',
-    //                         icon: 'success',
-    //                         confirmButtonColor: '#3b5d50'
-    //                     }).then(() => {
-    //                         window.location.href = '/customers/index'; // Redirect to dashboard
-    //                     });
-    //                 } else {
-    //                     showAlert({
-    //                         title: 'Error',
-    //                         text: 'Invalid credentials. Please try again.',
-    //                         icon: 'warning',
-    //                         confirmButtonColor: '#3b5d50'
-    //                     });
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error:', error);
-    //                 showAlert({
-    //                     title: 'Error',
-    //                     text: 'An error occurred. Please try again later.',
-    //                     icon: 'warning',
-    //                     confirmButtonColor: '#3b5d50'
-    //                 });
-    //             });
-    //     });
-    // });
-    //
-    // // Show SweetAlert function
-    // // Show SweetAlert function
-    // function showAlert({ title, text, icon, confirmButtonColor }) {
-    //     swal({
-    //         title: title,
-    //         text: text,
-    //         icon: icon,
-    //         buttons: {
-    //             confirm: {
-    //                 text: 'OK',
-    //                 value: true,
-    //                 visible: true,
-    //                 className: '',
-    //                 closeModal: true,
-    //                 style: {
-    //                     backgroundColor: '#3b5d50', // Set button color
-    //                     color: '#fff', // Set button text color to white
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
 
     document.addEventListener('DOMContentLoaded', function () {
         // Handle Sign Up Form Submission
@@ -229,25 +108,38 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.loginSuccess) {
-                        showAlert('success', 'Login successful! Redirecting...', () => {
-                            window.location.href = '/customers/index'; 
+                        showAlert('success', 'Login successful! Redirecting...').then(() => {
+                            window.location.href = '/customers/index'; // Redirect after alert
                         });
                     } else {
                         showAlert('error', 'Invalid credentials. Please try again.');
                     }
                 })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAlert('error', 'An error occurred. Please try again later.');
+                });
         });
     });
 
     // Show SweetAlert function
-    function showAlert(type, message, callback) {
+    function showAlert(type, message) {
         if (type === 'error') {
-            swal('Error!', message, 'error');
+            return Swal.fire({
+                title: 'Error!',
+                text: message,
+                icon: 'error',
+                confirmButtonColor: '#3b5d50'
+            });
         } else if (type === 'success') {
-            swal('Success!', message, 'success').then(callback);
+            return Swal.fire({
+                title: 'Success!',
+                text: message,
+                icon: 'success',
+                confirmButtonColor: '#3b5d50'
+            });
         }
     }
-
 
 </script>
 <script src="/public/js/main.js"></script>

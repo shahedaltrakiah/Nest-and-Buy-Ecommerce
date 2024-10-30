@@ -148,22 +148,21 @@
 
 
     <!-- Wishlist Section -->
-    <div class="container wishlist-section my-4">
-        <h4 class="mb-4 text-center text-primary">Your Wishlist</h4>
+    <div class="order-card"">
+        <h4>Your Wishlist</h4>
         <div class="row justify-content-center">
             <?php if (!empty($wishlistItems)): ?>
                 <?php foreach ($wishlistItems as $item): ?>
                     <div class="col-md-3 col-sm-6 mb-4">
                         <div class="card wishlist-card">
-                            <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin: auto;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                            <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 10px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
                             <div class="card-body text-center">
-                                <h6 class="card-title text-dark"><?= htmlspecialchars($item['product_name']) ?></h6> <!-- Changed to text-dark -->
+                                <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6> <!-- Changed to text-dark -->
                                 <p class="card-text text-muted">$<?= htmlspecialchars($item['price']) ?></p>
 
-                                <!-- Form to remove item from wishlist -->
                                 <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
                                     <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
-                                    <button type="button" class="btn btn-danger btn-sm remove-btn">Remove</button>
+                                    <button type="button" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
                                 </form>
                             </div>
                         </div>

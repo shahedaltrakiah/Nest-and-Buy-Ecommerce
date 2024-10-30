@@ -6,12 +6,6 @@ class Wishlist extends Model {
         parent::__construct('wishlists'); // Initialize with the 'wishlists' table
     }
 
-    /**
-     * Fetch all wishlist items for a specific customer.
-     *
-     * @param int $customerId The ID of the customer.
-     * @return array An array of wishlist items associated with the customer.
-     */
     public function getWishlistItems($customerId)
     {
         $statement = $this->pdo->prepare("
@@ -32,14 +26,7 @@ class Wishlist extends Model {
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
     
-    
-    /**
-     * Add a product to the wishlist for a specific customer.
-     *
-     * @param int $customerId The ID of the customer.
-     * @param int $productId The ID of the product to add.
-     * @return bool True on success, false on failure.
-     */
+
     public function addToWishlist($customerId, $productId) {
         // Check if the product is already in the wishlist
         $existsStmt = $this->pdo->prepare("SELECT COUNT(*) FROM wishlists WHERE customer_id = ? AND product_id = ?");

@@ -134,16 +134,17 @@ function validateRegisterForm() {
     }
 
     // Validate phone number
-    const phonePattern = /^[0-9]{10}$/;
+    const phonePattern = /^\+962[0-9]{8}$/;
     if (!phonePattern.test(phone)) {
         Swal.fire({
             title: 'Invalid Phone',
-            text: 'Please enter a 10-digit phone number.',
+            text: 'Please enter a phone number starting with +962 followed by 9 digits.',
             icon: 'warning',
             confirmButtonColor: '#3b5d50'
         });
         return false;
     }
+
 
     // Validate password length
     if (password.length < 6) {
