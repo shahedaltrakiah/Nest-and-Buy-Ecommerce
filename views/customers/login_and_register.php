@@ -230,16 +230,12 @@
                 .then(data => {
                     if (data.loginSuccess) {
                         showAlert('success', 'Login successful! Redirecting...', () => {
-                            window.location.href = '/customers/index'; // Redirect to dashboard
+                            window.location.href = '/customers/index'; 
                         });
                     } else {
                         showAlert('error', 'Invalid credentials. Please try again.');
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showAlert('error', 'An error occurred. Please try again later.');
-                });
         });
     });
 
