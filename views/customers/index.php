@@ -1,5 +1,4 @@
 <?php require "views/partials/header.php"; ?>
-
     <!-- Start Hero Section -->
     <div class="hero">
         <div class="container">

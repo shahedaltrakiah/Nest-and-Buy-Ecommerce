@@ -112,14 +112,18 @@ class CustomerController extends Controller
     // Cart page
     public function cart()
     {
-        $cart = $_SESSION['cart'];
-        $this->view('customers/cart', ['cart' => $cart]);
+        $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : []; // Check if cart exists
+        $this->view('customers/cart', ['cart' => $cart]); // Pass cart data to the view
     }
 
     // Checkout page
     public function checkout()
     {
         $this->view('customers/checkout');
+    }
+    public function test() {
+        // Include the test view
+        require_once __DIR__ . '/../views/customers/test.php';
     }
 
     // Profile page for customer
