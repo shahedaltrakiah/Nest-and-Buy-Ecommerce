@@ -57,8 +57,8 @@
                             <li class="nav-item dropdown" style="margin-right: -1px;">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="<?php echo $_SESSION['user']['image_url']; ?>"
-                                         alt="User Image" style="width: 30px; height: 30px; border-radius: 50%;">
+                                    <img src="/public/<?php echo $_SESSION['user']['image_url']; ?>"
+                                         alt="User Image" style="width: 35px; height: 35px; border-radius: 50%;">
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                     <li></li>
@@ -99,6 +99,29 @@
 
         </div>
     </div>
-
 </nav>
 <!-- End Header/Navigation -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Get the current path
+        const currentPath = window.location.pathname;
+
+        // Select all nav-links
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            // Check if the href attribute matches the current path
+            if (link.getAttribute('href') === currentPath) {
+                // Remove 'active' from any previously active link
+                document.querySelectorAll('.nav-link.active').forEach(activeLink => {
+                    activeLink.classList.remove('active');
+                });
+
+                // Add 'active' class to the current link
+                link.classList.add('active');
+            }
+        });
+    });
+
+</script>
