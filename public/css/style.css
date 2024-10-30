@@ -666,7 +666,7 @@ a.more {
   }
 }
 
-.testimonial-slider-wrap #testimonial-nav>span {
+#testimonial-nav>span {
   cursor: pointer;
   position: absolute;
   width: 58px;
@@ -680,7 +680,7 @@ a.more {
   transition: .3s all ease;
 }
 
-.testimonial-slider-wrap #testimonial-nav>span:hover {
+#testimonial-nav>span:hover {
   background: #3b5d50;
   color: #ffffff;
 }

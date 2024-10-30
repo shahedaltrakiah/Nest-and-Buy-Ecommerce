@@ -42,7 +42,7 @@ class Core {
         'customers/shop' => ['CustomerController@shop', 'GET'],
         'customers/product_details' => ['CustomerController@productDetails', 'GET'],
         'customers/cart' => ['CustomerController@cart', 'GET'],
-        'customers/checkout' => ['CustomerController@checkout', 'POST'],
+        'customers/checkout' => ['CustomerController@checkout', 'GET'],
         'customers/profile' => ['CustomerController@profile', 'GET'],
         'customers/logout' => ['CustomerController@logout', 'GET'],
         'customer/cart'=>['CartController@add','POST'],
@@ -51,6 +51,9 @@ class Core {
         'customers/cart/remove' => ['CartController@remove', ['POST', 'GET']],
         'customers/cart/remove-coupon'=>['CartController@removeCoupon','POST'],
         'customers/cart/apply-coupon'=>['CartController@applyCoupon','POST'],
+        'customer/profile/add' => ['WishlistController@add', ['POST']],
+        'customers/profile/remove' => ['WishlistController@remove', 'POST'],
+        'customers/profile'=>['WishlistController@viewWishlist','GET'],
     ];
 
     public function __construct() {

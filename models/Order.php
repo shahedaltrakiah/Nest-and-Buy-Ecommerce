@@ -7,21 +7,33 @@ class Order extends Model
         parent::__construct('orders');
     }
 
-    public function create($data)
-    {
-        // Ensure required fields are present
+    public function create($data) {
         if (isset($data['customer_id'], $data['total_amount'])) {
-            // You can also set default values for optional fields
-            $data['order_date'] = date('Y-m-d H:i:s'); // Current date and time
-            $data['status'] = 'pending'; // Default status
-            $data['coupon_id'] = $data['coupon_id'] ?? null; // Optional coupon_id
-            $data['created_at'] = date('Y-m-d H:i:s'); // Set created_at timestamp
-            $data['updated_at'] = date('Y-m-d H:i:s'); // Set updated_at timestamp
+            $stmt = $this->pdo->prepare("
+            INSERT INTO orders (customer_id, order_date, status, coupon_id, total_amount, 
+                                created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-            // Call the parent create method
-            parent::create($data);
+            try {
+                $stmt->execute([
+                    $data['customer_id'],
+                    $data['order_date'],
+                    $data['status'],
+                    $data['coupon_id'],
+                    $data['total_amount'],
+                    $data['created_at'],
+                    $data['updated_at']
+                ]);
+
+                // Return the last inserted order ID
+                return $this->pdo->lastInsertId();
+            } catch (PDOException $e) {
+                // Log the error message or output for debugging
+                error_log("Database error: " . $e->getMessage());
+                throw new Exception("Database error: " . $e->getMessage());
+            }
         } else {
             throw new Exception("Missing required fields: customer_id and total_amount");
         }
     }
+
 }
