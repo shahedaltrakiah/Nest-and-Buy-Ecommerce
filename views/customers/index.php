@@ -5,12 +5,19 @@
             <div class="row justify-content-between">
                 <div class="col-lg-5">
                     <div class="intro-excerpt">
-                        <h1>Modern Interior <span clsas="d-block">Design Studio</span></h1>
+                        <h1>Modern Interior <span class="d-block">Design Studio</span></h1>
                         <p class="mb-4">Transforming your vision into stunning, personalized spaces. Let’s create your
                             dream environment together!</p>
                         <p>
                             <a href="/customers/shop" class="btn btn-secondary me-2">Start Shopping</a>
-                            <a href="/customers/login_and_register" class="btn btn-white-outline">Join Now</a>
+
+                            <?php if (isset($_SESSION['user'])): ?>
+                                <!-- Show 'Explore More' if the user is logged in -->
+                                <a href="/customers/explore" class="btn btn-white-outline">Explore More</a>
+                            <?php else: ?>
+                                <!-- Show 'Join Now' if the user is not logged in -->
+                                <a href="/customers/login_and_register" class="btn btn-white-outline">Join Now</a>
+                            <?php endif; ?>
                         </p>
                     </div>
                 </div>
@@ -37,37 +44,52 @@
 
             <!-- Slider -->
             <div id="productCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+
+                <!-- Carousel Controls -->
+                <div id="testimonial-nav">
+                    <span class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                            data-bs-slide="prev" style="margin-left: -40px; margin-top: 90px;" >
+                        <span class="fa fa-chevron-left" style="color: #0c4128"></span>
+                    </span>
+                    <span class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                            data-bs-slide="next" style="margin-right: -40px; margin-top: 90px;">
+                        <span class="fa fa-chevron-right" style="color: #0c4128"></span>
+                    </span>
+                </div>
+
                 <div class="carousel-inner">
-                    <?php
-                    // Chunk products to display multiple items per slide
-                    $chunkedProducts = array_chunk($products, 4); // Adjust '4' based on the number of items per slide
-                    foreach ($chunkedProducts as $index => $productChunk) : ?>
-                        <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                            <div class="row justify-content-center g-5">
-                                <?php foreach ($productChunk as $product) : ?>
-                                    <div class="col-lg-3 col-md-4 mb-4">
-                                        <div class="team-member text-center category-card">
-                                            <a class="category-item"
-                                               href="/customers/category/<?php echo $product['category_id']; ?>">
-                                                <img width="261px" height="261px"
-                                                     src="/public/<?php echo $product['category_image_url']; ?>"
-                                                     class="img-fluid" alt="<?php echo $product['category_name']; ?>">
-                                                <h3 class="category-title" style="color: #0c4128;">
-                                                    <?php echo ucwords(str_replace(['-', '_', '&'], ' ', $product['category_name'])); ?>
-                                                </h3>
-                                            </a>
+                    <div class="col-lg-11 mx-auto">
+                        <?php
+                        // Chunk products to display multiple items per slide
+                        $chunkedProducts = array_chunk($products, 4); // Adjust '4' based on the number of items per slide
+                        foreach ($chunkedProducts as $index => $productChunk) : ?>
+                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
+                                <div class="row justify-content-center g-4">
+                                    <?php foreach ($productChunk as $product) : ?>
+                                        <div class="col-lg-3 col-md-4 mb-4">
+                                            <div class="team-member text-center category-card">
+                                                <a class="category-item"
+                                                   href="/customers/category/<?php echo $product['category_id']; ?>">
+                                                    <img width="261px" height="261px"
+                                                         src="/public/<?php echo $product['category_image_url']; ?>"
+                                                         class="img-fluid"
+                                                         alt="<?php echo $product['category_name']; ?>">
+                                                    <h3 class="category-title" style="color: #0c4128;">
+                                                        <?php echo ucwords(str_replace(['-', '_', '&'], ' ', $product['category_name'])); ?>
+                                                    </h3>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                <?php endforeach; ?>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- End Category Slider Section -->
-
 
     <!-- Start Why Choose Us Section -->
     <div class="why-choose-section" style="margin-top: -90px;">

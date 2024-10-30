@@ -20,29 +20,21 @@ class CustomerController extends Controller
                 ];
 
                 // Check if the email is already in use
-//                if ($this->model('Customer')->isEmailTaken($data['email'])) {
-//                    echo "<script>
-//                    swal('Error!', 'This email is already in use.', 'error');
-//                  </script>";
-//                    return; // Stop further processing
-//                }
-
-                // If registration is successful
-//                if ($this->model('Customer')->register($data)) {
-//                    echo "<script>
-//                    swal('Success!', 'Registration successful! You can now log in.', 'success').then(() => {
-//                        window.location = '/customers/login_and_register';
-//                    });
-//                  </script>";
-//                    exit();
-//                }
-
-                if ($this->model('Customer')->register($data)) {
-                    header("Location: /customers/login_and_register"); // Redirect to login page or success page
+                if ($this->model('Customer')->isEmailTaken($data['email'])) {
+                    echo json_encode(['emailTaken' => true]);
                     exit();
                 }
 
+                // If registration is successful
+                if ($this->model('Customer')->register($data)) {
+                    echo json_encode(['registrationSuccess' => true]);
+                    exit();
+                } else {
+                    echo json_encode(['registrationSuccess' => false]);
+                    exit();
+                }
             } elseif ($formType === 'signin') {
+                // Handle Sign In
                 $email = $_POST['email'];
                 $password = $_POST['password'];
 
@@ -53,18 +45,17 @@ class CustomerController extends Controller
                         'image_url' => $user['image_url'] ?? 'https://cdn.icon-icons.com/icons2/2030/PNG/512/user_icon_124042.png',
                         'name' => $user['first_name'] . ' ' . $user['last_name']
                     ];
-                    var_dump($_SESSION);
-                    header("Location: /customers/index");
+                    echo json_encode(['loginSuccess' => true]);
                     exit();
                 } else {
-                    echo "<script>
-                    swal('Error!', 'Invalid credentials. Please try again.', 'error');
-                  </script>";
+                    echo json_encode(['loginSuccess' => false]);
+                    exit();
                 }
             }
         }
         $this->view('customers/login_and_register');
     }
+
 
 
     // Home page for customers
@@ -130,9 +121,12 @@ class CustomerController extends Controller
     // Profile page for customer
     public function profile()
     {
-//        $customer = $this->model('Customer')->find($id);
-//        $this->view('customers/profile', ['customers' => $customer]);
-        $this->view('customers/profile');
+        $customer = $this->model('Customer')->getCustomerById();
+
+        $orderitems = $this->model('OrderItem')->getOrderDetails();
+
+        $this->view('customers/profile', ['customers' => $customer, 'orderitems' => $orderitems]);
+
     }
 
     // Customer logout

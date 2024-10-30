@@ -31,16 +31,16 @@ class Product extends Model {
         SELECT c.id AS category_id, 
                c.category_name, 
                c.image_url AS category_image_url,
-               GROUP_CONCAT(p.id) AS product_id,
+               (p.id) AS product_id,
                p.product_name,p.price,
-               GROUP_CONCAT((SELECT pi.image_url 
+               (SELECT pi.image_url 
                              FROM ProductImages pi 
                              WHERE pi.product_id = p.id 
-                             LIMIT 1)) AS product_images
+                             LIMIT 1) AS product_images
         FROM Categories c
         LEFT JOIN Products p ON p.category_id = c.id
         GROUP BY c.id
-        ORDER BY c.category_name ASC ,COUNT(p.id) DESC
+        ORDER BY c.category_name ASC 
     ");
         $statement->execute();
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
