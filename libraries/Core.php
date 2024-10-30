@@ -42,7 +42,7 @@ class Core {
         'customers/shop' => ['CustomerController@shop', 'GET'],
         'customers/product_details' => ['CustomerController@productDetails', 'GET'],
         'customers/cart' => ['CustomerController@cart', 'GET'],
-        'customers/checkout' => ['CustomerController@checkout', 'POST'],
+        'customers/checkout' => ['CustomerController@checkout', 'GET'],
         'customers/profile' => ['CustomerController@profile', 'GET'],
         'customers/logout' => ['CustomerController@logout', 'GET'],
         'customer/cart'=>['CartController@add','POST'],

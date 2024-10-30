@@ -102,7 +102,7 @@ class CartController extends Controller
 }
 
 public function checkout() {
-    session_start(); // Ensure session is started
+   // session_start(); 
 
     // Debug output to check session variables
     echo '<pre>';
@@ -139,8 +139,25 @@ public function checkout() {
         ];
 
         // Create order
+        // Debug: Check order data
+        echo '<pre>';
+        print_r($orderData);
+        echo '</pre>';
+
+        // Create order
         $orderModel = new Order();
-        $orderId = $orderModel->create($orderData); 
+
+        try {
+            $orderId = $orderModel->create($orderData);
+            if (empty($orderId)) {
+                throw new Exception("Order creation failed, order ID is NULL.");
+            } else {
+                echo "Order created successfully. Order ID: " . $orderId . "<br>";
+            }
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+            exit(); // Stop execution on error
+        }
 
         // Create order items
         $orderItemModel = new OrderItem();
@@ -151,8 +168,16 @@ public function checkout() {
                 'quantity' => $product['quantity'],
                 'price' => $product['price']
             ];
+
+            // Check if order_id is correctly set
+            if (empty($orderItemData['order_id'])) {
+                throw new Exception("Cannot create order item, order_id is NULL.");
+            }
+
             $orderItemModel->create($orderItemData);
         }
+
+
 
         // Clear the cart and discount session
         unset($_SESSION['cart']);
