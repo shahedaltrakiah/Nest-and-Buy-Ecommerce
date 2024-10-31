@@ -148,39 +148,41 @@
 
 
     <!-- Wishlist Section -->
-    <div class="order-card"">
-        <h4>Your Wishlist</h4>
-        <div class="row justify-content-center">
-            <?php if (!empty($wishlistItems)): ?>
-                <?php foreach ($wishlistItems as $item): ?>
-                    <div class="col-md-3 col-sm-6 mb-4">
-                        <div class="card wishlist-card">
-                            <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 10px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
-                            <div class="card-body text-center">
-                                <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6> <!-- Changed to text-dark -->
-                                <p class="card-text text-muted">$<?= htmlspecialchars($item['price']) ?></p>
+    <div class="order-card">
+    <h4>Your Wishlist</h4>
+    <div class="row"> <!-- Removed 'justify-content-center' for left alignment -->
+        <?php if (!empty($wishlistItems)): ?>
+            <?php foreach ($wishlistItems as $item): ?>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="card wishlist-card">
+                        <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 15px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6>
+                            <p class="card-text text-muted">$<?= htmlspecialchars($item['price']) ?></p>
 
-                                <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
-                                    <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
-                                    <button type="button" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
-                                </form>
-                            </div>
+                            <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
+                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
+                                <button type="submit" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
+                            </form>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="col-12 text-center">
-                    <p class="text-muted">No items in your wishlist.</p> <!-- Changed to text-muted -->
                 </div>
-            <?php endif; ?>
-        </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="col-12 text-center">
+                <p class="text-muted">No items in your wishlist.</p>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
 
+
 <!-- SweetAlert Script -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<!-- jQuery from Google Hosted Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
@@ -194,26 +196,34 @@
         });
     }
 
-    function removeItem(itemName) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You want to remove " + itemName + " from your wishlist!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, remove it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire({
-                        title: 'Removed!',
-                        text: itemName + ' has been removed from your wishlist.',
-                        icon: 'success',
-                        confirmButtonColor: '#3B5D50'
-                    }
-                );
+    function removeItem(itemName, form) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to remove " + itemName + " from your wishlist!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, remove it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Submit the form to remove the item
+            form.submit(); // Submit the form after confirmation
+            Swal.fire({
+                title: 'Removed!',
+                text: itemName + ' has been removed from your wishlist.',
+                icon: 'success',
+                confirmButtonColor: '#3B5D50'
+            });
+        }
+    });
+}
 
-            }
-        });
-    }
+// Example: Attach this function to your button click event
+$('.remove-btn').on('click', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+    const form = $(this).closest('form'); // Get the closest form
+    const itemName = form.find('input[name="product_id"]').val(); // You may want to adjust this to get the actual product name instead
+    removeItem(itemName, form); // Call the removeItem function
+});
 </script>

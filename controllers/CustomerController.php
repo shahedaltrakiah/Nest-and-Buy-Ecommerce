@@ -124,8 +124,11 @@ class CustomerController extends Controller
         $customer = $this->model('Customer')->getCustomerById();
 
         $orderitems = $this->model('OrderItem')->getOrderDetails();
+        $customerId = $_SESSION['user']['id'];
 
-        $this->view('customers/profile', ['customers' => $customer, 'orderitems' => $orderitems]);
+        $wishlistItems = $this->model('Wishlist')->getWishlistItems($customerId);
+
+        $this->view('customers/profile', ['customers' => $customer, 'orderitems' => $orderitems,'wishlistItems' => $wishlistItems]);
 
     }
 
