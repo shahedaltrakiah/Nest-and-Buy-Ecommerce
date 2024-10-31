@@ -25,11 +25,13 @@ class WishlistController extends Controller {
     
             // Set success or error message in session
             if ($success) {
+                // Update the session wishlist array
+                $_SESSION['wishlists'][] = $productId; // Add the new product ID to the wishlist session array
+    
                 $_SESSION['wishlist_message'] = ['type' => 'success', 'text' => 'Product added to wishlist.'];
             } else {
                 $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Product is already in wishlist.'];
             }
-    
             // Redirect to profile page (make sure this page fetches wishlist items)
             header('Location: /customers/profile'); // Ensure this points to the correct profile method
             exit();
@@ -69,6 +71,11 @@ class WishlistController extends Controller {
             $result = $wishlistModel->removeItem($productId); // Remove the item from the wishlist
     
             if ($result) {
+                // Remove the product ID from the session wishlist array
+                if (($key = array_search($productId, $_SESSION['wishlists'])) !== false) {
+                    unset($_SESSION['wishlists'][$key]); // Remove the product ID from the array
+                }
+    
                 $_SESSION['wishlist_message'] = ['type' => 'success', 'text' => 'Item removed from wishlist.'];
             } else {
                 $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Failed to remove item. Please try again.'];
@@ -81,4 +88,5 @@ class WishlistController extends Controller {
         header('Location: /customers/profile');
         exit();
     }
+
 }
