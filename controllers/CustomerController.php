@@ -104,7 +104,7 @@ class CustomerController extends Controller
         $totalPages = ceil($totalItems / $itemsPerPage);
 
         // Retrieve products based on current page and filters
-        $product = $this->model ('Product')->getProductsByPage($search, $min_price, $max_price, $category_id, $currentPage, $itemsPerPage);
+        $products = $this->model ('Product')->getProductsByPage($search, $min_price, $max_price, $category_id, $currentPage, $itemsPerPage);
 
         $products = $this->model('Product')->getProducts();
         // Pass data to the view, including pagination and filter states
