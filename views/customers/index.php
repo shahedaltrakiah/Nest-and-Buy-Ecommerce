@@ -5,7 +5,7 @@
             <div class="row justify-content-between">
                 <div class="col-lg-5">
                     <div class="intro-excerpt">
-                        <h1>Modern Interior <span class="d-block">Design Studio</span></h1>
+                        <h1>Modern Interior <span>Design Studio</span></h1>
                         <p class="mb-4">Transforming your vision into stunning, personalized spaces. Let’s create your
                             dream environment together!</p>
                         <p>
@@ -194,7 +194,7 @@
                             <!-- <input type="text" class="form-control" placeholder="Enter email address"
                                 aria-label="Recipient's username" aria-describedby="basic-addon2"> -->
                             <div class="input-group-append">
-                                <a href="/customers/shop" class="input-group-text btn btn-secondary me-2"
+                                <a href="/customers/shop" class="btn btn-secondary me-2"
                                    id="basic-addon2">SHOP NOW</a>
                             </div>
                         </div>

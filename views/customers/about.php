@@ -1,15 +1,13 @@
 <?php require "views/partials/header.php"; ?>
 
 <!-- Start Hero Section -->
-<div class="hero" style="height: 60px;">
+<div class="hero" style="padding: calc(3rem - 30px) 0 1rem 0;">
     <div class="container">
-        <div class="row ">
-            <div class="col-lg-12">
-                <div class="intro-excerptt">
-                    <h1 style="margin-bottom: 10px; margin-top: -30px;"> About Us</h1>
-                    <p style="font-size: 15px;">At Nest & Buy, we bring you stylish, high-quality furniture to make
-                        your home cozy and beautiful. With a focus on craftsmanship and design, we’re here to help
-                        you create spaces you love.</p>
+        <div class="row">
+            <div class="col-lg-12 mt-3">
+                <div class="intro-excerptt text-center">
+                    <h1 class="hero-title mb-3">About Us</h1>
+                    <p class="hero-subtitle">Discover who we are and what we stand for</p>
                 </div>
             </div>
         </div>
@@ -99,13 +97,14 @@
 
         <div class="row justify-content-center g-5">
             <div class="col-lg-4 col-md-4 mb-4 ">
-                <div class="team-member text-center card-spacing " >
+                <div class="team-member text-center card-spacing ">
                     <div class="team-img-wrap">
                         <img src="/public/images/anas.jpg" alt="Lawson Arnold" class="img-fluid rounded-circle">
                     </div>
                     <h3 class="mt-3">Anas Hassan </h3>
                     <p>Product Owner</p>
-                    <a href="https://www.linkedin.com/in/anas-hassan-254125280?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
+                    <a href="https://www.linkedin.com/in/anas-hassan-254125280?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                       target="_blank">
                         <i class="fab fa-linkedin fa-2x" style="margin-right: 10px;"></i>
                     </a>
                     <a href="https://github.com/Anashani867" target="_blank">

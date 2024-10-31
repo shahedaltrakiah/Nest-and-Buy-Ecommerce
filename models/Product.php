@@ -176,7 +176,7 @@ public function getProductByIdWithSingleImage($productId)
     
 }
 
-    //rania function fro product_details/  New: Add review to a product
+    //rania function for product_details/  New: Add review to a product
     public function addReview($productId, $fullName, $email, $phone, $rating, $comment)
     {
         $statement = $this->pdo->prepare("
@@ -190,6 +190,14 @@ public function getProductByIdWithSingleImage($productId)
         $statement->bindParam(':rating', $rating, PDO::PARAM_INT);
         $statement->bindParam(':comment', $comment, PDO::PARAM_STR);
         return $statement->execute();
+    }
+
+    public function searchProducts($query)
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM products WHERE product_name LIKE :query");
+        $statement->bindValue(':query', '%' . $query . '%');
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

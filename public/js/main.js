@@ -73,7 +73,7 @@ document.getElementById("subscribeForm").addEventListener("submit", function (ev
 
 
 // Set the date we're counting down to
-const countdownDate = new Date("October 31, 2024 23:59:59").getTime();
+const countdownDate = new Date("November 10, 2024 23:59:59").getTime();
 
 // Update the countdown every second
 const countdownFunction = setInterval(() => {

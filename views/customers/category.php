@@ -1,15 +1,15 @@
 <?php require "views/partials/header.php"; ?>
 
 <!-- Start Hero Section -->
-<div class="hero" style="height: 60px;">
+<div class="hero" style="padding: calc(3rem - 30px) 0 1rem 0;">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="intro-excerpt" style="max-width: 100%;">
-                    <h1 style="margin-bottom: 20px; margin-top: -30px;">
-                        Category: <?php echo htmlspecialchars($products[0]['category_name']); ?>
+                <div class="intro-excerptt text-center">
+                    <h1 class="hero-title mb-3">
+                        Category:<span style="color: #F9BF29;"> <?php echo htmlspecialchars($products[0]['category_name']); ?> </span>
                     </h1>
-                    <p style="font-size: 15px;">
+                    <p class="hero-subtitle" style="max-width: 75%;">
                         <?php echo htmlspecialchars($products[0]['description']); ?>
                     </p>
                 </div>

@@ -67,7 +67,7 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
                                     <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>"
                                          alt="User Image"
-                                         style="width: 35px; height: 35px; border-radius: 50%;">
+                                         style="max-width: 40px; border-radius: 50%;">
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                     <li></li>
