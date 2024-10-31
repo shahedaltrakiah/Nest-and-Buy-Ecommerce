@@ -83,12 +83,18 @@ class CustomerController extends Controller
     }
 
     // Contact Us page
-    public function contact()
-    {
-//        $messages = $this->model('Message')->saveMessage($id);
-//        $this->view('customers/contact', ['messages' => $messages]);
+    public function contact() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Assuming $this->model('Customer') provides access to the saveMessage method
+            $this->model('Message')->saveMessage();
+            // Redirect or show a success message
+            header('Location: /customers/contact?success=true');
+            exit();
+        }
         $this->view('customers/contact');
+
     }
+
 
     // Category details page
     public function categoryView($id)

@@ -10,17 +10,20 @@ class Message extends Model {
 
     }
 
-    public function saveMessage($id) {
+    public function saveMessage() {
+        // Prepare the SQL statement
         $statement = $this->pdo->prepare("
-            INSERT INTO $this->table (customer_id,content,created_at) 
-            VALUES (:customer_id, :content, :status, NOW())
-        ");
+        INSERT INTO $this->table (customer_id, content, created_at) 
+        VALUES (:customer_id, :content, NOW())
+    ");
 
         // Bind parameters
-        $statement->bindParam(':customer_id', $id);
+        $statement->bindParam(':customer_id', $_SESSION['user']['id'], PDO::PARAM_INT);
+        $statement->bindParam(':content', $_POST['message'], PDO::PARAM_STR);
 
-        // Execute the query
+        // Execute and return the result
         return $statement->execute();
     }
+
 
 }
