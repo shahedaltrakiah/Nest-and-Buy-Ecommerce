@@ -7,7 +7,7 @@
     <div class="profile-card">
         <button class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
         <div class="profile-info">
-            <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>">
+            <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/images/user-profile.png'; ?>">
             <div>
                 <h3><?php echo htmlspecialchars($customers->first_name . ' ' . $customers->last_name); ?></h3>
             </div>
@@ -154,7 +154,7 @@
         <?php if (!empty($wishlistItems)): ?>
             <?php foreach ($wishlistItems as $item): ?>
                 <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card wishlist-card">
+                    <div class="card wishlist-card" style="margin-top: 20px;">
                         <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 15px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
                         <div class="card-body text-center">
                             <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6>
