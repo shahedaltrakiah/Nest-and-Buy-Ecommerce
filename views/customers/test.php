@@ -1,9 +1,9 @@
 <?php
 
 // Include the necessary files
-require_once '../Ecommerce-website/libraries/Controller.php'; // Include the Controller
-require_once '../Ecommerce-website/models/Product.php'; // Include the Product model
-require_once '../Ecommerce-website/models/Wishlist.php'; // Include the Wishlist model
+// require_once '../Ecommerce-website/libraries/Controller.php'; // Include the Controller
+// require_once '../Ecommerce-website/models/Product.php'; // Include the Product model
+// require_once '../Ecommerce-website/models/Wishlist.php'; // Include the Wishlist model
 
 // Create an instance of the Product model
 $productModel = new Product();
