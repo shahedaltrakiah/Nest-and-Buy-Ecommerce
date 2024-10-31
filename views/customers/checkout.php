@@ -6,13 +6,6 @@
 
 <div class="untree_co-section">
 		<div class="container">
-			<div class="row mb-5">
-				<div class="col-md-12">
-					<div class="border p-4 rounded" role="alert">
-						Returning customer? <a href="login.php">Click here</a> to login
-					</div>
-				</div>
-			</div>
 			<div class="row">
     <div class="col-md-6 mb-5 mb-md-0">
         <h2 class="h3 mb-3 text-black">Billing Details</h2>
@@ -21,11 +14,11 @@
     <div class="form-group row">
         <div class="col-md-6">
             <label for="c_fname" class="text-black">First Name <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="c_fname" name="c_fname" required>
+            <input type="text" class="form-control" id="c_fname" name="c_fname" value="<?php echo isset($_SESSION['user']['first_name']) ? htmlspecialchars($_SESSION['user']['first_name']) : ''; ?>" required>
         </div>
         <div class="col-md-6">
             <label for="c_lname" class="text-black">Last Name <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="c_lname" name="c_lname" required>
+            <input type="text" class="form-control" id="c_lname" name="c_lname" value="<?php echo isset($_SESSION['user']['last_name']) ? htmlspecialchars($_SESSION['user']['last_name']) : ''; ?>" required>
         </div>
     </div>
     <div class="form-group row">
@@ -49,21 +42,16 @@
     <div class="form-group row mb-5">
         <div class="col-md-6">
             <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-            <input type="email" class="form-control" id="c_email_address" name="c_email_address" required>
+            <input type="email" class="form-control" id="c_email_address" name="c_email_address" value="<?php echo isset($_SESSION['user']['email']) ? htmlspecialchars($_SESSION['user']['email']) : ''; ?>" required>
         </div>
         <div class="col-md-6">
             <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-            <input type="tel" class="form-control" id="c_phone" name="c_phone" placeholder="Phone Number" required>
+            <input type="tel" class="form-control" id="c_phone" name="c_phone" placeholder="Phone Number" value="<?php echo isset($_SESSION['user']['phone']) ? htmlspecialchars($_SESSION['user']['phone']) : ''; ?>" required>
         </div>
     </div>
+    <button type="submit" class="btn btn-primary m-auto d-flex p-3">Proceed to Payment</button>
+</form>
 
-    <div class="form-group m-2">
-        <label for="c_order_notes" class="text-black">Order Notes</label>
-        <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control" placeholder="Write your notes here..."></textarea>
-    </div>
-
-                        <button type="submit" class="btn btn-primary m-auto d-flex p-3">Proceed to Payment</button>
-                    </form>
                 </div>
             </div>
 
@@ -126,6 +114,9 @@
             </div>
         </div>
     </div>
+</div>
+</div>
+</div>
 </div>
 
 
