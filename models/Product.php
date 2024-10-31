@@ -142,8 +142,8 @@ class Product extends Model
         $stmt = $this->pdo->query("SELECT * FROM categories");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-    public function getProductById($productId)
-    {
+    // New method to get a product by ID
+    public function getProductById($productId) {
         $statement = $this->pdo->prepare("
              SELECT p.*, c.category_name, 
                     (SELECT GROUP_CONCAT(image_url) 

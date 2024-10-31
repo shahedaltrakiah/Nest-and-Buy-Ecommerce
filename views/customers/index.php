@@ -13,7 +13,7 @@
 
                             <?php if (isset($_SESSION['user'])): ?>
                                 <!-- Show 'Explore More' if the user is logged in -->
-                                <a href="/customers/shop" class="btn btn-white-outline">Explore More</a>
+                                <a href="/customers/explore" class="btn btn-white-outline">Explore More</a>
                             <?php else: ?>
                                 <!-- Show 'Join Now' if the user is not logged in -->
                                 <a href="/customers/login_and_register" class="btn btn-white-outline">Join Now</a>

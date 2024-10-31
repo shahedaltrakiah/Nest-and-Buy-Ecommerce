@@ -7,7 +7,7 @@
     <div class="profile-card">
         <button class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
         <div class="profile-info">
-            <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/images/user-profile.png'; ?>">
+            <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>">
             <div>
                 <h3><?php echo htmlspecialchars($customers->first_name . ' ' . $customers->last_name); ?></h3>
             </div>
@@ -98,7 +98,7 @@
                     <td>#<?= htmlspecialchars($order->order_id) ?></td>
                     <td><?= htmlspecialchars(date('M d, Y', strtotime($order->order_date))) ?></td>
                     <td><span class="badge bg-<?= $order->status == 'completed' ? 'success' : 'warning' ?>"><?= htmlspecialchars(ucfirst($order->status)) ?></span></td>
-                    <td><sup> JD </sup><?= number_format($order->total_amount, 2) ?></td>
+                    <td>JD<?= number_format($order->total_amount, 2) ?></td>
                     <td>
                         <button class="view-details-btn" data-bs-toggle="modal"
                                 data-bs-target="#orderDetailsModal" data-order-id="<?= $order->order_id ?>">View Details</button>
@@ -123,7 +123,7 @@
                         <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order->order_id) ?></span></h5>
                         <p><strong>Date:</strong> <span class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order->order_date))) ?></span></p>
                         <p><strong>Status:</strong> <span class="badge bg-<?= $order->status == 'completed' ? 'success' : 'warning' ?>"><?= htmlspecialchars(ucfirst($order->status)) ?></span></p>
-                        <p><strong>Total:</strong> <span class="text-danger"><sup> JD </sup><?= number_format($order->total_amount, 2) ?></span></p>
+                        <p><strong>Total:</strong> <span class="text-danger">JD<?= number_format($order->total_amount, 2) ?></span></p>
                         <p><strong>Shipping Address:</strong> <span class="text-muted">Amman,Joradan</span>
                         </p>
                         <p><strong>Items Ordered:</strong></p>
@@ -132,7 +132,7 @@
                             <ul class="list-group">
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <?= htmlspecialchars($order->product_name) ?>
-                                    <span class="badge bg-secondary"><sup> JD </sup><?= number_format($order->product_price, 2) ?></span>
+                                    <span class="badge bg-secondary">JD<?= number_format($order->product_price, 2) ?></span>
                                 </li>
                             </ul>
                             <?php endforeach; ?>
@@ -150,15 +150,16 @@
     <!-- Wishlist Section -->
     <div class="order-card">
     <h4>Your Wishlist</h4>
-    <div class="row">
+    <div class="row"> <!-- Removed 'justify-content-center' for left alignment -->
         <?php if (!empty($wishlistItems)): ?>
             <?php foreach ($wishlistItems as $item): ?>
                 <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card wishlist-card" style="margin-top: 20px;">
-                        <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 15px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                    <div class="card wishlist-card">
+                        <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 10px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
                         <div class="card-body text-center">
                             <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6>
-                            <p class="card-text text-muted"><sup> JD </sup><?= htmlspecialchars($item['price']) ?></p>
+                            <p class="card-text text-muted">$<?= htmlspecialchars($item['price']) ?></p>
+
                             <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
                                 <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
                                 <button type="submit" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
