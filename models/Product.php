@@ -142,4 +142,35 @@ class Product extends Model
         $stmt = $this->pdo->query("SELECT * FROM categories");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // New method to get a product by ID
+    public function getProductById($productId) {
+        $statement = $this->pdo->prepare("
+            SELECT 
+                p.id, 
+                p.product_name, 
+                p.description, 
+                p.price, 
+                p.average_rating, 
+                p.stock_quantity, 
+                p.created_at, 
+                p.updated_at, 
+                pi.image_url, 
+                c.category_name 
+            FROM 
+                $this->table AS p 
+            JOIN 
+                productimages AS pi ON p.id = pi.product_id 
+            JOIN 
+                categories AS c ON p.category_id = c.id  -- Adjust this line if necessary
+            WHERE 
+                p.id = :productId
+        ");
+        
+        $statement->bindParam(':productId', $productId, \PDO::PARAM_INT);
+        $statement->execute();
+        
+        return $statement->fetch(\PDO::FETCH_ASSOC); // Return a single product as an associative array
+    }
+    
+    
 }

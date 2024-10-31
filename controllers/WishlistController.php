@@ -70,19 +70,19 @@ class WishlistController extends Controller {
             $wishlistModel = new Wishlist();
             $result = $wishlistModel->removeItem($productId); // Remove the item from the wishlist
     
-            if ($result) {
-                // Remove the product ID from the session wishlist array
-                if (($key = array_search($productId, $_SESSION['wishlists'])) !== false) {
-                    unset($_SESSION['wishlists'][$key]); // Remove the product ID from the array
-                }
-    
-                $_SESSION['wishlist_message'] = ['type' => 'success', 'text' => 'Item removed from wishlist.'];
-            } else {
-                $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Failed to remove item. Please try again.'];
+   if ($result) {
+            // Remove the product ID from the session wishlist array
+            if (($key = array_search($productId, $_SESSION['wishlists'])) !== false) {
+                unset($_SESSION['wishlists'][$key]); // Remove the product ID from the array
             }
+
+            $_SESSION['wishlist_message'] = ['type' => 'success', 'text' => 'Item removed from wishlist.'];
         } else {
-            $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Invalid product ID.'];
+            $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Failed to remove item. Please try again.'];
         }
+    } else {
+        $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Invalid product ID.'];
+    }
     
         // Redirect to profile page
         header('Location: /customers/profile');
