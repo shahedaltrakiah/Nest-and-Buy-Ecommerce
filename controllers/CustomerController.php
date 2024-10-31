@@ -159,6 +159,7 @@ class CustomerController extends Controller
             'user' => $user // Pass user data to the view
         ]);
     }
+
     // Cart page
     public function cart()
     {
