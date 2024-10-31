@@ -1,166 +1,141 @@
 <?php require 'views/partials/header.php'; ?>
 
 <div class="container mt-5">
-    <div class="row s_product_inner justify-content-center mb-5">
-        <!-- Product Images Section -->
-        <div class="col-lg-7 col-xl-7">
-            <div class="product_slider_img">
-                <div id="vertical">
+    <div class="container mt-5">
+        <div class="row justify-content-center mb-5 s_product_inner">
+
+            <!-- Main Product Image and Thumbnails Section -->
+            <div class="col-lg-6 col-xl-6 d-flex align-items-start">
+                <div class="product-slider d-flex flex-row">
+
                     <!-- Main Product Image -->
-                    <div>
+                    <div class="main-image-container">
                         <?php
-                        // The main product image URL (base image)
-                        $baseImageUrl = htmlspecialchars($product['image_url'] ?? '../images/default-product.png');
+                        $allImages = explode(',', $product['all_images']);
+                        $mainImage = $allImages[0];
                         ?>
-                        <img id="main-image" width="461px" height="461px"
-                             src="http://localhost/Ecommerce_website.github.io-/<?= $baseImageUrl; ?>"
-                             class="img-fluid" alt="<?= htmlspecialchars($product['product_name']); ?>">
+                        <img id="main-image" width="540" height="540" src="/public/<?= htmlspecialchars($mainImage); ?>"
+                             class="img-fluid rounded shadow" alt="<?= htmlspecialchars($product['product_name']); ?>">
                     </div>
 
-                    <!-- Sub-images (Thumbnails) -->
-                    <div class="sub-images mt-3">
+                    <!-- Thumbnails Section to the Right of Main Image with Scroll -->
+                    <div class="sub-images d-flex flex-column ms-3" style="max-height: 400px; overflow-y: auto;">
+                        <?php foreach ($allImages as $image):
+                            $image = trim($image); ?>
+                            <img onclick="changeMainImage(this.src)" class="sub-image img-thumbnail mb-2"
+                                 width="150" height="150" src="/public/<?= htmlspecialchars($image); ?>"
+                                 alt="<?= htmlspecialchars($product['product_name']); ?>">
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Product Details Section -->
+            <div class="col-lg-5 col-xl-5 ">
+                <div class="s_product_text">
+                    <!-- Product Name and Price -->
+                    <h2><?= htmlspecialchars(ucwords(str_replace('-', ' ', $product['product_name']))); ?></h2>
+
+                    <h4 class="product-price text-primary mt-3"><sup>JD</sup> <?= htmlspecialchars(number_format($product['price'], 2)); ?></h4>
+
+                    <!-- Product Description -->
+                    <p class="lh-lg mt-3"><?= htmlspecialchars($product['description']); ?></p>
+
+                    <!-- Availability Status -->
+                    <div class="availability mb-3">
+                        <span><strong>Availability:</strong></span>
                         <?php
-                        // Extract base name and extension for image processing
-                        $baseName = pathinfo($baseImageUrl, PATHINFO_FILENAME);
-                        $extension = pathinfo($baseImageUrl, PATHINFO_EXTENSION);
-
-                        // Loop through sub-images (from 1 to 9)
-                        for ($i = 1; $i <= 9; $i++) {
-                            // Generate sub-image URL
-                            $subImageUrl = "http://localhost/Ecommerce_website.github.io-/images/{$baseName}{$i}.{$extension}";
-
-                            // Check if the file exists locally
-                            $localImagePath = "../images/{$baseName}{$i}.{$extension}";
-
-                            // If the file doesn't exist, stop the loop
-                            if (!file_exists($localImagePath)) {
-                                break;
-                            }
-
-                            // Display the sub-image with a class for JavaScript handling
-                            echo '<img class="sub-image img-thumbnail ms-1" width="60px" height="60px" src="' . $subImageUrl . '" alt="' . htmlspecialchars($product['product_name']) . '">';
+                        if ($product['stock_quantity'] > 5) {
+                            echo "Available";
+                        } elseif ($product['stock_quantity'] > 0) {
+                            echo "Hurry up, limited quantity!";
+                        } else {
+                            echo "Out of Stock";
                         }
                         ?>
                     </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Product Details Section -->
-        <div class="col-lg-5 col-xl-4">
-            <div class="s_product_text ">
-                <?php
-                // Function to format the product name
-                function formatProductName($name)
-                {
-                    // Replace dashes with spaces and capitalize each word
-                    return ucwords(str_replace('-', ' ', $name));
-                }
-                ?>
-
-                <h3><?= htmlspecialchars(formatProductName($product['product_name'])); ?></h3>
-                <h2>$<?= htmlspecialchars($product['price']); ?></h2>
-
-                <p><?= htmlspecialchars($product['description']); ?></p>
-                <ul class="list list-unstyled">
-                    <li>
-                        <a class="active" href="#"><span>Category</span> : Household</a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>Availability</span> :
-                            <?php
-                            // Check stock quantity for availability
-                            if (is_null($product['stock_quantity'])) {
-                                echo "Sold Out";
-                            } elseif ($product['stock_quantity'] <= 5) {
-                                echo "Don't miss out, stock running low!";
-                            } else {
-                                echo "In Stock";
-                            }
-                            ?>
+                    <!-- Quantity Selector and Add to Cart Button -->
+                    <div class="d-flex align-items-center mb-5 mt-5">
+                        <input type="number" min="1" max="<?= $product['stock_quantity']; ?>" value="1"
+                               class="form-control w-25 me-2 text-center" id="quantity" name="quantity">
+                        <?php if ($product['stock_quantity'] > 0): ?>
+                            <a href="/cart/add/<?= $product['id']; ?>" class="btn btn-secondary">Add to Cart</a>
+                        <?php else: ?>
+                            <button class="btn btn-secondary" disabled>Out of Stock</button>
+                        <?php endif; ?>
+                        <a href="/wishlist/add/<?= $product['id']; ?>" class="btn btn-outline-secondary ms-2">
+                            <i class="fa-solid fa-heart"></i>
                         </a>
-                    </li>
-                </ul>
-                <div class="card_area d-flex justify-content-between align-items-center">
-                    <div class="product_count">
-                        <span class="inumber-decrement"> <i class="ti-minus"></i></span>
-                        <input class="input-number" type="text" value="1" min="0" max="10">
-                        <span class="number-increment"> <i class="ti-plus"></i></span>
                     </div>
-                    <a href="#" class="btn btn-secondary me-1">Add to Cart</a>
-                    <a href="#" class="like_us btn-secondary"> <i class="ti-heart"></i> </a>
                 </div>
             </div>
 
         </div>
-        <div class="container mt-5">
-            <!-- Review Form -->
-            <h4>Add Your Review</h4>
-            <form method="POST" action="">
-                <div class="form-group">
-                    <label for="full_name">Full Name:</label>
-                    <input type="text" name="full_name" id="full_name" class="form-control w-50" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" class="form-control w-50" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone:</label>
-                    <input type="text" name="phone" id="phone" class="form-control w-50" required>
-                </div>
-                <div class="form-group">
-                    <label for="rating">Rating:</label>
-                    <select name="rating" id="rating" class="form-control w-50" required>
-                        <option value="1">1 Star</option>
-                        <option value="2">2 Stars</option>
-                        <option value="3">3 Stars</option>
-                        <option value="4">4 Stars</option>
-                        <option value="5">5 Stars</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="comment">Comment:</label>
-                    <textarea name="comment" id="comment" class="form-control w-50" rows="4" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit Review</button>
+    </div>
 
-            </form>
+
+
+    <!-- Reviews Section (Side-by-Side Layout) -->
+    <div class="reviews-section my-5">
+        <h4 class="mb-4">Customer Reviews</h4>
+        <div class="d-flex justify-content-between my-5">
+            <!-- Review Submission Form -->
+            <div class="review-form-container col-md-5">
+                <h5>Write a Review</h5>
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating</label>
+                        <select name="rating" id="rating" class="form-select" required>
+                            <option value="">Choose Rating</option>
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <option value="<?= $i; ?>"><?= $i; ?> Star<?= $i > 1 ? 's' : ''; ?></option>
+                            <?php endfor; ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment</label>
+                        <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Name</label>
+                        <input type="text" name="full_name" id="full_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" name="email" id="email" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary ">Submit Review</button>
+                </form>
+            </div>
+
+            <!-- Divider Line -->
+            <div class="vr mx-3"></div>
+
+            <!-- Display Reviews -->
+            <div class="customer-reviews col-md-6">
+                <?php if (!empty($reviews)): ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="review mt-3 p-3 border rounded">
+                            <p><strong>Rating:</strong> <?= htmlspecialchars($review['rating']); ?> Stars</p>
+                            <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
+                            <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
+                <?php endif; ?>
+            </div>
         </div>
-
-        <!-- Display Reviews -->
-        <h4 class="mt-5">Reviews</h4>
-        <?php if (count($reviews) > 0): ?>
-            <?php foreach ($reviews as $review): ?>
-                <div class="review">
-                    <p><strong>Rating:</strong> <?= htmlspecialchars($review['rating']); ?> Stars</p>
-                    <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
-                    <p><em>Reviewed on <?= htmlspecialchars($review['created_at']); ?></em></p>
-                    <hr>
-                </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <p>No reviews yet. Be the first to leave a review!</p>
-        <?php endif; ?>
     </div>
 </div>
-
-<!-- JavaScript for Image Swap -->
 <script>
-    // Select all sub-images
-    const subImages = document.querySelectorAll('.sub-image');
-
-    // Select the main image
-    const mainImage = document.getElementById('main-image');
-
-    // Loop through each sub-image and add a click event listener
-    subImages.forEach(function (subImage) {
-        subImage.addEventListener('click', function () {
-            // Set the src of the main image to the clicked sub-image src
-            mainImage.src = subImage.src;
-        });
-    });
+    // JavaScript function to change the main image on thumbnail click
+    function changeMainImage(src) {
+        document.getElementById("main-image").src = src;
+    }
 </script>
 
-
+<?php require 'views/partials/footer.php'; ?>

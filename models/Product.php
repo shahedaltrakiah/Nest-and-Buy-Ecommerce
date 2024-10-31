@@ -142,54 +142,19 @@ class Product extends Model
         $stmt = $this->pdo->query("SELECT * FROM categories");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public function getProductsByFilter($category_id, $min_price, $max_price)
-    {
-        $sql = "SELECT * FROM products WHERE price >= :min_price AND price <= :max_price";
-        if ($category_id) {
-            $sql .= " AND category_id = :category_id";
-        }
-
-        $stmt = $this->pdo->prepare($sql); // Updated from $this->db to $this->pdo
-        $stmt->bindValue(':min_price', $min_price, PDO::PARAM_INT);
-        $stmt->bindValue(':max_price', $max_price, PDO::PARAM_INT);
-        if ($category_id) {
-            $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
-        }
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Added FETCH_ASSOC for consistent output
-    }
-
     // New method to get a product by ID
     public function getProductById($productId) {
         $statement = $this->pdo->prepare("
-            SELECT 
-                p.id, 
-                p.product_name, 
-                p.description, 
-                p.price, 
-                p.average_rating, 
-                p.stock_quantity, 
-                p.created_at, 
-                p.updated_at, 
-                pi.image_url, 
-                c.category_name 
-            FROM 
-                $this->table AS p 
-            JOIN 
-                productimages AS pi ON p.id = pi.product_id 
-            JOIN 
-                categories AS c ON p.category_id = c.id  -- Adjust this line if necessary
-            WHERE 
-                p.id = :productId
+            SELECT p.*, 
+                   pi.image_url, 
+                   c.category_name 
+            FROM $this->table p
+            LEFT JOIN productimages pi ON p.id = pi.product_id 
+            LEFT JOIN categories c ON p.category_id = c.id 
+            WHERE p.id = :productId
         ");
-        
-        $statement->bindParam(':productId', $productId, \PDO::PARAM_INT);
+        $statement->bindParam(':productId', $productId, PDO::PARAM_INT);
         $statement->execute();
-        
-        return $statement->fetch(\PDO::FETCH_ASSOC); // Return a single product as an associative array
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
-    
-    
 }
