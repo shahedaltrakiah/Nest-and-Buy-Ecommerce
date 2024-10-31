@@ -78,11 +78,12 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="fa-solid fa-heart"></i>
-                                    <span class="wishlist-count"><?php echo isset($_SESSION['wishlists']) ? count($_SESSION['wishlists']) : 0; ?></span>
-                                </a>
-                            </li>
+                            <li class="nav-item">
+    <a class="nav-link" href="/customers/profile">
+        <i class="fa-solid fa-heart"></i>
+        <span class="wishlist-count"><?php echo isset($_SESSION['wishlists']) ? count($_SESSION['wishlists']) : 0; ?></span>
+    </a>
+</li>
                         <?php else: ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="/customers/login_and_register">
