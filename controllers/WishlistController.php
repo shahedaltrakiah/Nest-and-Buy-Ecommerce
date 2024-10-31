@@ -31,6 +31,7 @@ class WishlistController extends Controller {
                 $_SESSION['wishlist_message'] = ['type' => 'success', 'text' => 'Product added to wishlist.'];
             } else {
                 $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Product is already in wishlist.'];
+                
             }
             // Redirect to profile page (make sure this page fetches wishlist items)
             header('Location: /customers/profile'); // Ensure this points to the correct profile method

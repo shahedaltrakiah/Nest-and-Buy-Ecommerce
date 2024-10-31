@@ -59,17 +59,30 @@
 
                     <!-- Quantity Selector and Add to Cart Button -->
                     <div class="d-flex align-items-center mb-5 mt-5">
-                        <input type="number" min="1" max="<?= $product['stock_quantity']; ?>" value="1"
-                               class="form-control w-25 me-2 text-center" id="quantity" name="quantity">
-                        <?php if ($product['stock_quantity'] > 0): ?>
-                            <a href="/cart/add/<?= $product['id']; ?>" class="btn btn-secondary">Add to Cart</a>
-                        <?php else: ?>
-                            <button class="btn btn-secondary" disabled>Out of Stock</button>
-                        <?php endif; ?>
-                        <a href="/wishlist/add/<?= $product['id']; ?>" class="btn btn-outline-secondary ms-2">
-                            <i class="fa-solid fa-heart"></i>
-                        </a>
-                    </div>
+    <?php if ($product['stock_quantity'] > 0): ?>
+        <form action="/customer/cart" method="post" class="me-3 d-flex align-items-center">
+            <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+            <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock_quantity']; ?>" class="form-control quantity-input me-2" style="width: 80px;">
+            <button type="submit" class="btn btn-primary add-to-cart">
+                <i class="bi bi-cart-fill"></i> <span class="d-none d-sm-inline">Add to Cart</span>
+            </button>
+        </form>
+    <?php else: ?>
+        <button class="btn btn-secondary me-3" disabled>Out of Stock</button>
+    <?php endif; ?>
+    
+    <form action="/customer/profile/add" method="post" class="ms-2">
+        <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+        <button type="submit" class="btn btn-primary">
+            <i class="bi bi-heart-fill"></i> Add to Wishlist
+        </button>
+    </form>
+</div>
+
+
+
+
+
                 </div>
             </div>
 

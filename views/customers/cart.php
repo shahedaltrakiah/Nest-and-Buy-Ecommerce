@@ -32,10 +32,16 @@ require "views/partials/header.php"; ?>
                                         $subtotal += $total; 
                                 ?>
                                     <tr>
-                                        <td class="product-thumbnail">
-                                        <img style="height: 80px; width: 80px; object-fit: contain;" src="<?= htmlspecialchars('/public/' . $product['image']) ?>" alt="<?= htmlspecialchars($product['product_name'] ?? 'Product Image') ?>">
-                                        </td>
-                                        <td class="product-name"><?= htmlspecialchars($product['name']); ?></td>
+                                    <td class="product-thumbnail">
+    <img style="height: 80px; width: 80px; object-fit: contain;" 
+         src="<?= htmlspecialchars('/public/' . $product['image']) ?>" 
+         alt="<?= htmlspecialchars($product['name'] ?? 'Product Image') ?>">
+</td>
+
+
+<td class="product-name">
+    <b><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?></b>
+</td>
                                         <td class="product-price">$<?= number_format($product['price'], 2); ?></td>
                                         <td class="product-quantity">
                                             <span><?php echo htmlspecialchars($product['quantity']); ?></span>
