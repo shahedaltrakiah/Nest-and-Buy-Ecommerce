@@ -146,18 +146,35 @@ class Product extends Model
     public function getProductById($productId)
     {
         $statement = $this->pdo->prepare("
-            SELECT p.*, 
-                   pi.image_url, 
-                   c.category_name 
-            FROM $this->table p
-            LEFT JOIN productimages pi ON p.id = pi.product_id 
-            LEFT JOIN categories c ON p.category_id = c.id 
-            WHERE p.id = :productId
+            SELECT p.*, c.category_name, 
+                   (SELECT GROUP_CONCAT(image_url) 
+                    FROM productimages 
+                    WHERE product_id = p.id) AS all_images
+            FROM products p
+            JOIN categories c ON p.category_id = c.id
+            WHERE p.id = :product_id
         ");
-        $statement->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $statement->bindParam(':product_id', $productId, PDO::PARAM_INT);
         $statement->execute();
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return $statement->fetch(\PDO::FETCH_ASSOC);
     }
+public function getProductByIdWithSingleImage($productId)
+{
+    $statement = $this->pdo->prepare("
+        SELECT p.*, c.category_name, 
+               (SELECT image_url 
+                FROM productimages 
+                WHERE product_id = p.id 
+                LIMIT 1) AS image
+        FROM products p
+        JOIN categories c ON p.category_id = c.id
+        WHERE p.id = :product_id
+    ");
+    $statement->bindParam(':product_id', $productId, PDO::PARAM_INT);
+    $statement->execute();
+    return $statement->fetch(\PDO::FETCH_ASSOC);
+    
+}
 
     //rania function fro product_details/  New: Add review to a product
     public function addReview($productId, $fullName, $email, $phone, $rating, $comment)
