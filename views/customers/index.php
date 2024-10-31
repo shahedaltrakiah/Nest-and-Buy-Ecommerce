@@ -13,7 +13,7 @@
 
                             <?php if (isset($_SESSION['user'])): ?>
                                 <!-- Show 'Explore More' if the user is logged in -->
-                                <a href="/customers/explore" class="btn btn-white-outline">Explore More</a>
+                                <a href="/customers/shop" class="btn btn-white-outline">Explore More</a>
                             <?php else: ?>
                                 <!-- Show 'Join Now' if the user is not logged in -->
                                 <a href="/customers/login_and_register" class="btn btn-white-outline">Join Now</a>
@@ -269,7 +269,7 @@
                                     <?php foreach ($chunk as $product) : ?>
                                         <div class="col-12 col-md-4 col-lg-3 mb-5">
                                             <a class="product-item"
-                                               href="customers/product_details?id=<?php echo $product['product_id']; ?>">
+                                               href="/customers/product_details/<?php echo $product['product_id']; ?>">
                                                 <img width="261px" height="261px"
                                                      src="/public/<?php echo $product['product_images']; ?>"
                                                      class="img-fluid product-thumbnail"

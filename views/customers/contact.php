@@ -71,33 +71,29 @@
                         </div>
                     </div>
 
-                    <form action="" method="POST" onsubmit="return validateForm()">
+                    <form action="/customers/contact" method="POST">
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="text-black" for="first_name"></label>
-                                    <input type="text" class="form-control" id="fname" name="first_name"
-                                           placeholder="First name">
+                                    <input type="text" class="form-control" id="fname" name="first_name" placeholder="First name">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
                                     <label class="text-black" for="last_name"></label>
-                                    <input type="text" class="form-control" id="lname" name="last_name"
-                                           placeholder="Last name">
+                                    <input type="text" class="form-control" id="lname" name="last_name" placeholder="Last name">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="text-black" for="email"></label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                   placeholder="Email address">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email address">
                         </div>
 
                         <div class="form-group mb-5">
                             <label class="text-black" for="message"></label>
-                            <textarea class="form-control" id="message" name="message" placeholder="Message"
-                                      cols="30" rows="5"></textarea>
+                            <textarea class="form-control" id="message" name="message" placeholder="Message" cols="30" rows="5"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
@@ -106,6 +102,23 @@
         </div>
     </div>
 </div>
+
+<?php if (isset($_GET['success']) && $_GET['success'] === 'true'): ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Message Sent!',
+            text: 'Your message has been successfully sent.',
+            confirmButtonColor: '#3B5D50',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Optional: Redirect to clear the URL parameter after the alert
+                window.location.href = '/customers/contact';
+            }
+        });
+    </script>
+<?php endif; ?>
 
 <!-- End Contact Form -->
 

@@ -37,7 +37,7 @@ class Core {
         'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
         'customers/index' => ['CustomerController@index', 'GET'],
         'customers/about' => ['CustomerController@about', 'GET'],
-        'customers/contact' => ['CustomerController@contact', 'GET'],
+        'customers/contact' => ['CustomerController@contact', ['GET', 'POST']],
         'customers/category' => ['CustomerController@categoryView', 'GET'],
         'customers/shop' => ['CustomerController@shop', 'GET'],
         'customers/product_details' => ['CustomerController@productDetails', 'GET'],
