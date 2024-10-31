@@ -54,6 +54,8 @@ class Core {
         'customer/profile/add' => ['WishlistController@add', ['POST']],
         'customers/profile/remove' => ['WishlistController@remove', 'POST'],
         'customers/profile/view'=>['WishlistController@viewWishlist','GET'],
+  'customers/profile/update' => ['CustomerController@updateProfile', ['POST']],
+  'profile/uploadImage' => ['CustomerController@uploadImage', 'POST'],
     ];
 
     public function __construct() {

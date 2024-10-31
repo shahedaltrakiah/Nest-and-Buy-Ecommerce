@@ -1,5 +1,4 @@
 <?php
-
 class CustomerController extends Controller
 {
 
@@ -222,6 +221,58 @@ class CustomerController extends Controller
         $this->view('customers/profile', ['customers' => $customer, 'orderitems' => $orderitems,'wishlistItems' => $wishlistItems]);
 
     }
+    public function updateProfile()
+    {
+        // Fetch POST data
+        $id = $_POST['id'];
+        $firstName = $_POST['first_name'];
+        $lastName = $_POST['last_name'];
+        $email = $_POST['email'];
+        $phoneNumber = $_POST['phone_number'];
+        $address = $_POST['address'];
+    
+        // Validate and sanitize inputs here
+        // Example: $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+    
+        // Initialize variable for image name
+        $imageName = null;
+    
+        // Handle image upload if a file is provided
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image = $_FILES['image'];
+            $imageName = time() . '_' . basename($image['name']);
+            $uploadDir = 'public/uploads/'; // Specify your upload directory
+            $uploadFilePath = $uploadDir . $imageName;
+    
+            // Move the uploaded file to the specified directory
+            if (!move_uploaded_file($image['tmp_name'], $uploadFilePath)) {
+                // Handle image upload error
+                header("Location: profile.php?error=image_upload_failed");
+                exit;
+            }
+        }
+    
+        // Use $this->model to interact with the Customer model
+        $updateSuccess = $this->model('Customer')->updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageName);
+    
+        if ($updateSuccess) {
+            // Update the session with the new image path if an image was uploaded
+            if ($imageName) {
+                $_SESSION['user']['image_url'] = 'uploads/' . $imageName; // Update session variable with the new image URL
+            }
+            
+            // Redirect or send success response
+            header("Location: /customers/profile");
+            exit;
+        } else {
+            // Handle failure
+            header("Location: profile");
+            exit;
+        }
+    }
+    
+    
+    
 
     // Customer logout
     public function logout()

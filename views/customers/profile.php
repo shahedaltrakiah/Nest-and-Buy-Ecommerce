@@ -7,7 +7,8 @@
     <div class="profile-card">
         <button class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
         <div class="profile-info">
-            <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>">
+        <img src="<?php echo isset($_SESSION['user']['image_url']) ? '/public/' . $_SESSION['user']['image_url'] : '/public/images/user-profile.png'; ?>" alt="Profile Image">
+
             <div>
                 <h3><?php echo htmlspecialchars($customers->first_name . ' ' . $customers->last_name); ?></h3>
             </div>
@@ -38,9 +39,10 @@
         </div>
     </div>
 
-    <!-- Profile Edit Modal -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+<!-- Profile Edit Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/customers/profile/update" method="POST" enctype="multipart/form-data" id="editProfileForm">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
@@ -48,35 +50,45 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
+                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($customers->id); ?>"> <!-- Hidden ID field -->
+                        
                         <div class="col-md-6">
                             <label>First Name</label>
-                            <input type="text" class="form-control" id="editFirstName" value="<?php echo htmlspecialchars($customers->first_name); ?>">
+                            <input type="text" class="form-control" name="first_name" value="<?php echo htmlspecialchars($customers->first_name); ?>">
                         </div>
                         <div class="col-md-6">
                             <label>Last Name</label>
-                            <input type="text" class="form-control" id="editLastName" value="<?php echo htmlspecialchars($customers->last_name); ?>">
+                            <input type="text" class="form-control" name="last_name" value="<?php echo htmlspecialchars($customers->last_name); ?>">
                         </div>
                         <div class="col-md-12 mt-3">
                             <label>Email</label>
-                            <input type="email" class="form-control" id="editEmail" value="<?php echo htmlspecialchars($customers->email); ?>">
+                            <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($customers->email); ?>">
                         </div>
                         <div class="col-md-12 mt-3">
                             <label>Phone Number</label>
-                            <input type="text" class="form-control" id="editPhoneNumber" value="<?php echo htmlspecialchars($customers->phone_number); ?>">
+                            <input type="text" class="form-control" name="phone_number" value="<?php echo htmlspecialchars($customers->phone_number); ?>">
                         </div>
                         <div class="col-md-12 mt-3">
                             <label>Address</label>
-                            <input type="text" class="form-control" id="editAddress" value="<?php echo htmlspecialchars($customers->address); ?>">
+                            <input type="text" class="form-control" name="address" value="<?php echo htmlspecialchars($customers->address); ?>">
+                        </div>
+                        <div class="col-md-12 mt-3">
+                            <label>Profile Image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*"> <!-- Image upload field -->
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="updateUserProfile()">Save Changes</button>
+                    <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button> <!-- Button type to submit the form -->
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
+</div>
+
+
+
 
 
     <!-- Order History Section -->
@@ -187,15 +199,23 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script>
-    function updateUserProfile() {
-        Swal.fire({
-            title: 'Success!',
-            text: 'Your profile has been updated.',
-            icon: 'success',
-            confirmButtonColor: '#3B5D50'
-        });
-    }
+  document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to save the changes to your profile!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, save changes!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                this.submit(); // Submit the form if confirmed
+            }
+        });
+    });
     function removeItem(itemName, form) {
     Swal.fire({
         title: 'Are you sure?',

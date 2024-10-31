@@ -28,6 +28,14 @@ class Customer extends Model
         $statement->execute([$email]);  // Pass the $email parameter
         return $statement->fetch(\PDO::FETCH_ASSOC); // Adjust to fetch single user record
     }
+    public function updateImage($customerId, $imagePath)
+{
+    $sql = "UPDATE customers SET image_url = :image_url WHERE id = :id";
+    $stmt = $this->pdo->prepare($sql);
+    $stmt->bindParam(':image_url', $imagePath);
+    $stmt->bindParam(':id', $customerId);
+    return $stmt->execute();
+}
 
     public function isEmailTaken($email)
     {
@@ -51,6 +59,27 @@ class Customer extends Model
 
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
+    public function updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageUrl = null) {
+        // Prepare the SQL statement
+        $sql = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address = ?, updated_at = NOW()";
+    
+        // Add image_url to the SQL if it's provided
+        if ($imageUrl) {
+            $sql .= ", image_url = ?";
+        }
+        $sql .= " WHERE id = ?";
+    
+        // Prepare the statement
+        $stmt = $this->pdo->prepare($sql);
+    
+        // Bind parameters
+        if ($imageUrl) {
+            return $stmt->execute([$firstName, $lastName, $email, $phoneNumber, $address, $imageUrl, $id]);
+        } else {
+            return $stmt->execute([$firstName, $lastName, $email, $phoneNumber, $address, $id]);
+        }
+    }
+    
 
 
 }
