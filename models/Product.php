@@ -33,10 +33,10 @@ class Product extends Model
             SELECT c.id AS category_id, 
                    c.category_name, 
                    c.image_url AS category_image_url,
-                   GROUP_CONCAT(p.id) AS product_id,
-                   GROUP_CONCAT(p.product_name) AS product_names,
-                   GROUP_CONCAT(p.price) AS product_prices,
-                   GROUP_CONCAT((SELECT pi.image_url 
+                   p.id AS product_id,
+                   p.product_name,
+                   p.price,
+                  ((SELECT pi.image_url 
                                  FROM productimages pi 
                                  WHERE pi.product_id = p.id 
                                  LIMIT 1)) AS product_images

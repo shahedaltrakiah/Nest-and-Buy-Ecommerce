@@ -40,17 +40,28 @@ class CustomerController extends Controller
 
                 $user = $this->model('Customer')->login($email);
                 if ($user && password_verify($password, $user['password'])) {
+                    // Define the default image path
+                    $defaultImagePath = 'images/user-profile.png';
+
+                    // Check if the user has a valid image path; use default if it's empty or incomplete
+                    $imagePath = (!empty($user['image_url']) && $user['image_url'] !== 'images/' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/' . $user['image_url']))
+                        ? $user['image_url']
+                        : $defaultImagePath;
+
+                    // Store user information in the session
                     $_SESSION['user'] = [
                         'id' => $user['id'],
-                        'image_url' => $user['image_url'] ?? 'https://cdn.icon-icons.com/icons2/2030/PNG/512/user_icon_124042.png',
+                        'image_url' => $imagePath,
                         'name' => $user['first_name'] . ' ' . $user['last_name']
                     ];
+
                     echo json_encode(['loginSuccess' => true]);
                     exit();
                 } else {
                     echo json_encode(['loginSuccess' => false]);
                     exit();
                 }
+
             }
         }
         $this->view('customers/login_and_register');
