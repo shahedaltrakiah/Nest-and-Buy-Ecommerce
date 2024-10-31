@@ -142,4 +142,23 @@ class Product extends Model
         $stmt = $this->pdo->query("SELECT * FROM categories");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getProductsByFilter($category_id, $min_price, $max_price)
+    {
+        $sql = "SELECT * FROM products WHERE price >= :min_price AND price <= :max_price";
+        if ($category_id) {
+            $sql .= " AND category_id = :category_id";
+        }
+
+        $stmt = $this->pdo->prepare($sql); // Updated from $this->db to $this->pdo
+        $stmt->bindValue(':min_price', $min_price, PDO::PARAM_INT);
+        $stmt->bindValue(':max_price', $max_price, PDO::PARAM_INT);
+        if ($category_id) {
+            $stmt->bindValue(':category_id', $category_id, PDO::PARAM_INT);
+        }
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC); // Added FETCH_ASSOC for consistent output
+    }
+
 }

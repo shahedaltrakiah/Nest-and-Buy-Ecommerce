@@ -91,7 +91,7 @@ class CustomerController extends Controller
     {
         // Get search, category, and price range filters from GET request
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
-        $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : null;
+        $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : null; // Make sure to get category_id
         $min_price = isset($_GET['min_price']) ? (float)$_GET['min_price'] : 0;
         $max_price = isset($_GET['max_price']) ? (float)$_GET['max_price'] : 1000;
 
@@ -100,24 +100,39 @@ class CustomerController extends Controller
         $itemsPerPage = 8; // Number of items to display per page
 
         // Calculate total items and pages
-        $totalItems = $this->model ('Product')->getProductCount($search, $min_price, $max_price, $category_id);
+        $totalItems = $this->model('Product')->getProductCount($search, $min_price, $max_price, $category_id);
         $totalPages = ceil($totalItems / $itemsPerPage);
 
         // Retrieve products based on current page and filters
-        $product = $this->model ('Product')->getProductsByPage($search, $min_price, $max_price, $category_id, $currentPage, $itemsPerPage);
+        $products = $this->model('Product')->getProductsByPage($search, $min_price, $max_price, $category_id, $currentPage, $itemsPerPage);
 
-        $products = $this->model('Product')->getProducts();
         // Pass data to the view, including pagination and filter states
         $this->view('customers/shop', [
             'products' => $products,
             'currentPage' => $currentPage,
             'totalPages' => $totalPages,
             'search' => $search,
-            'category_id' => $category_id,
+            'category_id' => $category_id, // Pass selected category_id
             'min_price' => $min_price,
             'max_price' => $max_price,
         ]);
     }
+
+    public function filter()
+    {
+        try {
+            $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : null;
+            $min_price = isset($_GET['min_price']) ? (float)$_GET['min_price'] : 0;
+            $max_price = isset($_GET['max_price']) ? (float)$_GET['max_price'] : 1000;
+
+            $products = $this->model('Product')->getProductsByFilter($category_id, $min_price, $max_price);
+
+            echo json_encode(['success' => true, 'products' => $products]);
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
 
 
     // Product details page
