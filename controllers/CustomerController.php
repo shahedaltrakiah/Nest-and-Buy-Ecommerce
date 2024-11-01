@@ -140,40 +140,42 @@ class CustomerController extends Controller
     {
         $product = $this->model('Product')->getProductById($id);
         $reviews = $this->model('Review')->getReviewsByProductId($id);
-        $user = null;
+        $user = isset($_SESSION['user']) ? $_SESSION['user'] : null;
 
-        // Check if the user is logged in
-        if (isset($_SESSION['customer_id'])) {
-            $customerId = $_SESSION['customer_id'];
-            $user = $this->model('User')->getUserById($customerId); // Assuming a `getUserById` method in User model
-        } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // If form is submitted and user isn't logged in, trigger SweetAlert
-            echo "<script>swal('Please log in to submit a review!', '', 'warning');</script>";
-        }
+        $errorMessage = null;
 
-        // Handle review submission
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && $user) {
-            $reviewData = [
-                'product_id' => $id,
-                'customer_id' => $customerId,
-                'rating' => $_POST['rating'],
-                'comment' => $_POST['comment']
-            ];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($user) {
+                $reviewData = [
+                    'product_id' => $id,
+                    'customer_id' => $user['id'],
+                    'rating' => isset($_POST['rating']) ? $_POST['rating'] : null,
+                    'comment' => isset($_POST['comment']) ? $_POST['comment'] : null
+                ];
 
-            if ($this->model('Review')->addReview($reviewData)) {
-                header("Location: /customers/productDetails/$id");
-                exit();
+                if ($this->model('Review')->addReview($reviewData)) {
+                    // Redirect to avoid resubmission
+                    header("Location:/customers/products_details");
+                    exit();
+                } else {
+                    $errorMessage = "Failed to submit review. Please try again.";
+                }
             } else {
-                echo "<script>swal('Error!', 'Failed to submit review. Please try again.', 'error');</script>";
+                $errorMessage = "Please log in to submit a review.";
             }
         }
 
+        // Pass the error message to the view if it exists
         $this->view('customers/products_details', [
             'product' => $product,
             'reviews' => $reviews,
-            'user' => $user // Pass user data to the view
+            'user' => $user,
+            'errorMessage' => $errorMessage
         ]);
     }
+
+
+
 
     // Cart page
     public function cart()

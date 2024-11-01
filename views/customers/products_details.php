@@ -79,11 +79,15 @@
 
 
     <!-- Reviews Section (Side-by-Side Layout) -->
-    <div class="reviews-section my-5">
-        <h4 class="mb-4">Customer Reviews</h4>
+    <div class="reviews-section my-5 mt-5">
+        <h4 class="mb-4 mt-5">Customer Reviews</h4>
         <div class="d-flex justify-content-between my-5">
             <!-- Review Submission Form -->
             <div class="review-form-container col-md-5">
+                <?php if ($user): ?>
+                    <p>We're happy to see your feedback, <?= htmlspecialchars($user['name']); ?>, on our <?= htmlspecialchars($product['product_name']); ?>.</p>
+                <?php endif; ?>
+
                 <h5>Write a Review</h5>
                 <form method="POST" action="">
                     <div class="mb-3">
@@ -99,16 +103,13 @@
                         <label for="comment" class="form-label">Comment</label>
                         <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="full_name" class="form-label">Name</label>
-                        <input type="text" name="full_name" id="full_name" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary ">Submit Review</button>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+
+                    <?php if (isset($errorMessage)): ?>
+                        <div class="alert alert-danger mt-2"><?= htmlspecialchars($errorMessage); ?></div>
+                    <?php endif; ?>
                 </form>
+
             </div>
 
             <!-- Divider Line -->
@@ -130,6 +131,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 <script>
     // JavaScript function to change the main image on thumbnail click
@@ -137,5 +140,7 @@
         document.getElementById("main-image").src = src;
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <?php require 'views/partials/footer.php'; ?>

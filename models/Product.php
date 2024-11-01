@@ -158,20 +158,6 @@ class Product extends Model
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
 
-    //rania function fro product_details/  New: Add review to a product
-    public function addReview($productId, $fullName, $email, $phone, $rating, $comment)
-    {
-        $statement = $this->pdo->prepare("
-             INSERT INTO reviews (product_id, full_name, email, phone, rating, comment, created_at) 
-             VALUES (:product_id, :full_name, :email, :phone, :rating, :comment, NOW())
-         ");
-        $statement->bindParam(':product_id', $productId, PDO::PARAM_INT);
-        $statement->bindParam(':full_name', $fullName, PDO::PARAM_STR);
-        $statement->bindParam(':email', $email, PDO::PARAM_STR);
-        $statement->bindParam(':phone', $phone, PDO::PARAM_STR);
-        $statement->bindParam(':rating', $rating, PDO::PARAM_INT);
-        $statement->bindParam(':comment', $comment, PDO::PARAM_STR);
-        return $statement->execute();
-    }
+
 
 }
