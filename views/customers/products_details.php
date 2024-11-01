@@ -84,7 +84,6 @@
                     <p>We're happy to see your feedback, <?= htmlspecialchars($user['name']); ?>, on our <?= htmlspecialchars($product['product_name']); ?>.</p>
                 <?php endif; ?>
 
-                <h5>Write a Review</h5>
                 <form method="POST" action="">
                     <div class="mb-3">
                         <label for="rating" class="form-label">Rating</label>
