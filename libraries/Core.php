@@ -8,6 +8,7 @@ class Core
 
         // Admin Routes
         'admin/login' => ['AdminController@login', ['GET', 'POST']],
+        'admin/rest_password' => ['AdminController@restPassword', ['GET', 'POST']],
         'admin/dashboard' => ['AdminController@dashboard', 'GET'],
         'admin/manage_category' => ['AdminController@manageCategory', 'GET'],
         'admin/manage_products' => ['AdminController@manageProducts', 'GET'],
@@ -22,7 +23,7 @@ class Core
         'admin/product_update' => ['AdminController@updateProduct', 'POST'],
         
         // Super Admin Routes
-        'admin/superAdmin_manage_admin' => ['AdminController@manageAdmin', 'GET'],
+        'admin/super_manage_admin' => ['AdminController@manageAdmin', 'GET'],
 
         // Customer Routes
         'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],

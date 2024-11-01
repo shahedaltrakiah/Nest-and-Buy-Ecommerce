@@ -26,7 +26,6 @@ a {
   -o-transition: .3s all ease;
   transition: .3s all ease;
   color: #2f2f2f;
-  text-decoration: underline;
 }
 
 a:hover {
@@ -146,8 +145,9 @@ a.more {
 }
 
 .hero {
-  background: #3b5d50;
+  background-color: #3b5d50;
   padding: calc(4rem - 20px) 0 2rem 0;
+  width: 100%;
 }
 
 .hero-title {
@@ -179,22 +179,22 @@ a.more {
 .hero-subtitle {
   font-size: 1rem;
   color: #666;
-  margin-top: 1rem;
   max-width: 600px;
   margin: 0.5rem auto;
 }
 
 
-
 @media (min-width: 768px) {
   .hero {
     padding: calc(4rem - 30px) 0 4rem 0;
+    width: 100%;
   }
 }
 
 @media (min-width: 992px) {
   .hero {
     padding: calc(8rem - 20px) 0 6rem 0;
+    width: 100%;
   }
 }
 
@@ -1163,20 +1163,13 @@ a {
   color: #0c4128;
 }
 
-/************* our offer *****************/
-
 .our_offer {
   background-color: #fff;
+  padding: 20px 0; /* Added padding for spacing */
 }
 
 .our_offer .date_countdown {
-  margin: 37px 0 55px;
-}
-
-.our_offer .date_countdown #timer {
-  display: flex;
-  justify-content: space-between;
-
+  margin: 20px 0 30px; /* Reduced margins for better spacing */
 }
 
 .our_offer h2 {
@@ -1184,13 +1177,49 @@ a {
   line-height: 70px;
   color: #3b5d50;
   font-weight: bold;
+  text-align: center; /* Center the heading */
 }
 
 @media (max-width: 991px) {
   .our_offer h2 {
     font-size: 30px;
     line-height: 35px;
-    margin-top: 30px;
+    margin-top: 20px; /* Reduced margin on top */
+    text-align: center; /* Center the heading */
+  }
+}
+
+@media (max-width: 900px) {
+  .our_offer h2 {
+    font-size: 32px; /* Smaller font size for better fit */
+    line-height: 40px; /* Adjust line height for readability */
+  }
+
+  .our_offer .date {
+    font-size: 28px; /* Slightly smaller font size */
+    padding-right: 5%; /* Adjust padding for smaller screens */
+  }
+
+  .our_offer .input-group a {
+    font-size: 14px; /* Adjust button text size */
+    padding: 0 20px; /* Adjust padding for the button */
+  }
+}
+
+@media (max-width: 700px) {
+  .our_offer h2 {
+    font-size: 28px; /* Even smaller font size for very small screens */
+    line-height: 32px; /* Adjust line height */
+  }
+
+  .our_offer .date {
+    font-size: 24px; /* Further reduce font size for date */
+    padding-right: 5%; /* Consistent padding */
+  }
+
+  .our_offer .input-group a {
+    font-size: 12px; /* Smaller button text */
+    padding: 0 15px; /* Adjust padding */
   }
 }
 
@@ -1205,6 +1234,7 @@ a {
 @media (max-width: 991px) {
   .our_offer .date {
     padding-right: 4%;
+    font-size: 28px; /* Smaller font size for better fit */
   }
 }
 
@@ -1219,40 +1249,15 @@ a {
   text-transform: uppercase;
 }
 
-.our_offer .input-group input {
-  height: 60px;
-  padding-left: 25px;
-  border: 0px solid transparent;
-  border: 1px solid #F9BF29;
+.our_offer .input-group {
+  justify-content: center; /* Center the button on smaller screens */
+  margin-top: 10px; /* Space above the button */
 }
-
-.our_offer .input-group input::placeholder {
-  text-transform: capitalize;
-}
-
-/*.our_offer .input-group .input-group-text {*/
-/*  height: 60px;*/
-/*  line-height: 60px;*/
-/*  padding: 0px 45px;*/
-/*  border: 0px solid transparent;*/
-/*  background-color: #F9BF29;*/
-/*  color: #000;*/
-/*  font-size: 14px;*/
-/*  font-weight: bold;*/
-/*  text-transform: uppercase;*/
-/*}*/
 
 #basic-addon2:hover {
   background-color: #f9be2981;
   color: #000;
   border-color: #3b5d50;
-}
-
-
-@media (max-width: 991px) {
-  .our_offer .input-group .input-group-text {
-    padding: 0px 15px;
-  }
 }
 
 .date_countdown {
@@ -1265,24 +1270,35 @@ a {
 
 #timer {
   display: flex;
-  gap: 20px;
+  gap: 15px; /* Adjust gap for better spacing on smaller screens */
   font-size: 20px;
-  font-weight: bold;
 }
 
 .date {
   color: white;
-  padding: 15px;
+  padding: 10px;
   border-radius: 5px;
-  min-width: 70px;
+  min-width: 50px; /* Reduced minimum width for responsiveness */
   text-align: center;
 }
 
 .label {
   font-size: 14px;
   color: #666;
-  text-align: left;
+  text-align: center; /* Center label text */
 }
+
+@media (max-width: 576px) {
+  .date_countdown {
+    flex-direction: column; /* Stack labels and values on smaller screens */
+  }
+
+  #timer {
+    flex-direction: column; /* Stack timer elements vertically */
+    gap: 10px; /* Reduce gap for stacked items */
+  }
+}
+
 
 /* Centered filter container */
 .filter-container {

@@ -23,16 +23,17 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <title> Nest & Buy </title>
+
 </head>
 
 <body>
 
 <!-- Start Header/Navigation -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar"
-     style="margin-top: -5px;">
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
     <div class="container">
+
         <a class="navbar-brand" href="/">
-            <img class="logo-img" src="/public/images/Logo.png" style="max-width:150px;">
+            <img class="logo-img" src="/public/images/Logo.png" style="max-width:150px; margin-top: -10px;">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni"
@@ -56,53 +57,43 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                 </li>
             </ul>
 
-            <!-- User Section -->
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                <nav>
-                    <ul class="navbar-nav">
-                        <?php if (isset($_SESSION['user'])): ?>
-                            <li class="nav-item dropdown" style="margin-right: -2px; margin-top: -5px;">
-                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-
-                                    <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>"
-                                         alt="User Image"
-                                         style="max-width: 40px; border-radius: 50%;">
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                                    <li></li>
-                                    <li>
-                                        <a class="dropdown-item" href="/customers/profile">Profile</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="/customers/logout" onclick="confirmLogout()">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/customers/profile">
-                                    <i class="fa-solid fa-heart"></i>
-                                    <span class="wishlist-count"><?php echo isset($_SESSION['wishlists']) ? count($_SESSION['wishlists']) : 0; ?></span>
-                                </a>
-                            </li>
-                        <?php else: ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/customers/login_and_register">
-                                    <i class="fa-solid fa-right-to-bracket"></i>
-                                </a>
-                            </li>
-                        <?php endif; ?>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/customers/cart">
-                                <img src="/public/images/cart.svg" alt="Cart">
-                                <span class="cart-count"><?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                <?php if (isset($_SESSION['user'])): ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>" alt="User Image"
+                                 style="width: 50px; height: 50px; border-radius: 50%; margin-top: -10px;">
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li></li>
+                            <li><a class="dropdown-item" href="/customers/profile">Profile</a></li>
+                            <li><a class="dropdown-item" href="/customers/logout" onclick="confirmLogout()">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/customers/profile">
+                            <i class="fa-solid fa-heart"></i>
+                            <span class="wishlist-count"><?php echo isset($_SESSION['wishlists']) ? count($_SESSION['wishlists']) : 0; ?></span>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/customers/login_and_register">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                        </a>
+                    </li>
+                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customers/cart">
+                        <img src="/public/images/cart.svg" alt="Cart" style="max-width: 20px;">
+                        <span class="cart-count"><?php echo isset($_SESSION['cart']) ? count($_SESSION['cart']) : 0; ?></span>
+                    </a>
+                </li>
             </ul>
+
         </div>
     </div>
 </nav>
 <!-- End Header/Navigation -->
+
+

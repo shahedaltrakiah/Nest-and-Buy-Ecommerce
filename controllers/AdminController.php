@@ -102,6 +102,12 @@ class AdminController extends Controller
         $this->view('admin/account_settings', ['admins' => $admin]);
     }
 
+    // Rest Password page
+    public function restPassword()
+    {
+        $this->view('admin/rest_password');
+    }
+
     // Admin logout
     public function logout()
     {

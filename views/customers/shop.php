@@ -116,29 +116,51 @@
                 </div>
             </div>
         </div>
+
         <div class="row" style="margin-bottom: -140px;">
             <div class="col-12 text-center">
                 <div class="text-center mt-4">
                     <?php if (isset($totalPages) && $totalPages > 0): ?>
+                        <!-- Previous Button -->
                         <?php if ($currentPage > 1): ?>
-                            <a class="btn btn-secondary mx-1"
-                               href="?page=<?php echo $currentPage - 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">&laquo;
-                                Previous</a>
+                            <a class="btn btn-secondary btn-sm mx-1"
+                               href="?page=<?php echo $currentPage - 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">&laquo; Previous</a>
                         <?php endif; ?>
-                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                            <a href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>&max_price=<?= $max_price; ?>&category_id=<?= $category_id; ?>"
-                               class="btn <?= $i == $currentPage ? 'btn-secondary' : 'btn-primary'; ?> mx-1"><?= $i; ?></a>
+
+                        <!-- Pagination Links -->
+                        <?php
+                        // Display page numbers
+                        for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <?php if ($i <= 2 || $i >= $totalPages - 1 || ($i >= $currentPage - 1 && $i <= $currentPage + 1)): ?>
+                                <a href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>&max_price=<?= $max_price; ?>&category_id=<?= $category_id; ?>"
+                                   class="btn <?= $i == $currentPage ? 'btn-secondary' : 'btn-primary'; ?> btn-sm mx-1"><?= $i; ?></a>
+                            <?php elseif ($i == 3 && $currentPage > 4): ?>
+                                <span class="btn btn-light mx-1">...</span>
+                            <?php elseif ($i == $totalPages - 2 && $currentPage < $totalPages - 3): ?>
+                                <span class="btn btn-light mx-1">...</span>
+                            <?php endif; ?>
                         <?php endfor; ?>
+
+                        <!-- Next Button -->
                         <?php if ($currentPage < $totalPages): ?>
-                            <a class="btn btn-secondary mx-1"
-                               href="?page=<?php echo $currentPage + 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">Next
-                                &raquo;</a>
+                            <a class="btn btn-secondary btn-sm mx-1"
+                               href="?page=<?php echo $currentPage + 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">Next &raquo;</a>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <!-- Include footer here -->
 <?php require "views/partials/footer.php"; ?>
+
+<style>
+    .pagination-btn {
+        padding: 5px 10px; /* Adjust padding */
+        font-size: 0.85rem; /* Adjust font size */
+    }
+</style>
+
