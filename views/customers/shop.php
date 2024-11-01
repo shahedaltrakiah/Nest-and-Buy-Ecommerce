@@ -87,33 +87,33 @@
 
     </script>
 
-
     <!-- Display Filtered Products -->
     <div class="untree_co-section product-section before-footer-section">
         <div class="container">
-
-            <div class="row">
-                <?php if (!empty($products)): ?>
-                    <?php foreach ($products as $product): ?>
-                        <div class="col-12 col-md-4 col-lg-3 mb-5">
-                            <a class="product-item" href="/customers/product_details/<?php echo $product['id']; ?>">
-                                <img src="/public/<?php echo $product['image_url']; ?>"
-                                     class="img-fluid product-thumbnail" width="261" height="261"
-                                     alt="<?php echo htmlspecialchars($product['product_name']); ?>">
-                                <h3 class="product-title">
-                                    <b><?php echo ucwords(str_replace(['-', '_'], ' ', $product['product_name'])); ?></b>
-                                </h3>
-                                <strong class="product-price"><sup>
-                                        JD </sup><?php echo htmlspecialchars($product['price']); ?></strong>
-                                <span class="icon-cross">
+            <div id="productResults">
+                <div class="row">
+                    <?php if (!empty($products)): ?>
+                        <?php foreach ($products as $product): ?>
+                            <div class="col-12 col-md-4 col-lg-3 mb-5">
+                                <a class="product-item" href="/customers/product_details/<?php echo $product['id']; ?>">
+                                    <img src="/public/<?php echo $product['image_url']; ?>"
+                                         class="img-fluid product-thumbnail" width="261" height="261"
+                                         alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                                    <h3 class="product-title">
+                                        <b><?php echo ucwords(str_replace(['-', '_'], ' ', $product['product_name'])); ?></b>
+                                    </h3>
+                                    <strong class="product-price"><sup>
+                                            JD </sup><?php echo htmlspecialchars($product['price']); ?></strong>
+                                    <span class="icon-cross">
                                     <img src="../public/images/cross.svg" class="img-fluid">
                                 </span>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class="text-center">No products found matching your criteria.</p>
-                <?php endif; ?>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-center">No products found matching your criteria.</p>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
         <div class="row" style="margin-bottom: -140px;">

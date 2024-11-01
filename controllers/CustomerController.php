@@ -81,18 +81,22 @@ class CustomerController extends Controller
         $this->view('customers/about');
     }
 
-    // Contact Us page
     public function contact() {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Assuming $this->model('Customer') provides access to the saveMessage method
+            if (!isset($_SESSION['user'])) {
+                header('Location: /customers/contact?error=not_logged_in');
+                exit();
+            }
+
             $this->model('Message')->saveMessage();
-            // Redirect or show a success message
             header('Location: /customers/contact?success=true');
             exit();
         }
-        $this->view('customers/contact');
 
+        $this->view('customers/contact');
     }
+
 
 
     // Category details page
@@ -171,7 +175,7 @@ class CustomerController extends Controller
 
                 if ($this->model('Review')->addReview($reviewData)) {
                     // Redirect to avoid resubmission
-                    header("Location:/customers/products_details");
+                    header("Location:/customers/products_details?success=true");
                     exit();
                 } else {
                     $errorMessage = "Failed to submit review. Please try again.";
@@ -189,8 +193,6 @@ class CustomerController extends Controller
             'errorMessage' => $errorMessage
         ]);
     }
-
-
 
 
     // Cart page
@@ -272,8 +274,6 @@ class CustomerController extends Controller
             exit;
         }
     }
-    
-    
     
 
     // Customer logout

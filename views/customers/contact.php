@@ -71,6 +71,19 @@
                         </div>
                     </div>
 
+                    <!-- Display error message if not logged in -->
+                    <?php if (isset($_GET['error']) && $_GET['error'] === 'not_logged_in'): ?>
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Not Logged In',
+                                text: 'You need to log in to send a message.',
+                                confirmButtonColor: '#3B5D50',
+                                confirmButtonText: 'OK'
+                            });
+                        </script>
+                    <?php endif; ?>
+
                     <!-- Form with Validation -->
                     <form action="/customers/contact" method="POST" onsubmit="return validateForm()">
                         <div class="row">
@@ -142,4 +155,10 @@
 <?php endif; ?>
 
 <?php require "views/partials/footer.php"; ?>
+
+<style>
+    .input-group-text, .form-control, .form-select {
+        height: 50px;
+    }
+</style>
 
