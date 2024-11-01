@@ -156,12 +156,13 @@
 
 
     <!-- Wishlist Section -->
-    <div class="order-card">
+<!-- Wishlist Section -->
+<div class="order-card">
     <h4>Your Wishlist</h4>
-    <div class="row">
+    <div class="wishlist-slider">
         <?php if (!empty($wishlistItems)): ?>
             <?php foreach ($wishlistItems as $item): ?>
-                <div class="col-md-3 col-sm-6 mb-4">
+                <div class="wishlist-item">
                     <div class="card wishlist-card" style="margin-top: 20px;">
                         <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 15px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
                         <div class="card-body text-center">
@@ -181,21 +182,28 @@
                 <p class="text-muted">No items in your wishlist.</p>
             </div>
         <?php endif; ?>
-    </div>
+    </div> 
 </div>
 
+<!-- Slick CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 
+<!-- jQuery (only load once) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Slick Carousel JavaScript -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <!-- SweetAlert Script -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- jQuery from Google Hosted Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- JavaScript -->
+
+<!-- Popper and Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
 <script>
-function validateForm() {
+    function validateForm() {
     const form = document.getElementById('editProfileForm');
     const firstName = form.elements["first_name"].value.trim();
     const lastName = form.elements["last_name"].value.trim();
@@ -288,9 +296,6 @@ function validateForm() {
 }
 
 
-
-</script>
-<script>
     function removeItem(itemName, form) {
     Swal.fire({
         title: 'Are you sure?',
@@ -321,4 +326,29 @@ $('.remove-btn').on('click', function(e) {
     const itemName = form.find('input[name="product_id"]').val(); // You may want to adjust this to get the actual product name instead
     removeItem(itemName, form); // Call the removeItem function
 });
+$(document).ready(function(){
+    if ($('.wishlist-slider .wishlist-item').length >= 4) {
+        $('.wishlist-slider').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            infinite: false,
+            dots: true,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 2
+                    }
+                },
+                {
+                    breakpoint: 576,
+                    settings: {
+                        slidesToShow: 1
+                    }
+                }
+            ]
+        });
+    }
+});
+
 </script>
