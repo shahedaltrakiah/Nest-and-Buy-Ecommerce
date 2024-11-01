@@ -162,18 +162,15 @@
     <div class="wishlist-slider">
         <?php if (!empty($wishlistItems)): ?>
             <?php foreach ($wishlistItems as $item): ?>
-                <div class="wishlist-item">
-                    <div class="card wishlist-card" style="margin-top: 20px;">
-                        <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 15px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
-                        <div class="card-body text-center">
-                            <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6>
-                            <p class="card-text text-muted"><sup> JD </sup><?= htmlspecialchars($item['price']) ?></p>
-
-                            <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
-                                <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
-                                <button type="submit" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
-                            </form>
-                        </div>
+                <div class="wishlist-item" style="width: 100%; max-width: 250px; height: 350px;">
+                    <img class="wishlist-image" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                    <div class="wishlist-details text-center">
+                        <h6 class="text-dark"><?= ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name']))); ?></h6>
+                        <p class="text-muted"><sup> JD </sup><?= htmlspecialchars($item['price']) ?></p>
+                        <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
+                            <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
+                            <button type="submit" class="btn btn-danger btn-sm remove-btn">Remove</button>
+                        </form>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -182,8 +179,9 @@
                 <p class="text-muted">No items in your wishlist.</p>
             </div>
         <?php endif; ?>
-    </div> 
+    </div>
 </div>
+
 
 <!-- Slick CSS -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
@@ -323,7 +321,7 @@
 $('.remove-btn').on('click', function(e) {
     e.preventDefault(); // Prevent the default form submission
     const form = $(this).closest('form'); // Get the closest form
-    const itemName = form.find('input[name="product_id"]').val(); // You may want to adjust this to get the actual product name instead
+    const itemName = form.find('input[name="product_name"]').val(); // You may want to adjust this to get the actual product name instead
     removeItem(itemName, form); // Call the removeItem function
 });
 $(document).ready(function(){
