@@ -7,7 +7,7 @@ class Core
         '' => ['CustomerController@index', 'GET'], // This handles the root URL
 
         // Admin Routes
-        'admin/login' => ['AdminController@login', 'POST'],
+        'admin/login' => ['AdminController@login', ['GET', 'POST']],
         'admin/dashboard' => ['AdminController@dashboard', 'GET'],
         'admin/manage_category' => ['AdminController@manageCategory', 'GET'],
         'admin/manage_products' => ['AdminController@manageProducts', 'GET'],
@@ -18,21 +18,11 @@ class Core
         'admin/account_settings' => ['AdminController@accountSettings', 'GET'],
         'admin/logout' => ['AdminController@logout', 'GET'],
         'admin/product_view' => ['AdminController@viewProduct', 'GET'],
-        'admin/product_edit' => ['AdminController@editProduct', 'GET'], // Specify POST for updates
-        'admin/product_update' => ['AdminController@updateProduct', 'POST'], // Specify POST for updates
-
+        'admin/product_edit' => ['AdminController@editProduct', 'GET'],
+        'admin/product_update' => ['AdminController@updateProduct', 'POST'],
+        
         // Super Admin Routes
-        'super-admin/login' => ['SuperAdminController@login', 'POST'],
-        'super-admin/dashboard' => ['SuperAdminController@dashboard', 'GET'],
-        'super-admin/manage_category' => ['SuperAdminController@manageCategory', 'GET'],
-        'super-admin/manage_products' => ['SuperAdminController@manageProducts', 'GET'],
-        'super-admin/manage_orders' => ['SuperAdminController@manageOrders', 'GET'],
-        'super-admin/manage_customers' => ['SuperAdminController@manageCustomers', 'GET'],
-        'super-admin/manage_coupon' => ['SuperAdminController@manageCoupon', 'GET'],
-        'super-admin/messages' => ['SuperAdminController@messages', 'GET'],
-        'super-admin/account_settings' => ['SuperAdminController@accountSettings', 'GET'],
-        'super-admin/logout' => ['SuperAdminController@logout', 'GET'],
-        'super-admin/manage_admin' => ['SuperAdminController@manageAdmin', 'GET'],
+        'admin/superAdmin_manage_admin' => ['AdminController@manageAdmin', 'GET'],
 
         // Customer Routes
         'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
