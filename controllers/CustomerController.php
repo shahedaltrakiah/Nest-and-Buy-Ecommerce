@@ -171,7 +171,7 @@ class CustomerController extends Controller
 
                 if ($this->model('Review')->addReview($reviewData)) {
                     // Redirect to avoid resubmission
-                    header("Location:/customers/products_details");
+                    header("Location:/customers/products_details/${id}");
                     exit();
                 } else {
                     $errorMessage = "Failed to submit review. Please try again.";
