@@ -38,11 +38,10 @@
             </div>
         </div>
     </div>
-
-<!-- Profile Edit Modal -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+<!-- Edit Profile -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form action="/customers/profile/update" method="POST" enctype="multipart/form-data" id="editProfileForm">
+        <form action="/customers/profile/update" method="POST" enctype="multipart/form-data" id="editProfileForm"onsubmit="return validateForm()">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
@@ -51,26 +50,26 @@
                 <div class="modal-body">
                     <div class="row">
                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($customers->id); ?>"> <!-- Hidden ID field -->
-                        
+
                         <div class="col-md-6">
                             <label>First Name</label>
-                            <input type="text" class="form-control" name="first_name" value="<?php echo htmlspecialchars($customers->first_name); ?>">
+                            <input type="text" class="form-control" name="first_name" value="<?php echo htmlspecialchars($customers->first_name); ?>" required>
                         </div>
                         <div class="col-md-6">
                             <label>Last Name</label>
-                            <input type="text" class="form-control" name="last_name" value="<?php echo htmlspecialchars($customers->last_name); ?>">
+                            <input type="text" class="form-control" name="last_name" value="<?php echo htmlspecialchars($customers->last_name); ?>" required>
                         </div>
                         <div class="col-md-12 mt-3">
                             <label>Email</label>
-                            <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($customers->email); ?>">
+                            <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($customers->email); ?>" required>
                         </div>
                         <div class="col-md-12 mt-3">
                             <label>Phone Number</label>
-                            <input type="text" class="form-control" name="phone_number" value="<?php echo htmlspecialchars($customers->phone_number); ?>">
+                            <input type="text" class="form-control" name="phone_number" value="<?php echo htmlspecialchars($customers->phone_number); ?>" pattern="^[\d\+\-\.\(\)\/\s]*$" required>
                         </div>
                         <div class="col-md-12 mt-3">
                             <label>Address</label>
-                            <input type="text" class="form-control" name="address" value="<?php echo htmlspecialchars($customers->address); ?>">
+                            <input type="text" class="form-control" name="address" value="<?php echo htmlspecialchars($customers->address); ?>" required>
                         </div>
                         <div class="col-md-12 mt-3">
                             <label>Profile Image</label>
@@ -79,7 +78,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button> <!-- Button type to submit the form -->
+                    <button type="submit" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -196,23 +195,102 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script>
-  document.getElementById('editProfileForm').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
+function validateForm() {
+    const form = document.getElementById('editProfileForm');
+    const firstName = form.elements["first_name"].value.trim();
+    const lastName = form.elements["last_name"].value.trim();
+    const email = form.elements["email"].value.trim();
+    const phoneNumber = form.elements["phone_number"].value.trim();
+    const address = form.elements["address"].value.trim();
+    const image = form.elements["image"].value;
 
+    // Regular expression patterns
+    const namePattern = /^[A-Za-z\s]{2,30}$/; // letters only, 2-30 characters
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // basic email pattern
+    const phonePattern = /^[\d\+\-\.\(\)\/\s]*$/; // allows numbers, parentheses, +, -, ., /
+
+    // Validate First Name
+    if (!namePattern.test(firstName)) {
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You want to save the changes to your profile!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, save changes!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                this.submit(); // Submit the form if confirmed
-            }
+            icon: 'error',
+            title: 'Invalid First Name',
+            text: 'Please enter a valid first name (letters only, 2-30 characters).',
         });
+        return false;
+    }
+
+    // Validate Last Name
+    if (!namePattern.test(lastName)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Last Name',
+            text: 'Please enter a valid last name (letters only, 2-30 characters).',
+        });
+        return false;
+    }
+
+    // Validate Email
+    if (!emailPattern.test(email)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Email',
+            text: 'Please enter a valid email address.',
+        });
+        return false;
+    }
+
+    // Validate Phone Number
+    if (!phonePattern.test(phoneNumber) || phoneNumber.length < 7) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Phone Number',
+            text: 'Please enter a valid phone number.',
+        });
+        return false;
+    }
+
+    // Validate Address (check if it's not empty)
+    if (address === "") {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Address',
+            text: 'Please enter your address.',
+        });
+        return false;
+    }
+
+    // Optional: Validate Profile Image if required (checking if an image file is selected)
+    if (image && !image.match(/\.(jpg|jpeg|png|gif)$/)) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Invalid Image',
+            text: 'Please upload a valid image file (jpg, jpeg, png, gif).',
+        });
+        return false;
+    }
+
+    // Confirm Save Changes
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You want to save the changes to your profile!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save changes!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit(); // Submit the form if confirmed
+        }
     });
+
+    return false; // Prevent default form submission until confirmation
+}
+
+
+
+</script>
+<script>
     function removeItem(itemName, form) {
     Swal.fire({
         title: 'Are you sure?',
