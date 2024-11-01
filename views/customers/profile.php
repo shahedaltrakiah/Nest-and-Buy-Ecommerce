@@ -187,15 +187,19 @@
                 <?php foreach ($wishlistItems as $index => $item): ?>
                     <div class="col-md-3 col-sm-6 mb-4 wishlist-card">
                         <div class="card" style="margin-top: 20px;">
-                            <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain; margin-top: 15px;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
-                            <div class="card-body text-center">
-                                <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6>
-                                <p class="card-text text-muted"><sup> JD </sup><?= htmlspecialchars($item['price']) ?></p>
-                                <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
-                                    <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
-                                    <button type="submit" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
-                                </form>
-                            </div>
+                            <a href="/customers/product_details/<?= htmlspecialchars($item['product_id']) ?>">
+                                <div class="text-center" style="margin-top: 15px;">
+                                    <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                                </div>
+                                <div class="card-body text-center">
+                                    <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6>
+                                    <p class="card-text text-muted"><sup> JD </sup><?= htmlspecialchars($item['price']) ?></p>
+                                    <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
+                                        <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
+                                    </form>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 <?php endforeach; ?>
