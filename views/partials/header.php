@@ -28,7 +28,8 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 <body>
 
 <!-- Start Header/Navigation -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar"
+     style="margin-top: -5px;">
     <div class="container">
         <a class="navbar-brand" href="/">
             <img class="logo-img" src="/public/images/Logo.png" style="max-width:150px;">
@@ -60,12 +61,13 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                 <nav>
                     <ul class="navbar-nav">
                         <?php if (isset($_SESSION['user'])): ?>
-                            <li class="nav-item dropdown" style="margin-right: -2PX;">
+                            <li class="nav-item dropdown" style="margin-right: -2px; margin-top: -5px;">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
 
                                     <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>"
-                                         alt="User Image" style="width: 35px; height: 35px; border-radius: 50%;">
+                                         alt="User Image"
+                                         style="max-width: 40px; border-radius: 50%;">
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                     <li></li>
@@ -79,11 +81,11 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                             </li>
                             <li class="nav-item">
                             <li class="nav-item">
-    <a class="nav-link" href="/customers/profile">
-        <i class="fa-solid fa-heart"></i>
-        <span class="wishlist-count"><?php echo isset($_SESSION['wishlists']) ? count($_SESSION['wishlists']) : 0; ?></span>
-    </a>
-</li>
+                                <a class="nav-link" href="/customers/profile">
+                                    <i class="fa-solid fa-heart"></i>
+                                    <span class="wishlist-count"><?php echo isset($_SESSION['wishlists']) ? count($_SESSION['wishlists']) : 0; ?></span>
+                                </a>
+                            </li>
                         <?php else: ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="/customers/login_and_register">

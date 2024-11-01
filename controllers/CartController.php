@@ -7,29 +7,37 @@ require_once '../Ecommerce-website/models/OrderItem.php';
 class CartController extends Controller
 {
     public function add()
-    {
-        if (isset($_POST['product_id']) && isset($_POST['quantity'])) {
-            $product_id = $_POST['product_id'];
-            $quantity = $_POST['quantity'];
-            $productModel = new Product();
-            $product = $productModel->getProductById($product_id); 
-            if (!isset($_SESSION['cart'])) {
-                $_SESSION['cart'] = [];
-            }
-            if (isset($_SESSION['cart'][$product_id])) {
-                $_SESSION['cart'][$product_id]['quantity'] += $quantity; 
-            } else {
-                $_SESSION['cart'][$product_id] = [
-                    'name' => $product['product_name'],
-                    'price' => $product['price'],
-                    'image' => $product['image_url'], 
-                    'quantity' => $quantity
-                ];
-            }
-            header('Location: /customers/cart');
-            exit();
+{
+    if (isset($_POST['product_id']) && isset($_POST['quantity'])) {
+        $product_id = $_POST['product_id'];
+        $quantity = $_POST['quantity'];
+        $productModel = new Product();
+        $product = $productModel->getProductByIdWithSingleImage($product_id);
+
+        // Debug output for the product
+        var_dump($product);
+
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
         }
-    }public function remove()
+        
+        if (isset($_SESSION['cart'][$product_id])) {
+            $_SESSION['cart'][$product_id]['quantity'] += $quantity; 
+        } else {
+            $_SESSION['cart'][$product_id] = [
+                'name' => $product['product_name'],
+                'price' => $product['price'],
+                'image' => $product['image'], // Change to 'image'
+                'quantity' => $quantity
+            ];
+        }
+        
+        header('Location: /customers/cart');
+        exit();
+    }
+}
+
+public function remove()
     {
         // Start the session if it's not already started
         if (session_status() !== PHP_SESSION_ACTIVE) {

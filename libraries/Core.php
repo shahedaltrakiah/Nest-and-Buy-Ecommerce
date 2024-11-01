@@ -1,6 +1,7 @@
 <?php
 
-class Core {
+class Core
+{
     protected $routes = [
         // Default route to customer index
         '' => ['CustomerController@index', 'GET'], // This handles the root URL
@@ -37,7 +38,7 @@ class Core {
         'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
         'customers/index' => ['CustomerController@index', 'GET'],
         'customers/about' => ['CustomerController@about', 'GET'],
-        'customers/contact' => ['CustomerController@contact', 'GET'],
+        'customers/contact' => ['CustomerController@contact', ['GET', 'POST']],
         'customers/category' => ['CustomerController@categoryView', 'GET'],
         'customers/shop' => ['CustomerController@shop', 'GET'],
         'customers/product_details' => ['CustomerController@productDetails', ['GET', 'POST']],
@@ -46,22 +47,28 @@ class Core {
         'customers/checkout' => ['CustomerController@checkout', 'GET'],
         'customers/profile' => ['CustomerController@profile', 'GET'],
         'customers/logout' => ['CustomerController@logout', 'GET'],
-        'customer/cart'=>['CartController@add','POST'],
-        'customers/test'=> ['CustomerController@test', 'GET'],
-        'customers/cart/checkout' => ['CartController@checkout','POST'],
+        'customer/cart' => ['CartController@add', 'POST'],
+        'customers/test' => ['CustomerController@test', 'GET'],
+        'customers/cart/checkout' => ['CartController@checkout', 'POST'],
         'customers/cart/remove' => ['CartController@remove', ['POST', 'GET']],
-        'customers/cart/remove-coupon'=>['CartController@removeCoupon','POST'],
-        'customers/cart/apply-coupon'=>['CartController@applyCoupon','POST'],
+        'customers/cart/remove-coupon' => ['CartController@removeCoupon', 'POST'],
+        'customers/cart/apply-coupon' => ['CartController@applyCoupon', 'POST'],
         'customer/profile/add' => ['WishlistController@add', ['POST']],
         'customers/profile/remove' => ['WishlistController@remove', 'POST'],
-        'customers/profile/view'=>['WishlistController@viewWishlist','GET'],
+        'customers/profile/view' => ['WishlistController@viewWishlist', 'GET'],
+        'customers/profile/update' => ['CustomerController@updateProfile', ['POST']],
+        'profile/uploadImage' => ['CustomerController@uploadImage', 'POST'],
+        'shop/liveSearch' => ['ShopController@liveSearch', 'GET'],
+
     ];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->dispatch();
     }
 
-    private function dispatch() {
+    private function dispatch()
+    {
         $url = $this->getUrl();
         $method = $_SERVER['REQUEST_METHOD']; // Get the current request method
 
@@ -113,7 +120,8 @@ class Core {
         }
     }
 
-    private function getUrl() {
+    private function getUrl()
+    {
         $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
         $url = trim($url, '/');  // Trim leading and trailing slashes
 

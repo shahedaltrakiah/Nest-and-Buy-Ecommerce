@@ -1,12 +1,12 @@
 <?php require "views/partials/header.php"; ?>
 
 <!-- Start Hero Section -->
-<div class="hero" style="height: 50px;">
+<div class="hero" style="padding: calc(3rem - 10px) 0 1rem 0;">
     <div class="container">
-        <div class="row justify-content-between">
-            <div class="intro-excerpt">
-                <h1 style="margin-bottom: 10px; margin-top: -30px;">Contact</h1>
-                <p style="font-size: 15px;">We would love to hear from you.</p>
+        <div class="row ">
+            <div class="intro-excerptt text-center">
+                <h1 class="hero-title mb-3">Contact</h1>
+                <p class="hero-subtitle">We would love to hear from you.</p>
             </div>
         </div>
     </div>
@@ -71,7 +71,8 @@
                         </div>
                     </div>
 
-                    <form action="" method="POST" onsubmit="return validateForm()">
+                    <!-- Form with Validation -->
+                    <form action="/customers/contact" method="POST" onsubmit="return validateForm()">
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
@@ -90,14 +91,14 @@
                         </div>
                         <div class="form-group">
                             <label class="text-black" for="email"></label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                   placeholder="Email address">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email address"
+                            >
                         </div>
 
                         <div class="form-group mb-5">
                             <label class="text-black" for="message"></label>
-                            <textarea class="form-control" id="message" name="message" placeholder="Message"
-                                      cols="30" rows="5"></textarea>
+                            <textarea class="form-control" id="message" name="message" placeholder="Message" cols="30"
+                                      rows="5"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
@@ -107,7 +108,38 @@
     </div>
 </div>
 
-<!-- End Contact Form -->
+<script>
+    function validateForm() {
+        const message = document.getElementById("message").value.trim();
+        if (message === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Empty Message',
+                text: 'Message field cannot be empty.',
+                confirmButtonColor: '#3B5D50',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<?php if (isset($_GET['success']) && $_GET['success'] === 'true'): ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Message Sent!',
+            text: 'Your message has been successfully sent.',
+            confirmButtonColor: '#3B5D50',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/customers/contact';
+            }
+        });
+    </script>
+<?php endif; ?>
 
 <?php require "views/partials/footer.php"; ?>
 
