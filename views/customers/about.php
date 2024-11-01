@@ -150,9 +150,9 @@
             <div class="col-lg-4 col-md-4 mb-4">
                 <div class="team-member text-center card-spacing mb-4">
                     <div class="team-img-wrap">
-                        <img src="/public/images/person_1.jpg" alt="David Smith" class="img-fluid rounded-circle">
+                        <img src="/public/images/rania.jpg" alt="David Smith" class="img-fluid rounded-circle">
                     </div>
-                    <h3 class="mt-3">Ranya</h3>
+                    <h3 class="mt-3">Ranya Alhosann</h3>
                     <p>Developer</p>
                     <a href="https://www.linkedin.com/in/davidsmith" target="_blank">
                         <i class="fab fa-linkedin fa-2x" style="margin-right: 10px;"></i>
@@ -168,7 +168,7 @@
                     <div class="team-img-wrap">
                         <img src="/public/images/person_1.jpg" alt="Emily Brown" class="img-fluid rounded-circle">
                     </div>
-                    <h3 class="mt-3">Husam</h3>
+                    <h3 class="mt-3">Husam AlSaket</h3>
                     <p>Developer</p>
                     <a href="https://www.linkedin.com/in/emilybrown" target="_blank">
                         <i class="fab fa-linkedin fa-2x" style="margin-right: 10px;"></i>
@@ -182,7 +182,7 @@
             <div class="col-lg-4 col-md-4 mb-4">
                 <div class="team-member text-center card-spacing mb-4">
                     <div class="team-img-wrap">
-                        <img src="/public/images/person_1.jpg" alt="Michael Green" class="img-fluid rounded-circle">
+                        <img src="/public/images/mousa.PNG" alt="Michael Green" class="img-fluid rounded-circle">
                     </div>
                     <h3 class="mt-3">Mousa Ala'aldin</h3>
                     <p>Developer</p>

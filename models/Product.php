@@ -142,6 +142,7 @@ class Product extends Model
         $stmt = $this->pdo->query("SELECT * FROM categories");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
     // New method to get a product by ID
     public function getProductById($productId)
     {
@@ -158,9 +159,10 @@ class Product extends Model
         $statement->execute();
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
-public function getProductByIdWithSingleImage($productId)
-{
-    $statement = $this->pdo->prepare("
+
+    public function getProductByIdWithSingleImage($productId)
+    {
+        $statement = $this->pdo->prepare("
         SELECT p.*, c.category_name, 
                (SELECT image_url 
                 FROM productimages 
@@ -170,13 +172,13 @@ public function getProductByIdWithSingleImage($productId)
         JOIN categories c ON p.category_id = c.id
         WHERE p.id = :product_id
     ");
-    $statement->bindParam(':product_id', $productId, PDO::PARAM_INT);
-    $statement->execute();
-    return $statement->fetch(\PDO::FETCH_ASSOC);
-    
-}
+        $statement->bindParam(':product_id', $productId, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch(\PDO::FETCH_ASSOC);
 
-    //rania function fro product_details/  New: Add review to a product
+    }
+
+    //rania function for product_details/  New: Add review to a product
     public function addReview($productId, $fullName, $email, $phone, $rating, $comment)
     {
         $statement = $this->pdo->prepare("
@@ -194,7 +196,12 @@ public function getProductByIdWithSingleImage($productId)
 
     public function searchProducts($query)
     {
-        $statement = $this->pdo->prepare("SELECT * FROM products WHERE product_name LIKE :query");
+        $statement = $this->pdo->prepare(
+            "SELECT p.*, 
+                   (SELECT pi.image_url 
+                    FROM productimages pi 
+                    WHERE pi.product_id = p.id 
+                    LIMIT 1) AS image_url FROM products p WHERE product_name LIKE :query");
         $statement->bindValue(':query', '%' . $query . '%');
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);

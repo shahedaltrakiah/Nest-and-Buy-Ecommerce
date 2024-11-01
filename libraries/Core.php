@@ -42,7 +42,6 @@ class Core
         'customers/category' => ['CustomerController@categoryView', 'GET'],
         'customers/shop' => ['CustomerController@shop', 'GET'],
         'customers/product_details' => ['CustomerController@productDetails', ['GET', 'POST']],
-        'customers/products_details/{id}' => ['CustomerController@productDetails',  ['GET', 'POST']],
         'customers/cart' => ['CustomerController@cart', 'GET'],
         'customers/checkout' => ['CustomerController@checkout', 'GET'],
         'customers/profile' => ['CustomerController@profile', 'GET'],
@@ -91,6 +90,7 @@ class Core
             $controllerName = $controllerMethod[0];
             $methodName = $controllerMethod[1];
             $routeMethod = $route[1] ?? 'GET'; // Default to GET if no method is specified
+            $controllers = isset($urlParts[1]) ? $urlParts[1] : null;
 
             // Check if route allows the request method
             if ((is_array($routeMethod) && in_array($method, $routeMethod)) || $method === $routeMethod) {

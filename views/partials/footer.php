@@ -1,8 +1,8 @@
 <!-- Start Footer Section -->
 <footer class="footer-section">
-    <div class="container relative" style="margin-top: 50px; margin-bottom: -50px;">
+    <div class="container relative" style=" margin-bottom: -50px;">
 
-        <div class="sofa-img">
+        <div class="sofa-img" style="margin-top:60px;">
             <img src="/public/images/sofa.png" alt="Image" class="img-fluid">
         </div>
 
