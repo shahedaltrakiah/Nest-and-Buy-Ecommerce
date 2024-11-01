@@ -227,52 +227,101 @@ class CustomerController extends Controller
     }
     public function updateProfile()
     {
-        // Fetch POST data
         $id = $_POST['id'];
-        $firstName = $_POST['first_name'];
-        $lastName = $_POST['last_name'];
-        $email = $_POST['email'];
-        $phoneNumber = $_POST['phone_number'];
-        $address = $_POST['address'];
+        $firstName = trim($_POST['first_name']);
+        $lastName = trim($_POST['last_name']);
+        $email = trim($_POST['email']);
+        $phoneNumber = trim($_POST['phone_number']);
+        $address = trim($_POST['address']);
+        
+        $errors = [];
     
-        // Validate and sanitize inputs here
-        // Example: $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+        // Validate first name (letters only, 2-30 characters)
+        if (!preg_match('/^[a-zA-Z\s]{2,30}$/', $firstName)) {
+            $errors[] = "First name must contain only letters and be between 2 and 30 characters.";
+        }
     
-        // Initialize variable for image name
+        // Validate last name (letters only, 2-30 characters)
+        if (!preg_match('/^[a-zA-Z\s]{2,30}$/', $lastName)) {
+            $errors[] = "Last name must contain only letters and be between 2 and 30 characters.";
+        }
+    
+        // Validate email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Invalid email format.";
+        } elseif ($this->model('Customer')->isEmailTaken($email, $id)) {
+            $errors[] = "Email already taken! Please choose a different email address.";
+        }
+    
+        // Validate phone number (Jordanian format: starts with 07 and has 10 digits)
+        if (!preg_match('/^07\d{8}$/', $phoneNumber)) {
+            $errors[] = "Phone number must be in the format 07XXXXXXXX.";
+        }
+    
+        // Validate address (non-empty)
+        if (empty($address)) {
+            $errors[] = "Address cannot be empty.";
+        }
+    
+        // If there are errors, redirect back with SweetAlert error messages
+        if (!empty($errors)) {
+            $_SESSION['profile_errors'] = json_encode($errors); // Encode errors as JSON
+            header("Location: /customers/profile"); // Redirect back to profile
+            exit;
+        }
+    
         $imageName = null;
     
         // Handle image upload if a file is provided
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $image = $_FILES['image'];
+    
+            // Basic image type and size validation can be added here
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!in_array($image['type'], $allowedTypes)) {
+                $_SESSION['profile_errors'] = json_encode(["Invalid image type! Please upload a JPEG, PNG, or GIF."]);
+                header("Location: /customers/profile");
+                exit;
+            }
+    
             $imageName = time() . '_' . basename($image['name']);
-            $uploadDir = 'public/uploads/'; // Specify your upload directory
+            $uploadDir = 'public/uploads/';
             $uploadFilePath = $uploadDir . $imageName;
     
-            // Move the uploaded file to the specified directory
+            // Move uploaded file to the designated directory
             if (!move_uploaded_file($image['tmp_name'], $uploadFilePath)) {
-                // Handle image upload error
-                header("Location: profile.php?error=image_upload_failed");
+                $_SESSION['profile_errors'] = json_encode(["Image upload failed! Please try again."]);
+                header("Location: /customers/profile");
                 exit;
             }
         }
     
-        // Use $this->model to interact with the Customer model
-        $updateSuccess = $this->model('Customer')->updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageName);
-    
-        if ($updateSuccess) {
-            // Update the session with the new image path if an image was uploaded
-            if ($imageName) {
-                $_SESSION['user']['image_url'] = 'uploads/' . $imageName; // Update session variable with the new image URL
+        try {
+            // Update customer profile information in the database
+            $updateSuccess = $this->model('Customer')->updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageName);
+            if ($updateSuccess) {
+                if ($imageName) {
+                    $_SESSION['user']['image_url'] = 'uploads/' . $imageName; // Update image URL in session
+                }
+                header("Location: /customers/profile"); // Redirect on success
+                exit;
             }
-            
-            // Redirect or send success response
-            header("Location: /customers/profile");
-            exit;
-        } else {
-            // Handle failure
-            header("Location: profile");
-            exit;
+        } catch (PDOException $e) {
+            // Handle specific database error for email duplication
+            if ($e->getCode() == 23000) {
+                $_SESSION['profile_errors'] = json_encode(["Email already taken! Please choose a different email address."]);
+                header("Location: /customers/profile");
+                exit;
+            } else {
+                // General error handling
+                $_SESSION['profile_errors'] = json_encode(["An error occurred while updating your profile."]);
+                header("Location: /customers/profile");
+                exit;
+            }
         }
+    
+        header("Location: /customers/profile");
+        exit;
     }
     
 
