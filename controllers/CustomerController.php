@@ -170,7 +170,15 @@ class CustomerController extends Controller
 
         // Handle review submission
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if ($user) {
+            if (isset($_POST['delete_review_id'])) {
+                // Handle review deletion
+                $reviewId = $_POST['delete_review_id'];
+                if ($this->model('Review')->deleteReview($reviewId)) {
+                    header("Location: " . $_SERVER['REQUEST_URI'] . "?deleted=true");
+                    exit();
+                }
+            } elseif ($user) {
+                // Handle review submission
                 $reviewData = [
                     'product_id' => $id,
                     'customer_id' => $user['id'],
@@ -179,7 +187,6 @@ class CustomerController extends Controller
                 ];
 
                 if ($this->model('Review')->addReview($reviewData)) {
-                    // Redirect back to the same page with a success message
                     header("Location: " . $_SERVER['REQUEST_URI'] . "?success=true");
                     exit();
                 } else {

@@ -42,6 +42,10 @@ class Review extends Model {
         $statement->execute([':product_id' => $productId]);
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function deleteReview($reviewId) {
+        $statement = $this->pdo->prepare("DELETE FROM reviews WHERE id = :id");
+        return $statement->execute([':id' => $reviewId]);
+    }
 
 
 

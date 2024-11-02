@@ -189,30 +189,37 @@
                     </form>
                 </div>
 
-
                 <?php if (!empty($reviews)): ?>
-                    <?php foreach ($reviews as $review): ?>
-                        <div class="review mt-1 p-3 border rounded bg-light d-flex align-items-start ">
-                            <div class="review-info me-3">
-                                <p><strong>Rating:</strong>
-                                    <?php
-                                    $rating = (int)$review['rating'];
-                                    for ($i = 1; $i <= 5; $i++) {
-                                        echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
-                                    }
-                                    ?>
-                                </p>
-                                <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
-                                <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
-                                <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
-                            </div>
-                            <div class="review-image justify-content-center" >
-                                <?php if (!empty($review['image_url'])): ?>
-                                    <img src="/public/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" height="120" width="120">
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                <?php foreach ($reviews as $review): ?>
+                <div class="review mt-1 p-3 border rounded bg-light d-flex align-items-start position-relative">
+                    <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
+                        <?php if ($user['id'] === $review['customer_id']): ?>
+                            <!-- Delete Review Button -->
+                            <button class="delete-review  btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
+                        <?php endif; ?>
+                    </div>
+                    <div class="review-info me-3">
+                        <p><strong>Rating:</strong>
+                            <?php
+                            $rating = (int)$review['rating'];
+                            for ($i = 1; $i <= 5; $i++) {
+                                echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
+                            }
+                            ?>
+                        </p>
+                        <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
+                        <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
+                        <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
+                    </div>
+                    <div class="review-image justify-content-center">
+                        <?php if (!empty($review['image_url'])): ?>
+                            <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" height="120" width="120">
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <?php endforeach; ?>
+
+
                 <?php else: ?>
                     <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
                 <?php endif; ?>
@@ -222,6 +229,37 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.querySelectorAll('.delete-review').forEach(button => {
+        button.addEventListener('click', function() {
+            const reviewId = this.getAttribute('data-id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Create a form to submit the deletion
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '';
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'delete_review_id';
+                    hiddenInput.value = reviewId;
+                    form.appendChild(hiddenInput);
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        });
+    });
+</script>
 
 <script>
     function changeMainImage(src) {
@@ -281,6 +319,23 @@
 </script>
 
 <style>
+    .review {
+        position: relative; /* Ensure the review box is a positioning context */
+    }
+
+    .delete-button {
+        position: absolute;
+        top: 10px; /* Adjust this value for vertical positioning */
+        right: 10px; /* Adjust this value for horizontal positioning */
+        z-index: 10; /* Ensure it is above other content */
+    }
+
+    .delete-review {
+        background: none; /* Remove background for a cleaner look */
+        border: none; /* Remove border for a cleaner look */
+        color: red; /* Set the text color for the delete button */
+        cursor: pointer; /* Change cursor to pointer for better UX */
+    }
 
 /* Star Rating Styles */
     .star-rating {
