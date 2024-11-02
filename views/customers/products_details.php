@@ -142,19 +142,20 @@
             <div class="customer-reviews col-md-6" id="reviews-section">
                 <div class="reviews-filter mb-4">
                     <form method="GET" action="">
-                        <div class="d-flex justify-content-between">
-                            <select name="filter" class="form-select me-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <select name="filter" class="form-select me-3">
                                 <option value="all" <?= isset($_GET['filter']) && $_GET['filter'] === 'all' ? 'selected' : ''; ?>>All Reviews</option>
                                 <option value="my" <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'selected' : ''; ?>>My Reviews</option>
                             </select>
-                            <select name="sort" class="form-select">
+                            <select name="sort" class="form-select me-2 mb-1 ">
                                 <option value="asc" <?= isset($_GET['sort']) && $_GET['sort'] === 'asc' ? 'selected' : ''; ?>>Ascending</option>
                                 <option value="desc" <?= isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'selected' : ''; ?>>Descending</option>
                             </select>
-                            <button type="submit" class="btn btn-primary action-button ">Filter</button>
+                            <button type="submit" class="btn btn-primary action-button mt-4" style="font-weight: lighter">Filter</button>
                         </div>
                     </form>
                 </div>
+
                 <?php if (!empty($reviews)): ?>
                     <?php foreach ($reviews as $review): ?>
                         <div class="review mt-3 p-3 border rounded bg-light">
@@ -322,6 +323,7 @@
     }
 
     .customer-reviews::-webkit-scrollbar {
+        display: none;
         width: 8px;
     }
 
