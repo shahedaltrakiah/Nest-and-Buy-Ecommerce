@@ -97,12 +97,12 @@
                 <form method="POST" action="">
                     <div class="mb-3">
                         <label for="rating" class="form-label">Rating</label>
-                        <select name="rating" id="rating" class="form-select" required>
-                            <option value="">Choose Rating</option>
+                        <div class="star-rating">
                             <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <option value="<?= $i; ?>"><?= $i; ?> Star<?= $i > 1 ? 's' : ''; ?></option>
+                                <i class="fa fa-star" data-value="<?= $i; ?>" onclick="setRating(<?= $i; ?>)" id="star-<?= $i; ?>"></i>
                             <?php endfor; ?>
-                        </select>
+                            <input type="hidden" name="rating" id="rating" required>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="comment" class="form-label">Comment</label>
@@ -122,7 +122,14 @@
                         <div class="review mt-3 p-3 border rounded bg-light">
                             <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
 
-                            <p><strong>Rating:</strong> <?= htmlspecialchars($review['rating']); ?> Stars</p>
+                            <p><strong>Rating:</strong>
+                                <?php
+                                $rating = (int)$review['rating'];
+                                for ($i = 1; $i <= 5; $i++) {
+                                    echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
+                                }
+                                ?>
+                            </p>
                             <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
                             <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
                         </div>
@@ -146,6 +153,22 @@
 <?php require 'views/partials/footer.php'; ?>
 
 <style>
+    /* Star Rating Styles */
+    .star-rating {
+        display: flex;
+        gap: 5px;
+    }
+
+    .star-rating .fa-star {
+        font-size: 24px;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .star-rating .fa-star.selected {
+        color: #ffcc00;
+    }
     /* Wishlist Button */
     .wishlist-button {
         position: absolute;
