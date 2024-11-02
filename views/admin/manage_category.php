@@ -153,7 +153,7 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                                 <td><?php echo htmlspecialchars($category['id']); ?></td>
                                 <td>
                                     <?php
-                                    $imageSrc = !empty($category['image_url']) ?"/public/".htmlspecialchars($category['image_url']) : '/public/images/mousa.png';
+                                    $imageSrc = !empty($category['image_url']) ?"/public/".htmlspecialchars($category['image_url']) : "";
                                     ?>
                                     <img src="<?= $imageSrc; ?>" class="" style="width: 70px; height: 70px;">
                                 </td>
