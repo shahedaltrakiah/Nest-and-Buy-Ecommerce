@@ -52,7 +52,7 @@
                                 <input type="email" class="form-control" id="c_email_address" name="c_email_address"
                                        required>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6 mb-3">
                                 <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="c_phone" name="c_phone"
                                        placeholder="Phone Number" required>
@@ -87,10 +87,10 @@
                                         $subtotal += $totalPrice;
                                         ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($product['name']); ?> <strong
+                                            <td><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?><strong
                                                         class="mx-2">x</strong> <?php echo htmlspecialchars($product['quantity']); ?>
                                             </td>
-                                            <td>$<?php echo number_format($totalPrice, 2); ?></td>
+                                            <td><sup>JD</sup><?php echo number_format($totalPrice, 2); ?></td>
                                         </tr>
                                         <?php
                                     }
@@ -99,7 +99,7 @@
 
                                 <tr>
                                     <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                                    <td class="text-black">$<?php echo number_format($subtotal, 2); ?></td>
+                                    <td class="text-black"><sup>JD</sup><?php echo number_format($subtotal, 2); ?></td>
                                 </tr>
 
                                 <?php
@@ -108,7 +108,7 @@
                                 if ($discount > 0) {
                                     echo "<tr>
                                     <td class='text-black font-weight-bold'><strong>Discount</strong></td>
-                                    <td class='text-black'>-$" . number_format($discount, 2) . "</td>
+                                    <td class='text-black'><sup>-JD</sup>" . number_format($discount, 2) . "</td>
                                   </tr>";
                                 }
 
@@ -119,7 +119,7 @@
                                 <tr>
                                     <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
                                     <td class="text-black font-weight-bold">
-                                        <strong>$<?php echo number_format($totalAmount, 2); ?></strong></td>
+                                        <strong><sup>JD</sup><?php echo number_format($totalAmount, 2); ?></strong></td>
                                 </tr>
                                 </tbody>
                             </table>

@@ -123,9 +123,18 @@
                     <td>#<?= htmlspecialchars($order['order_id']) ?></td>
                     <td><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></td>
                     <td>
-                    <span class="badge bg-<?= $order['status'] == 'completed' ? 'success' : 'warning' ?>">
+                    <span class="badge bg-<?php
+                    if ($order['status'] == 'completed') {
+                        echo 'success';
+                    } elseif ($order['status'] == 'canceled') {
+                        echo 'danger';
+                    } else {
+                        echo 'warning';
+                    }
+                    ?>">
                         <?= htmlspecialchars(ucfirst($order['status'])) ?>
                     </span>
+
                     </td>
                     <td><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></td>
                     <td>
@@ -151,17 +160,34 @@
                     </div>
                     <div class="modal-body">
                         <div class="order-details">
-                            <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order['order_id']) ?></span></h5>
-                            <p><strong>Date:</strong> <span class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></span></p>
-                            <p><strong>Status:</strong> <span class="badge bg-<?= $order['status'] == 'completed' ? 'success' : 'warning' ?>"><?= htmlspecialchars(ucfirst($order['status'])) ?></span></p>
-                            <p><strong>Total:</strong> <span class="text-danger"><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></span></p>
+                            <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order['order_id']) ?></span>
+                            </h5>
+                            <p><strong>Date:</strong> <span
+                                        class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></span>
+                            </p>
+                            <p><strong>Status:</strong>
+                                <span class="badge bg-<?php
+                                if ($order['status'] == 'completed') {
+                                    echo 'success';
+                                } elseif ($order['status'] == 'canceled') {
+                                    echo 'danger';
+                                } else {
+                                    echo 'warning';
+                                }
+                                ?>">
+                                    <?= htmlspecialchars(ucfirst($order['status'])) ?>
+                                </span>
+                            </p>
+                            <p><strong>Total:</strong> <span
+                                        class="text-danger"><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></span>
+                            </p>
                             <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
                             <p><strong>Items Ordered:</strong></p>
                             <div class="order-items">
                                 <ul class="list-group">
                                     <?php foreach ($order['items'] as $item): ?>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <?=  ucwords(str_replace(['-', '_'], ' ',  htmlspecialchars($item->product_name)));?>
+                                            <?= ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item->product_name))); ?>
                                             <span class="badge bg-secondary"><sup> JD </sup><?= number_format($item->product_price, 2) ?></span>
                                         </li>
                                     <?php endforeach; ?>
@@ -188,14 +214,20 @@
                         <div class="card" style="margin-top: 20px;">
                             <a href="/customers/product_details/<?= htmlspecialchars($item['product_id']) ?>">
                                 <div class="text-center" style="margin-top: 15px;">
-                                    <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain;" src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>" alt="<?= htmlspecialchars($item['product_name']) ?>">
+                                    <img class="card-img-top" style="height: 80px; width: 80px; object-fit: contain;"
+                                         src="<?= htmlspecialchars('/public/' . $item['image_url']) ?>"
+                                         alt="<?= htmlspecialchars($item['product_name']) ?>">
                                 </div>
                                 <div class="card-body text-center">
-                                    <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name'])));?></h6>
-                                    <p class="card-text text-muted"><sup> JD </sup><?= htmlspecialchars($item['price']) ?></p>
+                                    <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name']))); ?></h6>
+                                    <p class="card-text text-muted"><sup>
+                                            JD </sup><?= htmlspecialchars($item['price']) ?></p>
                                     <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
-                                        <input type="hidden" name="product_id" value="<?= htmlspecialchars($item['product_id']) ?>">
-                                        <button type="submit" class="btn btn-danger btn-sm remove-btn" style="margin-top: -10px;">Remove</button>
+                                        <input type="hidden" name="product_id"
+                                               value="<?= htmlspecialchars($item['product_id']) ?>">
+                                        <button type="submit" class="btn btn-danger btn-sm remove-btn"
+                                                style="margin-top: -10px;">Remove
+                                        </button>
                                     </form>
                                 </div>
                             </a>
@@ -231,9 +263,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // Check if there are profile errors in the session
-        <?php if (isset($_SESSION['profile_errors'])): ?>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if there are profile errors in the session
+            <?php if (isset($_SESSION['profile_errors'])): ?>
             const errors = <?php echo $_SESSION['profile_errors']; ?>;
             errors.forEach(error => {
                 Swal.fire({
@@ -244,8 +276,9 @@
                 });
             });
             <?php unset($_SESSION['profile_errors']); // Clear the session variable ?>
-        <?php endif; ?>
-    });
+            <?php endif; ?>
+        });
+
         function validateForm() {
             const form = document.getElementById('editProfileForm');
 
@@ -297,7 +330,7 @@
             const itemName = form.find('input[name="product_name"]').val(); // You may want to adjust this to get the actual product name instead
             removeItem(itemName, form); // Call the removeItem function
         });
-        
+
         // Select the Show More button
         const showMoreBtn = document.getElementById('showMoreBtn');
 
