@@ -208,7 +208,7 @@
                             </div>
                             <div class="review-image justify-content-center" >
                                 <?php if (!empty($review['image_url'])): ?>
-                                    <img  src="\<?= htmlspecialchars($review['image_url']); ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" height="120px" width="120px">
+                                    <img src="/public/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" height="120" width="120">
                                 <?php endif; ?>
                             </div>
                         </div>
