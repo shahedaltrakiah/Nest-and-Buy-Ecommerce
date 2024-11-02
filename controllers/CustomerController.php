@@ -175,8 +175,8 @@ class CustomerController extends Controller
                 ];
 
                 if ($this->model('Review')->addReview($reviewData)) {
-                    // Redirect to avoid resubmission
-                    header("Location:/customers/products_details?success=true");
+                    // Redirect back to the same page with a success message
+                    header("Location: " . $_SERVER['REQUEST_URI'] . "?success=true");
                     exit();
                 } else {
                     $errorMessage = "Failed to submit review. Please try again.";
@@ -185,6 +185,7 @@ class CustomerController extends Controller
                 $errorMessage = "Please log in to submit a review.";
             }
         }
+
 
         // Get filter and sort criteria from URL parameters
         $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
