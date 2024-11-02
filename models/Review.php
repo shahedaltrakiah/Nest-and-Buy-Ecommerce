@@ -9,7 +9,7 @@ class Review extends Model {
     public function addReview($data) {
         // Handle image upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $imagePath = 'uploads/' . basename($_FILES['image']['name']);
+            $imagePath = 'public/uploads/' . basename($_FILES['image']['name']);
             move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
             $data['image_url'] = $imagePath; // Add the image URL to the data array
         } else {
