@@ -132,26 +132,28 @@
     <div class="reviews-section my-5 d-flex flex-column">
         <div class="row">
             <div class="col-md-6">
-                <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Write a Review</h4>
+                <h4 class="mt-2" style="font-weight: bold; color: #3B5D50;">Write a Review</h4>
             </div>
             <div class="col-md-6 ">
-                <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Customer Reviews</h4>
+                <h4 class="mt-2" style="font-weight: bold; color: #3B5D50;">Customer Reviews</h4>
             </div>
 
         </div>
-        <div class="d-flex justify-content-between my-5 mt-3" style="width: 100%;">
 
+        <div class="d-flex justify-content-between" style="width: 100%;">
             <!-- Review Submission Form -->
             <div class="review-form-container col-md-5">
                 <?php if ($user): ?>
-                    <p>We're happy to see your feedback  <?= htmlspecialchars($user['name']); ?>, on our <?= htmlspecialchars(ucwords(str_replace('-', ' ', $product['product_name']))); ?>.</p>
+                    <p class="mt-3">We're happy to see your feedback <span style="color: #3b5d50">  <?= htmlspecialchars($user['name']); ?>, </span>  on
+                        our <?= htmlspecialchars(ucwords(str_replace('-', ' ', $product['product_name']))); ?>.</p>
                 <?php endif; ?>
                 <form method="POST" action="">
                     <div class="mb-3">
                         <label for="rating" class="form-label">Rating</label>
                         <div class="star-rating">
                             <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <i class="fa fa-star" data-value="<?= $i; ?>" onclick="setRating(<?= $i; ?>)" id="star-<?= $i; ?>"></i>
+                                <i class="fa fa-star" data-value="<?= $i; ?>" onclick="setRating(<?= $i; ?>)"
+                                   id="star-<?= $i; ?>"></i>
                             <?php endfor; ?>
                             <input type="hidden" name="rating" id="rating" required>
                         </div>
@@ -168,26 +170,35 @@
             <div class="vr mx-3"></div>
 
             <!-- Display Reviews with Scrolling -->
-            <div class="customer-reviews col-md-6 " id="reviews-section" >
-                <div class="reviews-filter ">
+            <div class="customer-reviews col-md-6" id="reviews-section">
+                <div class="reviews-filter" style="margin-bottom: -15px; margin-top: -10px;">
                     <form method="GET" action="">
-                        <div class="d-flex justify-content-between align-items-center ">
+                        <div class="d-flex justify-content-between align-items-center">
                             <select name="filter" class="form-select me-3">
-                                <option value="all" <?= isset($_GET['filter']) && $_GET['filter'] === 'all' ? 'selected' : ''; ?>>All Reviews</option>
-                                <option value="my" <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'selected' : ''; ?>>My Reviews</option>
+                                <option value="all" <?= isset($_GET['filter']) && $_GET['filter'] === 'all' ? 'selected' : ''; ?>>
+                                    All Reviews
+                                </option>
+                                <option value="my" <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'selected' : ''; ?>>
+                                    My Reviews
+                                </option>
                             </select>
-                            <select name="sort" class="form-select me-2 mb-1 ">
-                                <option value="asc" <?= isset($_GET['sort']) && $_GET['sort'] === 'asc' ? 'selected' : ''; ?>>Ascending</option>
-                                <option value="desc" <?= isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'selected' : ''; ?>>Descending</option>
+                            <select name="sort" class="form-select me-2 ">
+                                <option value="asc" <?= isset($_GET['sort']) && $_GET['sort'] === 'asc' ? 'selected' : ''; ?>>
+                                    Ascending
+                                </option>
+                                <option value="desc" <?= isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'selected' : ''; ?>>
+                                    Descending
+                                </option>
                             </select>
-                            <button type="submit" class="btn btn-primary action-button mt-4" style="font-weight: lighter">Filter</button>
+                            <button type="submit" class="btn btn-primary action-button mt-4">Filter
+                            </button>
                         </div>
                     </form>
                 </div>
 
                 <?php if (!empty($reviews)): ?>
                     <?php foreach ($reviews as $review): ?>
-                        <div class="review mt-1 p-3 border rounded bg-light">
+                        <div class="review mt-2 p-3 border rounded bg-light">
                             <p><strong>Rating:</strong>
                                 <?php
                                 $rating = (int)$review['rating'];
@@ -196,9 +207,13 @@
                                 }
                                 ?>
                             </p>
-                            <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
+                            <p>
+                                <strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?>
+                            </p>
                             <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
-                            <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
+                            <p><em>Reviewed
+                                    on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em>
+                            </p>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -242,7 +257,7 @@
 <style>
 
 
-/* Star Rating Styles */
+    /* Star Rating Styles */
     .star-rating {
         display: flex;
         gap: 5px;
@@ -258,6 +273,7 @@
     .star-rating .fa-star.selected {
         color: #ffcc00;
     }
+
     /* Wishlist Button */
     .wishlist-button {
         position: absolute;
@@ -341,11 +357,16 @@
         border-radius: 10px;
         padding: 20px;
         box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 50px;
     }
 
     .review-form-container, .customer-reviews {
         height: 100%;
         max-height: 400px;
+    }
+
+    .review-form-container p {
+        font-weight: bold;
     }
 
     .customer-reviews {
