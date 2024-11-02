@@ -191,6 +191,7 @@ class CustomerController extends Controller
         }
 
 
+
         // Get filter and sort criteria from URL parameters
         $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
         $sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
@@ -276,49 +277,49 @@ class CustomerController extends Controller
         $email = trim($_POST['email']);
         $phoneNumber = trim($_POST['phone_number']);
         $address = trim($_POST['address']);
-        
+
         $errors = [];
-    
+
         // Validate first name (letters only, 2-30 characters)
         if (!preg_match('/^[a-zA-Z\s]{2,30}$/', $firstName)) {
             $errors[] = "First name must contain only letters and be between 2 and 30 characters.";
         }
-    
+
         // Validate last name (letters only, 2-30 characters)
         if (!preg_match('/^[a-zA-Z\s]{2,30}$/', $lastName)) {
             $errors[] = "Last name must contain only letters and be between 2 and 30 characters.";
         }
-    
+
         // Validate email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Invalid email format.";
         } elseif ($this->model('Customer')->isEmailTaken($email, $id)) {
             $errors[] = "Email already taken! Please choose a different email address.";
         }
-    
+
         // Validate phone number (Jordanian format: starts with 07 and has 10 digits)
         if (!preg_match('/^07\d{8}$/', $phoneNumber)) {
             $errors[] = "Phone number must be in the format 07XXXXXXXX.";
         }
-    
+
         // Validate address (non-empty)
         if (empty($address)) {
             $errors[] = "Address cannot be empty.";
         }
-    
+
         // If there are errors, redirect back with SweetAlert error messages
         if (!empty($errors)) {
             $_SESSION['profile_errors'] = json_encode($errors); // Encode errors as JSON
             header("Location: /customers/profile"); // Redirect back to profile
             exit;
         }
-    
+
         $imageName = null;
-    
+
         // Handle image upload if a file is provided
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $image = $_FILES['image'];
-    
+
             // Basic image type and size validation can be added here
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
             if (!in_array($image['type'], $allowedTypes)) {
@@ -326,11 +327,11 @@ class CustomerController extends Controller
                 header("Location: /customers/profile");
                 exit;
             }
-    
+
             $imageName = time() . '_' . basename($image['name']);
             $uploadDir = 'public/uploads/';
             $uploadFilePath = $uploadDir . $imageName;
-    
+
             // Move uploaded file to the designated directory
             if (!move_uploaded_file($image['tmp_name'], $uploadFilePath)) {
                 $_SESSION['profile_errors'] = json_encode(["Image upload failed! Please try again."]);
@@ -338,7 +339,7 @@ class CustomerController extends Controller
                 exit;
             }
         }
-    
+
         try {
             // Update customer profile information in the database
             $updateSuccess = $this->model('Customer')->updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageName);
@@ -362,11 +363,11 @@ class CustomerController extends Controller
                 exit;
             }
         }
-    
+
         header("Location: /customers/profile");
         exit;
     }
-    
+
 
     // Customer logout
     public function logout()
