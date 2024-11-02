@@ -37,7 +37,29 @@
         </div>
         <div class="col-lg-5 col-xl-5">
             <div>
+
                 <h2><?= htmlspecialchars(ucwords(str_replace('-', ' ', $product['product_name']))); ?></h2>
+                <?php
+                // Calculate Average Rating
+                $totalRating = 0;
+                $reviewCount = count($reviews);
+                if ($reviewCount > 0) {
+                    foreach ($reviews as $review) {
+                        $totalRating += (int)$review['rating']; // Sum all the ratings
+                    }
+                    $averageRating = $totalRating / $reviewCount; // Calculate average
+                } else {
+                    $averageRating = 0; // Default to 0 if no reviews
+                }
+                ?>
+
+                <!-- Display Average Rating as Stars -->
+                <div class="star-rating mt-3 mb-2 ">
+                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <i class="fa fa-star fs-5  <?= ($i <= $averageRating) ? 'text-warning' : 'text-muted'; ?>"></i>
+                    <?php endfor; ?>
+                </div>
+                <a href="#reviews-section" class="text-primary" style="cursor: pointer;"><?= count($reviews); ?> reviews</a>
                 <h4 class="product-price text-primary mt-3"><sup>JD</sup> <?= htmlspecialchars(number_format($product['price'], 2)); ?></h4>
                 <p class="lh-lg mt-3"><?= htmlspecialchars($product['description']); ?></p>
 
@@ -49,7 +71,7 @@
                     } elseif ($product['stock_quantity'] > 0) {
                         echo "<span class='text-warning'>Hurry up, limited quantity!</span>";
                     } else {
-                        echo "<span class='text-danger'>Out of Stock</span>";
+                        echo "<span class='text-danger '>Out of Stock</span>";
                     }
                     ?>
                 </div>
@@ -86,14 +108,15 @@
             <div class="col-md-6 ">
                 <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Customer Reviews</h4>
             </div>
-        </div>        <div class="d-flex justify-content-between my-5" style="width: 100%;">
+
+        </div>
+        <div class="d-flex justify-content-between my-5" style="width: 100%;">
 
             <!-- Review Submission Form -->
             <div class="review-form-container col-md-5">
                 <?php if ($user): ?>
                     <p>We're happy to see your feedback, <?= htmlspecialchars($user['name']); ?>, on our <?= htmlspecialchars($product['product_name']); ?>.</p>
                 <?php endif; ?>
-
                 <form method="POST" action="">
                     <div class="mb-3">
                         <label for="rating" class="form-label">Rating</label>
@@ -116,12 +139,25 @@
             <div class="vr mx-3"></div>
 
             <!-- Display Reviews with Scrolling -->
-            <div class="customer-reviews col-md-6">
+            <div class="customer-reviews col-md-6" id="reviews-section">
+                <div class="reviews-filter mb-4">
+                    <form method="GET" action="">
+                        <div class="d-flex justify-content-between">
+                            <select name="filter" class="form-select me-2">
+                                <option value="all" <?= isset($_GET['filter']) && $_GET['filter'] === 'all' ? 'selected' : ''; ?>>All Reviews</option>
+                                <option value="my" <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'selected' : ''; ?>>My Reviews</option>
+                            </select>
+                            <select name="sort" class="form-select">
+                                <option value="asc" <?= isset($_GET['sort']) && $_GET['sort'] === 'asc' ? 'selected' : ''; ?>>Ascending</option>
+                                <option value="desc" <?= isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'selected' : ''; ?>>Descending</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary action-button ">Filter</button>
+                        </div>
+                    </form>
+                </div>
                 <?php if (!empty($reviews)): ?>
                     <?php foreach ($reviews as $review): ?>
                         <div class="review mt-3 p-3 border rounded bg-light">
-                            <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
-
                             <p><strong>Rating:</strong>
                                 <?php
                                 $rating = (int)$review['rating'];
@@ -130,6 +166,7 @@
                                 }
                                 ?>
                             </p>
+                            <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
                             <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
                             <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
                         </div>
@@ -137,6 +174,7 @@
                 <?php else: ?>
                     <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
                 <?php endif; ?>
+
             </div>
         </div>
     </div>
@@ -148,11 +186,31 @@
         document.getElementById("main-image").src = src;
     }
 </script>
+
+<script>
+    // JavaScript to handle star rating selection
+    function setRating(rating) {
+        // Set the hidden input value to the selected rating
+        document.getElementById("rating").value = rating;
+
+        // Update star appearance based on selected rating
+        for (let i = 1; i <= 5; i++) {
+            const star = document.getElementById("star-" + i);
+            if (i <= rating) {
+                star.classList.add("selected");
+            } else {
+                star.classList.remove("selected");
+            }
+        }
+    }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <?php require 'views/partials/footer.php'; ?>
 
 <style>
+
     /* Star Rating Styles */
     .star-rating {
         display: flex;
