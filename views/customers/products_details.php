@@ -19,7 +19,7 @@
                     <form action="/customer/profile/add" method="post" class="wishlist-button">
                         <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
                         <button type="submit" class="btn action-button">
-                            <i class="fa-solid fa-heart"></i>
+                            <i class="fa-solid fa-heart" style="font-size: 30px"> </i>
                         </button>
                     </form>
                 </div>
@@ -53,13 +53,17 @@
                     }
                     ?>
                 </div>
-
                 <div class="d-flex align-items-center mb-5 mt-5">
                     <?php if ($product['stock_quantity'] > 0): ?>
-                        <form action="/customer/cart" method="post" class="button-form me-3">
+                        <form action="/customer/cart" method="post" class="button-form me-3 d-flex align-items-center gap-2">
                             <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
-                            <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock_quantity']; ?>" class="quantity-input form-control me-2" required>
-                            <button type="submit" class="btn btn-primary action-button">
+
+                            <!-- Quantity Input Field -->
+                            <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock_quantity']; ?>"
+                                   class="quantity-input form-control mb-2" style="height: 50px; max-width: 100px; text-align: center;" required>
+
+                            <!-- Add to Cart Button -->
+                            <button type="submit" class="btn btn-primary action-button" style="height: 50px; width: 60px;">
                                 <i class="fa-solid fa-cart-plus"></i>
                             </button>
                         </form>
@@ -67,6 +71,7 @@
                         <button class="btn btn-secondary me-3" disabled>Out of Stock</button>
                     <?php endif; ?>
                 </div>
+
             </div>
         </div>
 
