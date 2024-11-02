@@ -32,7 +32,7 @@
             <input type="hidden" name="form_type" value="signin">
             <input type="email" id="loginEmail" name="email" placeholder="Email"/>
             <input type="password" id="loginPassword" name="password" placeholder="Password"/>
-            <a href="#">Forgot your password?</a>
+            <a href="/customers/rest_password">Forgot your password?</a>
             <button type="submit">Sign In</button>
         </form>
     </div>

@@ -59,10 +59,10 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <?php if (isset($_SESSION['user'])): ?>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" style="margin-right: -2px;">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>" alt="User Image"
-                                 style="width: 50px; height: 50px; border-radius: 50%; margin-top: -10px;">
+                                 style="width: 40px; height: 40px; border-radius: 50%; margin-top: -5px;">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li></li>
