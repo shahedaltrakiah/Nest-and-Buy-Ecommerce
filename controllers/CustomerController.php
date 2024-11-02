@@ -162,6 +162,7 @@ class CustomerController extends Controller
 
         $errorMessage = null;
 
+        // Handle review submission
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user) {
                 $reviewData = [
@@ -183,7 +184,24 @@ class CustomerController extends Controller
             }
         }
 
-        // Pass the error message to the view if it exists
+        // Get filter and sort criteria from URL parameters
+        $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
+        $sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
+
+        // Filter reviews based on selected criteria
+        if ($filter === 'my' && $user) {
+            // Filter out only the user's reviews
+            $reviews = array_filter($reviews, function ($review) use ($user) {
+                return $review['customer_id'] === $user['id']; // Assuming review has customer_id field
+            });
+        }
+
+        // Sort reviews by rating
+        usort($reviews, function ($a, $b) use ($sortOrder) {
+            return $sortOrder === 'ASC' ? $a['rating'] <=> $b['rating'] : $b['rating'] <=> $a['rating'];
+        });
+
+        // Pass the error message and updated reviews to the view
         $this->view('customers/products_details', [
             'product' => $product,
             'reviews' => $reviews,
@@ -191,7 +209,6 @@ class CustomerController extends Controller
             'errorMessage' => $errorMessage
         ]);
     }
-
 
     // Cart page
     public function cart()
