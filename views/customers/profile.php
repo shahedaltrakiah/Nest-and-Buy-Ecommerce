@@ -242,7 +242,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                cancelButtonColor: '#3B5D50',
                 confirmButtonText: 'Yes, save changes!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -253,7 +253,6 @@
             return false; // Prevent default form submission until confirmation
         }
 
-
         function removeItem(itemName, form) {
             Swal.fire({
                 title: 'Are you sure?',
@@ -261,7 +260,7 @@
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
+                cancelButtonColor: '#3B5D50',
                 confirmButtonText: 'Yes, remove it!'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -284,31 +283,7 @@
             const itemName = form.find('input[name="product_name"]').val(); // You may want to adjust this to get the actual product name instead
             removeItem(itemName, form); // Call the removeItem function
         });
-        $(document).ready(function () {
-            if ($('.wishlist-slider .wishlist-item').length >= 4) {
-                $('.wishlist-slider').slick({
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                    infinite: false,
-                    dots: true,
-                    responsive: [
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                slidesToShow: 2
-                            }
-                        },
-                        {
-                            breakpoint: 576,
-                            settings: {
-                                slidesToShow: 1
-                            }
-                        }
-                    ]
-                });
-            }
-        });
-
+        
         // Select the Show More button
         const showMoreBtn = document.getElementById('showMoreBtn');
 
