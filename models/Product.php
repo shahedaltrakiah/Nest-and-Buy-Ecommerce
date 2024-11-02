@@ -206,5 +206,24 @@ class Product extends Model
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function getProductWithImage($id)
+    {
+        $statement = $this->pdo->prepare("
+            SELECT p.*, pi.image_url 
+            FROM $this->table p 
+            LEFT JOIN productimages pi ON p.id = pi.product_id 
+            WHERE p.id = :id
+        ");
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllProducts()
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM $this->table");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
