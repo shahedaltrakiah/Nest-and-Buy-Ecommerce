@@ -66,6 +66,7 @@ public function login()
         $categories = $this->model('Category')->all();
         $products = $this->model('Product')->getProducts();
         $this->view('admin/manage_products', ['products' => $products, 'categories' => $categories]);
+
     }
 
     // Manage orders
@@ -75,54 +76,21 @@ public function login()
         $this->view('admin/manage_orders', ['orders' => $orders]);
     }
 
-
-
     //view Item
     public function viewProduct($id)
     {
         $product = $this->model('Product')->find($id);
-        // var_dump($product);
-        $this->view('admin/product_view', ['product' => $product]);
-
+        $this->view('admin/product_view', ['products' => $product]);
     }
+
     //view Item
     public function viewCustomer($id)
     {
         $customer = $this->model('Customer')->find($id);
-        // var_dump($product);
         $this->view('admin/customer_view', ['customer' => $customer]);
 
     }
 
-    // public function updateProduct($id,$data) {
-
-    //     $product = $this->model('Product')->update($id);
-    //    // var_dump($product);
-    //     $this->view('admin/product_update',['product'=>$product]);
-
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // public function editProduct($id)
-    // {
-    //     $product = $this->model('Product')->find($id);
-    //     $this->view('admin/product_edit', ['product' => $product]);
-    // }
     //edit Customer
     public function editCustomer($id)
     {
@@ -185,34 +153,6 @@ public function login()
     }
 
 
-
-    // public function gitCategory()
-    // {
-    //     $categories = $this->model('Product')->getProducts();
-    //     $this->view('admin/product_edit', ['Product' => $categories]);
-
-    // }
-
-    // public function updateProduct($id)
-    // {
-    //     //dd($id);
-    //     $data = [
-    //         'price' => $_POST['price'],
-    //         'description' => $_POST['description'],
-    //         'category_id' => $_POST['category_id'],
-    //         'average_rating' => $_POST['average_rating'],
-    //         'stock_quantity' => $_POST['stock_quantity'],
-    //     ];
-    //     $product = $this->model('Product')->find($id);
-    //     //dd($product);
-    //     $this->model('Product')->update($id, $data);
-    //     $_SESSION['message'] = "Product updated successfully!";
-    //     ;
-    //     $this->view('admin/product_edit', ['product' => $product]);
-
-    //     var_dump($_POST);
-    //     exit;
-    // }
     //create Product
     public function createProduct()
     {
@@ -234,7 +174,6 @@ public function login()
                 mkdir($uploadDir, 0777, true);
             }
 
-
             if ($productId && isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
                 $imageName = basename($_FILES['image_url']['name']);
                 $imagePath = $uploadDir . $imageName;
@@ -245,7 +184,6 @@ public function login()
                         'product_id' => $productId,
                         'image_url' => $imagePath,
                     ];
-
 
                     $this->model('ProductImage')->create($imageData);
                     $_SESSION['message'] = "Product created successfully!";
@@ -259,7 +197,6 @@ public function login()
             $_SESSION['message'] = "Please fill in all required fields.";
         }
 
-
         $products = $this->model('Product')->all();
         $this->view('admin/manage_products', ['products' => $products, 'categories' => $categories]);
     }
@@ -268,9 +205,6 @@ public function login()
     public function createCustomer()
     {
         if (isset( $_POST['first_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['phone_number'])) {
-
-            // Check if the email is already in use
-            
 
             $customerData = [
                 
@@ -323,8 +257,6 @@ public function login()
     }
 
 
-
-
     // Manage customers
     public function manageCustomers()
     {
@@ -333,39 +265,13 @@ public function login()
         $this->view('admin/manage_customers', ['customers' => $customers]);
     }
 
-    // Manage coupons
-    // public function manageCoupon()
-    // {
-    //     $coupons = $this->model('Coupon')->getAllCoupons();
-    //     $this->view('admin/manage_coupon', ['coupons' => $coupons]);
-    // }
-
-    // Handle messages
-    // public function messages()
-    // {
-    //     $messages = $this->model('Message')->getAllMessages();
-    //     $this->view('admin/messages', ['messages' => $messages]);
-    // }
-
-    // Account settings page
-    // public function accountSettings()
-    // {
-    //     $admin = $this->model('Admin')->getAdminById($_SESSION['admin_id']);
-    //     $this->view('admin/account_settings', ['admins' => $admin]);
-    // }
-    // =============================================
     public function editProduct($id)
     {
         $categories = $this->model('Category')->all();
         $product = $this->model('Product')->find($id);
         $this->view('admin/product_edit', ['product' => $product, 'categories' => $categories]);
     }
-    // public function gitCategory()
-    // {
-    //     $categories = $this->model('Product')->getProducts();
-    //     $this->view('admin/product_edit', ['Product' => $categories]);
 
-    // }
     public function updateProduct($id)
     {
         // Fetch all categories to display when updating the product
@@ -420,56 +326,6 @@ public function login()
         ]);
         exit;
     }
-    
-    
-    // public function updateProduct($id)
-    // {
-    //     $categories = $this->model('Category')->all();
-        
-    //     if (isset($_POST['product_name'], $_POST['price'], $_POST['description'], $_POST['category_id'], $_POST['stock_quantity'])) {
-    //         $productData = [
-    //             'product_name' => $_POST['product_name'],
-    //             'price' => $_POST['price'],
-    //             'description' => $_POST['description'],
-    //             'category_id' => $_POST['category_id'],
-               
-    //             'stock_quantity' => $_POST['stock_quantity'],
-    //         ];
-            
-    //         $this->model('Product')->update($id, $productData);
-            
-    //         $uploadDir = 'uploads/';
-    //         if (!is_dir($uploadDir)) {
-    //             mkdir($uploadDir, 0777, true);
-    //         }
-            
-    //         if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
-    //             $imageName = basename($_FILES['image_url']['name']);
-    //             $imagePath = $uploadDir . $imageName;
-                
-    //             if (move_uploaded_file($_FILES['image_url']['tmp_name'], $imagePath)) {
-    //                 $imageData = [
-    //                     'product_id' => $id,
-    //                     'image_url' => $imagePath,
-    //                 ];
-                    
-                   
-    //                 $this->model('ProductImage')->update($id, $imageData);
-    //                 $_SESSION['message'] = "Product updated successfully with image!";
-    //             } else {
-    //                 $_SESSION['message'] = "Failed to upload image.";
-    //             }
-    //         } else {
-    //             $_SESSION['message'] = "Product updated successfully!";
-    //         }
-    //     } else {
-    //         $_SESSION['message'] = "Please fill in all required fields.";
-    //     }
-        
-    //     $product = $this->model('Product')->getProductWithImage($id);
-    //     $this->view('admin/product_edit', ['product' => $product, 'categories' => $categories]);
-    // }
-    
 
     public function deleteProduct()
     {
@@ -487,52 +343,7 @@ public function login()
         header("Location: /admin/manage_products");
         exit;
     }
-    // public function viewCategory($id)
-    // {
-    //     $category = $this->model('Category')->find($id);
-    //     $this->view('admin/category_view', ['category' => $category]);
-    // }
-    // public function editCategory($id)
-    // {
-    //     $category = $this->model('Category')->find($id);
-    //     $this->view('admin/category_edit', ['category' => $category]);
-    // }
 
-    // public function updateCategory($id)
-    // {
-    //     $data = [
-    //         'category_name' => $_POST['category_name'],
-    //         'image_url' => $_POST['image_url'],
-    //     ];
-
-    //     $category = $this->model('Category')->find($id);
-
-    //     $this->model('Category')->update($id, $data);
-
-    //     $_SESSION['message'] = "Category updated successfully!";
-
-    //     $this->view('admin/category_edit', ['category' => $category]);
-
-   
-    //     exit;
-    // }
-
-    // public function deleteCategory()
-    // {
-    //     $id = $_POST['categoryId'] ?? null;
-
-    //     if (!$id || !$this->model('Category')->find($id)) {
-    //         $_SESSION['error'] = "Category not found!";
-    //         header("Location: /admin/manage_category");
-    //         exit;
-    //     }
-
-    //     $this->model('Category')->delete($id);
-
-    //     $_SESSION['message'] = "Category deleted successfully!";
-    //     header("Location: /admin/manage_category");
-    //     exit;
-    // }
     public function accountSettings()
     {
         // $admin = $this->model('Admin')->All($_SESSION['admin_id']);
@@ -580,7 +391,6 @@ public function login()
         }
     }
     
-
 
     public function viewCategory($id)
     {
@@ -739,16 +549,6 @@ public function login()
         exit;
     }
 
-
-
-
-
-
-
-
-
-
-
     public function manageReviews()
     {
         // Fetch all reviews from the Review model
@@ -863,63 +663,6 @@ public function addCoupon()
         $admins = $this->model('Admin')->all();
         $this->view('admin/super_manage_admin', ['admins' => $admins]);
     }
-    // public function deleteAdmin()
-    // {
-    //     $id = $_POST['adminId'] ?? null;
-
-    //     if (!$id || !$this->model('Admin')->find($id)) {
-    //         $_SESSION['error'] = "Admin not found!";
-    //         $admins = $this->model('Admin')->all();
-    //         $this->view('admin/super_manage_admin', ['admins' => $admins]);
-    //         return;
-    //     }
-        
-    //     $this->model('Admin')->delete($id);
-    //     $_SESSION['message'] = "Admin deleted successfully!";
-    //     $admins = $this->model('Admin')->all();
-    //     $this->view('admin/super_manage_admin', ['admins' => $admins]);
-    // }
-
-    
-//     public function manageAdmin()
-//     {
-//         header('Location: /admin/dashboard');
-//         if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'super admin') {
-
-//             exit();
-//         }
-
-//         $admins = $this->model('Admin')->getAllAdmins();
-//         $this->view('admin/super_manage_admin', ['admins' => $admins]);
-//     }
-//     public function addAdmin() {
-//         if (isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['role'])) {
-//             $existingAdmin = $this->model('Admin')->findByEmail($_POST['email']);
-
-//             if ($existingAdmin) {
-//                 echo "Error: Email already exists.";
-//                 return; 
-//             }
-
-//             $data = [
-//                 "username" => $_POST['username'],
-//                 "email" => $_POST['email'],
-//                 "password" => password_hash($_POST['password'], PASSWORD_DEFAULT),
-//                 "role" => $_POST['role'],
-//             ];
-
-
-//             $this->model('Admin')->create($data);
-
-
-//             $admins = $this->model('Admin')->all();
-//             $this->view('super_manage_admin', ['admins' => $admins]);
-//         } else {
-//             echo "Error: Required data not found.";
-//         }
-//     }
-
-// }
 }
 
 
