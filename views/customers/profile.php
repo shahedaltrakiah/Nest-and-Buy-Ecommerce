@@ -2,6 +2,7 @@
 
 <link href="/public/css/user_profile_style.css" rel="stylesheet">
 
+
 <div class="main-container">
     <!-- Profile Section -->
     <div class="profile-card">
@@ -232,6 +233,21 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Check if there are profile errors in the session
+        <?php if (isset($_SESSION['profile_errors'])): ?>
+            const errors = <?php echo $_SESSION['profile_errors']; ?>;
+            errors.forEach(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: error,
+                    confirmButtonText: 'OK'
+                });
+            });
+            <?php unset($_SESSION['profile_errors']); // Clear the session variable ?>
+        <?php endif; ?>
+    });
         function validateForm() {
             const form = document.getElementById('editProfileForm');
 

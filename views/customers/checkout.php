@@ -59,15 +59,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-4">
-                            <div class="form-group">
-                                <label for="c_order_notes" class="text-black">Order Notes</label>
-                                <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5"
-                                          class="form-control"
-                                          placeholder="Write your notes here..."></textarea>
-                            </div>
-                        </div>
-
                         <button type="submit" class="btn btn-primary m-auto d-flex p-3">Proceed to Payment</button>
                     </form>
                 </div>

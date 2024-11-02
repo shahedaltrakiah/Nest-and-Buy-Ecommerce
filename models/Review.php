@@ -22,9 +22,17 @@ class Review extends Model {
     // Method to get reviews for a specific product
     public function getReviewsByProductId($productId) {
         $statement = $this->pdo->prepare(
-            "SELECT * FROM reviews WHERE product_id = :product_id ORDER BY created_at DESC"
+            "SELECT reviews.*, customers.first_name, customers.last_name
+         FROM reviews
+         JOIN customers ON reviews.customer_id = customers.id
+         WHERE reviews.product_id = :product_id
+         ORDER BY reviews.created_at DESC"
         );
         $statement->execute([':product_id' => $productId]);
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+
+
 }
