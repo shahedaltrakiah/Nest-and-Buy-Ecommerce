@@ -157,7 +157,7 @@ require "views/partials/admin_header.php";
                         </div>
                     </div>
                     <div class="app-card-footer p-4 mt-auto">
-                        <button class="btn btn-sm app-btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfileModal-<?= $admin['id']; ?>">Edit</button>
+                    
                     </div>
                 </div>
             </div>
