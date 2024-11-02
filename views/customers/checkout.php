@@ -59,14 +59,6 @@
                             </div>
                         </div>
 
-                        <div  class="form-group row mb-4">
-                            <div class="form-group">
-                                <label for="c_order_notes" class="text-black">Order Notes</label>
-                                <textarea name="c_order_notes" id="c_order_notes" cols="30" rows="5" class="form-control"
-                                          placeholder="Write your notes here..."></textarea>
-                            </div>
-                        </div>
-
                         <button type="submit" class="btn btn-primary m-auto d-flex p-3">Proceed to Payment</button>
                     </form>
                 </div>
@@ -140,41 +132,41 @@
 </div>
 
 
-            <?php require "views/partials/footer.php"; ?>
-            <script>
-                function validateForm() {
-                    const firstName = document.getElementById('c_fname').value;
-                    const lastName = document.getElementById('c_lname').value;
-                    const postalCode = document.getElementById('c_postal_zip').value;
-                    const email = document.getElementById('c_email_address').value;
-                    const phoneInput = document.getElementById('c_phone').value;
+<?php require "views/partials/footer.php"; ?>
+<script>
+    function validateForm() {
+        const firstName = document.getElementById('c_fname').value;
+        const lastName = document.getElementById('c_lname').value;
+        const postalCode = document.getElementById('c_postal_zip').value;
+        const email = document.getElementById('c_email_address').value;
+        const phoneInput = document.getElementById('c_phone').value;
 
-                    const namePattern = /^[A-Za-z\s]+$/;
-                    const phonePattern = /^(\+9627|07)\d{8}$/;
-                    const postalPattern = /^\d+$/;
-                    const emailPattern = /^[a-zA-Z][\w.-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const namePattern = /^[A-Za-z\s]+$/;
+        const phonePattern = /^(\+9627|07)\d{8}$/;
+        const postalPattern = /^\d+$/;
+        const emailPattern = /^[a-zA-Z][\w.-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-                    if (!namePattern.test(firstName)) {
-                        swal("Error", "First Name should only contain letters.", "error");
-                        return false;
-                    }
-                    if (!namePattern.test(lastName)) {
-                        swal("Error", "Last Name should only contain letters.", "error",);
-                        return false;
-                    }
-                    if (!postalPattern.test(postalCode)) {
-                        swal("Error", "Postal/Zip Code should only contain numbers.", "error");
-                        return false;
-                    }
-                    if (!emailPattern.test(email)) {
-                        swal("Error", "Email should not start with a number and should be valid.", "error");
-                        return false;
-                    }
-                    if (!phonePattern.test(phoneInput)) {
-                        swal("Error", "Please enter a valid Jordanian phone number.", "error");
-                        return false;
-                    }
+        if (!namePattern.test(firstName)) {
+            swal("Error", "First Name should only contain letters.", "error");
+            return false;
+        }
+        if (!namePattern.test(lastName)) {
+            swal("Error", "Last Name should only contain letters.", "error",);
+            return false;
+        }
+        if (!postalPattern.test(postalCode)) {
+            swal("Error", "Postal/Zip Code should only contain numbers.", "error");
+            return false;
+        }
+        if (!emailPattern.test(email)) {
+            swal("Error", "Email should not start with a number and should be valid.", "error");
+            return false;
+        }
+        if (!phonePattern.test(phoneInput)) {
+            swal("Error", "Please enter a valid Jordanian phone number.", "error");
+            return false;
+        }
 
-                    return true;
-                }
-            </script>
+        return true;
+    }
+</script>

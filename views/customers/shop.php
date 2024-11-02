@@ -87,58 +87,80 @@
 
     </script>
 
-
     <!-- Display Filtered Products -->
     <div class="untree_co-section product-section before-footer-section">
         <div class="container">
-
-            <div class="row">
-                <?php if (!empty($products)): ?>
-                    <?php foreach ($products as $product): ?>
-                        <div class="col-12 col-md-4 col-lg-3 mb-5">
-                            <a class="product-item" href="/customers/product_details/<?php echo $product['id']; ?>">
-                                <img src="/public/<?php echo $product['image_url']; ?>"
-                                     class="img-fluid product-thumbnail" width="261" height="261"
-                                     alt="<?php echo htmlspecialchars($product['product_name']); ?>">
-                                <h3 class="product-title">
-                                    <b><?php echo ucwords(str_replace(['-', '_'], ' ', $product['product_name'])); ?></b>
-                                </h3>
-                                <strong class="product-price"><sup>
-                                        JD </sup><?php echo htmlspecialchars($product['price']); ?></strong>
-                                <span class="icon-cross">
+            <div id="productResults">
+                <div class="row">
+                    <?php if (!empty($products)): ?>
+                        <?php foreach ($products as $product): ?>
+                            <div class="col-12 col-md-4 col-lg-3 mb-5">
+                                <a class="product-item" href="/customers/product_details/<?php echo $product['id']; ?>">
+                                    <img src="/public/<?php echo $product['image_url']; ?>"
+                                         class="img-fluid product-thumbnail" width="261" height="261"
+                                         alt="<?php echo htmlspecialchars($product['product_name']); ?>">
+                                    <h3 class="product-title">
+                                        <b><?php echo ucwords(str_replace(['-', '_'], ' ', $product['product_name'])); ?></b>
+                                    </h3>
+                                    <strong class="product-price"><sup>
+                                            JD </sup><?php echo htmlspecialchars($product['price']); ?></strong>
+                                    <span class="icon-cross">
                                     <img src="../public/images/cross.svg" class="img-fluid">
                                 </span>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class="text-center">No products found matching your criteria.</p>
-                <?php endif; ?>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p class="text-center">No products found matching your criteria.</p>
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
+
         <div class="row" style="margin-bottom: -140px;">
             <div class="col-12 text-center">
                 <div class="text-center mt-4">
                     <?php if (isset($totalPages) && $totalPages > 0): ?>
+                        <!-- Previous Button -->
                         <?php if ($currentPage > 1): ?>
-                            <a class="btn btn-secondary mx-1"
-                               href="?page=<?php echo $currentPage - 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">&laquo;
-                                Previous</a>
+                            <a class="btn btn-secondary btn-sm mx-1"
+                               href="?page=<?php echo $currentPage - 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">&laquo; Previous</a>
                         <?php endif; ?>
-                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                            <a href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>&max_price=<?= $max_price; ?>&category_id=<?= $category_id; ?>"
-                               class="btn <?= $i == $currentPage ? 'btn-secondary' : 'btn-primary'; ?> mx-1"><?= $i; ?></a>
+
+                        <!-- Pagination Links -->
+                        <?php
+                        // Display page numbers
+                        for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <?php if ($i <= 2 || $i >= $totalPages - 1 || ($i >= $currentPage - 1 && $i <= $currentPage + 1)): ?>
+                                <a href="?page=<?= $i; ?>&search=<?= urlencode($search); ?>&max_price=<?= $max_price; ?>&category_id=<?= $category_id; ?>"
+                                   class="btn <?= $i == $currentPage ? 'btn-secondary' : 'btn-primary'; ?> btn-sm mx-1"><?= $i; ?></a>
+                            <?php elseif ($i == 3 && $currentPage > 4): ?>
+                                <span class="btn btn-light mx-1">...</span>
+                            <?php elseif ($i == $totalPages - 2 && $currentPage < $totalPages - 3): ?>
+                                <span class="btn btn-light mx-1">...</span>
+                            <?php endif; ?>
                         <?php endfor; ?>
+
+                        <!-- Next Button -->
                         <?php if ($currentPage < $totalPages): ?>
-                            <a class="btn btn-secondary mx-1"
-                               href="?page=<?php echo $currentPage + 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">Next
-                                &raquo;</a>
+                            <a class="btn btn-secondary btn-sm mx-1"
+                               href="?page=<?php echo $currentPage + 1; ?>&search=<?php echo urlencode($search); ?>&category_id=<?php echo $category_id; ?>&max_price=<?php echo $max_price; ?>">Next &raquo;</a>
                         <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <!-- Include footer here -->
 <?php require "views/partials/footer.php"; ?>
+
+<style>
+    .pagination-btn {
+        padding: 5px 10px; /* Adjust padding */
+        font-size: 0.85rem; /* Adjust font size */
+    }
+</style>
+

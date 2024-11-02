@@ -1,24 +1,37 @@
 <?php
-class AdminController extends Controller {
 
+class AdminController extends Controller
+{
     // Admin login
     public function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['email'];
-            $password = $_POST['password'];
+            $formType = $_POST['form_type'];
 
-            $admin = $this->model('Admin')->login($username, $password);
+            if ($formType === 'signin') {
+                // Handle Sign In
+                $email = $_POST['email'];
+                $password = $_POST['password'];
 
-            if ($admin) {
-                $_SESSION['admin_id'] = $admin->id;
-                header('Location: /admin/dashboard');
-            } else {
-                $this->view('admin/login', ['error' => 'Invalid login']);
+                $user = $this->model('Admin')->login($email);
+                if ($user && password_verify($password, $user['password'])) {
+
+                    // Store user information in the session
+                    $_SESSION['user'] = [
+                        'id' => $user['id'],
+                        'role' => $user['role'],
+                        'image_url' => 'images/user-profile.png',
+                    ];
+                    echo json_encode(['loginSuccess' => true]);
+                    exit();
+                } else {
+                    echo json_encode(['loginSuccess' => false]);
+                    exit();
+                }
+
             }
-        } else {
-            $this->view('admin/login');
         }
+        $this->view('admin/login');
     }
 
     // Admin dashboard
@@ -62,6 +75,19 @@ class AdminController extends Controller {
         $this->view('admin/manage_coupon', ['coupons' => $coupons]);
     }
 
+    // Manage Admins (Only accessible to Super Admin)
+    public function manageAdmin()
+    {
+        if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'super admin') {
+            header('Location: /admin/dashboard');
+            exit();
+        }
+
+        $admins = $this->model('Admin')->getAllAdmins();
+        $this->view('admin/superAdmin_manage_admin', ['admins' => $admins]);
+    }
+
+
     // Handle messages
     public function messages()
     {
@@ -74,6 +100,12 @@ class AdminController extends Controller {
     {
         $admin = $this->model('Admin')->getAdminById($_SESSION['admin_id']);
         $this->view('admin/account_settings', ['admins' => $admin]);
+    }
+
+    // Rest Password page
+    public function restPassword()
+    {
+        $this->view('admin/rest_password');
     }
 
     // Admin logout

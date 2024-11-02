@@ -10,4 +10,10 @@ class Admin extends Model
 
     }
 
+    public function login($email) {
+        $statement = $this->pdo->prepare("SELECT * FROM $this->table WHERE email = ?");
+        $statement->execute([$email]);
+        return $statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
 }

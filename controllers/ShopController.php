@@ -37,6 +37,9 @@ class ShopController extends Controller
                             <img src='{$imageUrl}' class='img-fluid product-thumbnail' alt='" . htmlspecialchars($product['product_name']) . "'>
                             <h3 class='product-title mt-2'><b>" . ucwords(str_replace(['-', '_'], ' ', $product['product_name'])) . "</b></h3>
                             <strong class='product-price'><sup>JD</sup> {$product['price']}</strong>
+                            <span class='icon-cross'>
+                                    <img src='../public/images/cross.svg' class='img-fluid'>
+                            </span>
                         </a>
                     </div>";
 
