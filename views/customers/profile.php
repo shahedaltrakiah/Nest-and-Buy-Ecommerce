@@ -118,17 +118,19 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($orderitems as $order): ?>
+            <?php foreach ($orders as $order): ?>
                 <tr>
-                    <td>#<?= htmlspecialchars($order->order_id) ?></td>
-                    <td><?= htmlspecialchars(date('M d, Y', strtotime($order->order_date))) ?></td>
+                    <td>#<?= htmlspecialchars($order['order_id']) ?></td>
+                    <td><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></td>
                     <td>
-                        <span class="badge bg-<?= $order->status == 'completed' ? 'success' : 'warning' ?>"><?= htmlspecialchars(ucfirst($order->status)) ?></span>
+                    <span class="badge bg-<?= $order['status'] == 'completed' ? 'success' : 'warning' ?>">
+                        <?= htmlspecialchars(ucfirst($order['status'])) ?>
+                    </span>
                     </td>
-                    <td><sup> JD </sup><?= number_format($order->total_amount, 2) ?></td>
+                    <td><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></td>
                     <td>
                         <button class="view-details-btn" data-bs-toggle="modal"
-                                data-bs-target="#orderDetailsModal" data-order-id="<?= $order->order_id ?>">View Details
+                                data-bs-target="#orderDetailsModal<?= $order['order_id'] ?>">View Details
                         </button>
                     </td>
                 </tr>
@@ -137,48 +139,44 @@
         </table>
     </div>
 
-    <!-- Modal for Viewing Order Details -->
-    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="order-details">
-                        <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order->order_id) ?></span></h5>
-                        <p><strong>Date:</strong> <span
-                                    class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order->order_date))) ?></span>
-                        </p>
-                        <p><strong>Status:</strong> <span
-                                    class="badge bg-<?= $order->status == 'completed' ? 'success' : 'warning' ?>"><?= htmlspecialchars(ucfirst($order->status)) ?></span>
-                        </p>
-                        <p><strong>Total:</strong> <span
-                                    class="text-danger"><sup> JD </sup><?= number_format($order->total_amount, 2) ?></span>
-                        </p>
-                        <p><strong>Shipping Address:</strong> <span class="text-muted">Amman,Jordan</span>
-                        </p>
-                        <p><strong>Items Ordered:</strong></p>
-                        <div class="order-items">
-                            <?php foreach ($orderitems as $order): ?>
+    <!-- Modals for Viewing Order Details -->
+    <?php foreach ($orders as $order): ?>
+        <div class="modal fade" id="orderDetailsModal<?= $order['order_id'] ?>" tabindex="-1"
+             aria-labelledby="orderDetailsModalLabel<?= $order['order_id'] ?>" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="orderDetailsModalLabel<?= $order['order_id'] ?>">Order Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="order-details">
+                            <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order['order_id']) ?></span></h5>
+                            <p><strong>Date:</strong> <span class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></span></p>
+                            <p><strong>Status:</strong> <span class="badge bg-<?= $order['status'] == 'completed' ? 'success' : 'warning' ?>"><?= htmlspecialchars(ucfirst($order['status'])) ?></span></p>
+                            <p><strong>Total:</strong> <span class="text-danger"><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></span></p>
+                            <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
+                            <p><strong>Items Ordered:</strong></p>
+                            <div class="order-items">
                                 <ul class="list-group">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <?= htmlspecialchars($order->product_name) ?>
-                                        <span class="badge bg-secondary"><sup> JD </sup><?= number_format($order->product_price, 2) ?></span>
-                                    </li>
+                                    <?php foreach ($order['items'] as $item): ?>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <?=  ucwords(str_replace(['-', '_'], ' ',  htmlspecialchars($item->product_name)));?>
+                                            <span class="badge bg-secondary"><sup> JD </sup><?= number_format($item->product_price, 2) ?></span>
+                                        </li>
+                                    <?php endforeach; ?>
                                 </ul>
-                            <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    <?php endforeach; ?>
+
 
     <!-- Wishlist Section -->
     <div class="order-card">

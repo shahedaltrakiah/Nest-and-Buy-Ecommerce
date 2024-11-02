@@ -1174,11 +1174,11 @@ a {
 }
 
 .our_offer h2 {
-  font-size: 50px;
+  font-size: 40px;
   line-height: 70px;
   color: #3b5d50;
   font-weight: bold;
-  text-align: center; /* Center the heading */
+
 }
 
 @media (max-width: 991px) {
@@ -1186,7 +1186,6 @@ a {
     font-size: 30px;
     line-height: 35px;
     margin-top: 20px; /* Reduced margin on top */
-    text-align: center; /* Center the heading */
   }
 }
 
@@ -1251,7 +1250,6 @@ a {
 }
 
 .our_offer .input-group {
-  justify-content: center; /* Center the button on smaller screens */
   margin-top: 10px; /* Space above the button */
 }
 

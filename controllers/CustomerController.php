@@ -66,8 +66,6 @@ class CustomerController extends Controller
         $this->view('customers/login_and_register');
     }
 
-
-
     // Home page for customers
     public function index()
     {
@@ -234,15 +232,36 @@ class CustomerController extends Controller
     public function profile()
     {
         $customer = $this->model('Customer')->getCustomerById();
-
-        $orderitems = $this->model('OrderItem')->getOrderDetails();
         $customerId = $_SESSION['user']['id'];
+
+        $orderItemsData = $this->model('OrderItem')->getOrderDetails();
+
+        // Group order items by order_id
+        $orders = [];
+        foreach ($orderItemsData as $item) {
+            $orderId = $item->order_id;
+            if (!isset($orders[$orderId])) {
+                $orders[$orderId] = [
+                    'order_id' => $item->order_id,
+                    'order_date' => $item->order_date,
+                    'status' => $item->status,
+                    'total_amount' => $item->total_amount,
+                    'items' => []
+                ];
+            }
+            $orders[$orderId]['items'][] = $item;
+        }
 
         $wishlistItems = $this->model('Wishlist')->getWishlistItems($customerId);
 
-        $this->view('customers/profile', ['customers' => $customer, 'orderitems' => $orderitems,'wishlistItems' => $wishlistItems]);
-
+        $this->view('customers/profile', [
+            'customers' => $customer,
+            'orders' => $orders,
+            'wishlistItems' => $wishlistItems
+        ]);
     }
+
+
     public function updateProfile()
     {
         $id = $_POST['id'];

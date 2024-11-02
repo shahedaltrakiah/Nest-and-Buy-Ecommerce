@@ -177,7 +177,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="offer_text ">
-                        <h2>Weekly Sale on <b style="color: black;"> 60% </b> Off All Products</h2>
+                        <h2>Get <b style="color: black;">60% OFF</b> with <b style="color: black;">FURNI10</b> or <b style="color: black;">FREESHIP</b> — grab it before it's gone! 😱</h2>
                         <div class="date_countdown">
                             <div id="timer">
                                 <div class="label">Days</div>
