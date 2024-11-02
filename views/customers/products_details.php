@@ -1,6 +1,6 @@
 <?php require 'views/partials/header.php'; ?>
 
-<div class="container mt-5">
+<div class="container mt-5" >
     <div class="row justify-content-center mb-5 s_product_inner">
 
         <!-- Main Product Image and Thumbnails Section -->
@@ -103,7 +103,7 @@
                     }
                     ?>
                 </div>
-                <div class="d-flex align-items-center mb-5 mt-3 ">
+                <div class="d-flex align-items-center mb-3 mt-3 ">
                     <?php if ($product['stock_quantity'] > 0): ?>
                         <form action="/customer/cart" method="post" class="button-form me-3 d-flex align-items-center gap-2">
                             <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
@@ -223,7 +223,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
@@ -255,7 +254,6 @@
 <?php require 'views/partials/footer.php'; ?>
 
 <style>
-
 
     /* Star Rating Styles */
     .star-rating {
