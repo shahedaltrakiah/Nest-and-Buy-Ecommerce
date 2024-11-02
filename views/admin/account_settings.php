@@ -137,18 +137,12 @@ require "views/partials/admin_header.php";
                         </div>
                     </div>
                     <div class="app-card-body px-4 w-100">
-                        <div class="item border-bottom py-2">
-                            <div class="item-label"><strong>Username:</strong></div>
-                            <div class="item-data"><?= htmlspecialchars($admin['username']); ?></div>
-                        </div>
+                   
                         <div class="item border-bottom py-2">
                             <div class="item-label"><strong>Email:</strong></div>
                             <div class="item-data"><?= htmlspecialchars($admin['email']); ?></div>
                         </div>
-                        <div class="item border-bottom py-2">
-                            <div class="item-label"><strong>Password:</strong></div>
-                            <div class="item-data"><?= htmlspecialchars($admin['password']); ?></div>
-                        </div>
+                      
                         <div class="item border-bottom py-2">
                             <div class="item-label"><strong>Role:</strong></div>
                             <div class="item-data"><?= htmlspecialchars($admin['role']); ?></div>
@@ -163,7 +157,7 @@ require "views/partials/admin_header.php";
                         </div>
                     </div>
                     <div class="app-card-footer p-4 mt-auto">
-                        <button class="btn btn-sm app-btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfileModal-<?= $admin['id']; ?>">Edit</button>
+                    
                     </div>
                 </div>
             </div>
