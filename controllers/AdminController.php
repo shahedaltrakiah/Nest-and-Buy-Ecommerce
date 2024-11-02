@@ -783,7 +783,75 @@ public function login()
             exit();
         }
     }
-    
+    public function manageCoupons()
+{
+    // Fetch all coupons from the Coupon model
+    $coupons = $this->model('CouponModel')->all();
+
+    // Pass the coupons data to the view
+    $this->view('admin/Coupon', ['coupons' => $coupons]);
+}
+
+public function CouponDelete()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Validate that the coupon ID is provided
+        $couponId = isset($_POST['couponId']) ? intval($_POST['couponId']) : 0;
+
+        if ($couponId > 0) {
+            // Call the model to delete the coupon
+            $result = $this->model('CouponModel')->CouponDelete($couponId);
+
+            if ($result) {
+                // Set a success message
+                $_SESSION['message'] = "Coupon deleted successfully!";
+            } else {
+                // Set an error message
+                $_SESSION['error'] = "Error deleting coupon. Please try again.";
+            }
+        } else {
+            $_SESSION['error'] = "Invalid coupon ID.";
+        }
+
+        // Redirect back to the manage coupons page
+        header("Location: /admin/Coupon");
+        exit();
+    }
+}
+public function addCoupon()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        // Validate that the required fields are provided
+        $code = isset($_POST['code']) ? trim($_POST['code']) : '';
+        $discount = isset($_POST['discount']) ? floatval($_POST['discount']) : 0;
+        $usageLimit = isset($_POST['usage_limit']) ? intval($_POST['usage_limit']) : null;
+        $expirationDate = isset($_POST['expiration_date']) ? $_POST['expiration_date'] : null;
+
+        if (!empty($code) && $discount >= 0 && $discount <= 100) {
+            // Check if the coupon code already exists
+            $existingCoupon = $this->model('CouponModel')->getCouponByCode($code);
+
+            if ($existingCoupon) {
+                $_SESSION['error'] = "Coupon code already exists. Please use a different code.";
+            } else {
+                // Call the model to add the coupon
+                $result = $this->model('CouponModel')->addCoupon($code, $discount, $usageLimit, $expirationDate);
+
+                if ($result) {
+                    $_SESSION['message'] = "Coupon added successfully!";
+                } else {
+                    $_SESSION['error'] = "Error adding coupon. Please try again.";
+                }
+            }
+        } else {
+            $_SESSION['error'] = "Please provide valid coupon code and discount.";
+        }
+
+        // Redirect back to the manage coupons page
+        header("Location: /admin/Coupon");
+        exit();
+    }
+}
     public function messages()
     {
         $messages = $this->model('Message')->all();

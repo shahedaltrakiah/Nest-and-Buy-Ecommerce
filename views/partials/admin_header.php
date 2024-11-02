@@ -274,6 +274,14 @@
         <span class="nav-link-text">Reviews</span>
     </a><!--//nav-link-->
 </li><!--//nav-item-->
+<li class="nav-item">
+        <a class="nav-link" href="/admin/Coupon">
+            <span class="nav-icon">
+                <i class="fas fa-tags"></i> <!-- Icon for Coupons -->
+            </span>
+            <span class="nav-link-text">Coupons</span>
+        </a><!--//nav-link-->
+    </li><!--//nav-item-->
 						<li class="nav-item">
 							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
 							<a class="nav-link" href="/admin/messages">

@@ -40,6 +40,9 @@ class Core
         'admin/customer_create' => ['AdminController@createCustomer', ['POST', 'GET']],
         'admin/deleteCustomer' => ['AdminController@deleteCustomer', ['GET', 'POST']],
         'admin/manage_testimonials' => ['AdminController@displayTestimonials', ['GET', 'POST']],
+        'admin/Coupon' => ['AdminController@manageCoupons', 'GET'],
+        'admin/CouponDelete' => ['AdminController@CouponDelete', 'POST'],
+        'admin/addCoupon' => ['AdminController@addCoupon', 'POST'],
 
 
 
