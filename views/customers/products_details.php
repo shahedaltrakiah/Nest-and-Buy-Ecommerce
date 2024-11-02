@@ -79,8 +79,14 @@
 
     <!-- Reviews Section (Side-by-Side Layout) -->
     <div class="reviews-section my-5 d-flex flex-column">
-        <h4 class="mb-4">Customer Reviews</h4>
-        <div class="d-flex justify-content-between my-5" style="width: 100%;">
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Write a Review</h4>
+            </div>
+            <div class="col-md-6 ">
+                <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Customer Reviews</h4>
+            </div>
+        </div>        <div class="d-flex justify-content-between my-5" style="width: 100%;">
 
             <!-- Review Submission Form -->
             <div class="review-form-container col-md-5">
@@ -114,6 +120,8 @@
                 <?php if (!empty($reviews)): ?>
                     <?php foreach ($reviews as $review): ?>
                         <div class="review mt-3 p-3 border rounded bg-light">
+                            <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
+
                             <p><strong>Rating:</strong> <?= htmlspecialchars($review['rating']); ?> Stars</p>
                             <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
                             <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
