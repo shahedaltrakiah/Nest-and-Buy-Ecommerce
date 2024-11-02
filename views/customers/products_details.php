@@ -30,8 +30,12 @@
                             icon: 'warning',
                             title: 'Login First',
                             text: '<?php echo $errorMessage; ?>',
-                            confirmButtonText: 'OK'
-                        });
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3B5D50'
+                        }).then(() => {
+                           
+                            window.history.replaceState(null, null, window.location.pathname);
+                        });;
                     </script>
                 <?php elseif (isset($_GET['success']) && $_GET['success'] == 'true'): ?>
                     <script>
@@ -39,10 +43,15 @@
                             icon: 'success',
                             title: 'Review Submitted!',
                             text: 'Your review has been added successfully.',
-                            confirmButtonText: 'OK'
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#3B5D50'
+                        }).then(() => {
+                            // Remove the `success` parameter from the URL
+                            window.history.replaceState(null, null, window.location.pathname);
                         });
                     </script>
                 <?php endif; ?>
+
                 <!-- Thumbnails Section to the Right of Main Image with Scroll -->
                 <div class="sub-images d-flex flex-column ms-3 customer-reviews" style="max-height: 400px; overflow-y: auto;">
                     <?php foreach ($allImages as $image):
@@ -82,7 +91,7 @@
                 <h4 class="product-price text-primary mt-3"><sup>JD</sup> <?= htmlspecialchars(number_format($product['price'], 2)); ?></h4>
                 <p class="lh-lg mt-3"><?= htmlspecialchars($product['description']); ?></p>
 
-                <div class="availability mb-3">
+                <div class="availability mb-1">
                     <strong>Availability:</strong>
                     <?php
                     if ($product['stock_quantity'] > 5) {
@@ -134,7 +143,7 @@
             <!-- Review Submission Form -->
             <div class="review-form-container col-md-5">
                 <?php if ($user): ?>
-                    <p>We're happy to see your feedback, <?= htmlspecialchars($user['name']); ?>, on our <?= htmlspecialchars($product['product_name']); ?>.</p>
+                    <p>We're happy to see your feedback  <?= htmlspecialchars($user['name']); ?>, on our <?= htmlspecialchars(ucwords(str_replace('-', ' ', $product['product_name']))); ?>.</p>
                 <?php endif; ?>
                 <form method="POST" action="">
                     <div class="mb-3">
@@ -231,7 +240,8 @@
 
 <style>
 
-    /* Star Rating Styles */
+
+/* Star Rating Styles */
     .star-rating {
         display: flex;
         gap: 5px;
