@@ -1,7 +1,5 @@
 <footer class="app-footer bg-light py-4">
-     <div class="container text-center">
-          <p class="mb-1">© <?= date("Y"); ?> Nest & Buy 2024 Nest & Buy❤️.</p>
-     </div>
+
 </footer>
 <!-- Javascript -->
 <script src="../../public/js/app.js"></script>

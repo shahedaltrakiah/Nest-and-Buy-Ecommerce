@@ -55,7 +55,7 @@ public function login()
     // Manage categories
     public function manageCategory()
     {
-        $categories = $this->model('Category')->getAllCategories();
+        $categories = $this->model('Category')->all();
         $this->view('admin/manage_category', ['categories' => $categories]);
     }
 
