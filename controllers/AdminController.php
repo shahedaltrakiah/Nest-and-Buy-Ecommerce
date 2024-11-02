@@ -346,13 +346,20 @@ public function login()
 
     public function accountSettings()
     {
-        // $admin = $this->model('Admin')->All($_SESSION['admin_id']);
-        // $this->view('admin/account_settings', ['admins' => $admin]);
-        $id = 1;
-        $admin = $this->model('Admin')->find($id);
-        $this->view('admin/account_settings', ['admin' => $admin]);
+  
+        if (isset($_SESSION['user']['id'])) {
+            $id = $_SESSION['user']['id'];
+       
+            $admin = $this->model('Admin')->find($id);
+     
+            $this->view('admin/account_settings', ['admin' => $admin]);
+        } else {
+          
+            header('Location: /login'); 
+            exit();
+        }
     }
-
+    
     // ===================================================
     public function createCategory()
     {
