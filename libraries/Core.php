@@ -7,7 +7,7 @@ class Core
         '' => ['CustomerController@index', 'GET'], // This handles the root URL
 
         // Admin Routes
-       'admin/login' => ['AdminController@login', ['GET', 'POST']],
+        'admin/login' => ['AdminController@login', ['GET', 'POST']],
         'admin/rest_password' => ['AdminController@restPassword', ['GET', 'POST']],
         'admin/dashboard' => ['AdminController@dashboard', 'GET'],
         'admin/manage_category' => ['AdminController@manageCategory', 'GET'],
@@ -16,7 +16,6 @@ class Core
         'admin/manage_customers' => ['AdminController@manageCustomers', ['POST', 'GET']],
         'admin/manage_coupon' => ['AdminController@manageCoupon', 'GET'],
         'admin/coupon_create' => ['AdminController@createCoupon', ['POST', 'GET']],
-
         'admin/coupon_edit' => ['AdminController@editCoupon', 'GET'], // Specify POST for updates
         'admin/coupon_update' => ['AdminController@updateCoupon', 'POST'], // Specify POST for updates
         'admin/deleteCoupon' => ['AdminController@deleteCoupon', ['GET', 'POST']],
@@ -33,7 +32,6 @@ class Core
         'admin/category_update' => ['AdminController@updateCategory', 'POST'], // Specify POST for updates
         'admin/deleteCategory' => ['AdminController@deleteCategory', ['GET', 'POST']],
         'admin/customer_edit' => ['AdminController@editCustomer', 'GET', 'GET'], // Specify POST for updates
-
         'admin/Review' => ['AdminController@manageReviews', 'GET'],
         'admin/deleteReview' => ['AdminController@removeReviewAdmin', 'POST'],
         'admin/customer_update' => ['AdminController@updateCustomer', 'POST', 'GET'], // Specify POST for updates
@@ -45,8 +43,6 @@ class Core
         'admin/addCoupon' => ['AdminController@addCoupon', 'POST'],
 
 
-
-
         // Super Admin Routes
         //    'admin/super_manage_admin' => ['AdminController@manageAdmin', ['GET', 'POST']],
         //    'super_admin/add_admin' => ['SuperAdminController@addAdmin', ['GET', 'POST']],
@@ -55,102 +51,102 @@ class Core
         'admin/super_manage_admin' => ['AdminController@manageAdmin', ['GET', 'POST']],
         'admin/add_admin' => ['AdminController@addAdmin', ['GET', 'POST']],
         'admin/delete_admin' => ['AdminController@deleteAdmin', ['GET', 'POST']],
-     // Customer Routes
-     'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
-     'customers/rest_password' => ['CustomerController@restPassword', ['GET', 'POST']],
-     'customers/index' => ['CustomerController@index', 'GET'],
-     'customers/about' => ['CustomerController@about', 'GET'],
-     'customers/contact' => ['CustomerController@contact', ['GET', 'POST']],
-     'customers/category' => ['CustomerController@categoryView', 'GET'],
-     'customers/shop' => ['CustomerController@shop', 'GET'],
-     'customers/product_details' => ['CustomerController@productDetails', ['GET', 'POST']],
-     'customers/cart' => ['CustomerController@cart', 'GET'],
-     'customers/checkout' => ['CustomerController@checkout', 'GET'],
-     'customers/profile' => ['CustomerController@profile', 'GET'],
-     'customers/logout' => ['CustomerController@logout', 'GET'],
-     'customer/cart' => ['CartController@add', 'POST'],
-     'customers/test' => ['CustomerController@test', 'GET'],
-     'customers/cart/checkout' => ['CartController@checkout', 'POST'],
-     'customers/cart/remove' => ['CartController@remove', ['POST', 'GET']],
-     'customers/cart/remove-coupon' => ['CartController@removeCoupon', 'POST'],
-     'customers/cart/apply-coupon' => ['CartController@applyCoupon', 'POST'],
-     'customer/profile/add' => ['WishlistController@add', ['POST']],
-     'customers/profile/remove' => ['WishlistController@remove', 'POST'],
-     'customers/profile/view' => ['WishlistController@viewWishlist', 'GET'],
-     'customers/profile/update' => ['CustomerController@updateProfile', ['POST']],
-     'profile/uploadImage' => ['CustomerController@uploadImage', 'POST'],
-     'shop/liveSearch' => ['ShopController@liveSearch', 'GET'],
+        // Customer Routes
+        'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
+        'customers/rest_password' => ['CustomerController@restPassword', ['GET', 'POST']],
+        'customers/index' => ['CustomerController@index', 'GET'],
+        'customers/about' => ['CustomerController@about', 'GET'],
+        'customers/contact' => ['CustomerController@contact', ['GET', 'POST']],
+        'customers/category' => ['CustomerController@categoryView', 'GET'],
+        'customers/shop' => ['CustomerController@shop', 'GET'],
+        'customers/product_details' => ['CustomerController@productDetails', ['GET', 'POST']],
+        'customers/cart' => ['CustomerController@cart', 'GET'],
+        'customers/checkout' => ['CustomerController@checkout', 'GET'],
+        'customers/profile' => ['CustomerController@profile', 'GET'],
+        'customers/logout' => ['CustomerController@logout', 'GET'],
+        'customer/cart' => ['CartController@add', 'POST'],
+        'customers/test' => ['CustomerController@test', 'GET'],
+        'customers/cart/checkout' => ['CartController@checkout', 'POST'],
+        'customers/cart/remove' => ['CartController@remove', ['POST', 'GET']],
+        'customers/cart/remove-coupon' => ['CartController@removeCoupon', 'POST'],
+        'customers/cart/apply-coupon' => ['CartController@applyCoupon', 'POST'],
+        'customer/profile/add' => ['WishlistController@add', ['POST']],
+        'customers/profile/remove' => ['WishlistController@remove', 'POST'],
+        'customers/profile/view' => ['WishlistController@viewWishlist', 'GET'],
+        'customers/profile/update' => ['CustomerController@updateProfile', ['POST']],
+        'profile/uploadImage' => ['CustomerController@uploadImage', 'POST'],
+        'shop/liveSearch' => ['ShopController@liveSearch', 'GET'],
 
- ];
+    ];
 
- public function __construct()
- {
-     $this->dispatch();
- }
+    public function __construct()
+    {
+        $this->dispatch();
+    }
 
- private function dispatch()
- {
-     $url = $this->getUrl();
-     $method = $_SERVER['REQUEST_METHOD']; // Get the current request method
+    private function dispatch()
+    {
+        $url = $this->getUrl();
+        $method = $_SERVER['REQUEST_METHOD']; // Get the current request method
 
-     // Split URL into parts
-     $urlParts = explode('/', $url);
-     $lastPart = end($urlParts);
+        // Split URL into parts
+        $urlParts = explode('/', $url);
+        $lastPart = end($urlParts);
 
-     // Determine route path and optional ID
-     if (ctype_digit($lastPart)) {
-         $id = $lastPart;
-         $routePath = implode('/', array_slice($urlParts, 0, -1)); // Remove last part for route path
-     } else {
-         $routePath = $url; // Use full URL as route path
-         $id = null;         // No ID
-     }
+        // Determine route path and optional ID
+        if (ctype_digit($lastPart)) {
+            $id = $lastPart;
+            $routePath = implode('/', array_slice($urlParts, 0, -1)); // Remove last part for route path
+        } else {
+            $routePath = $url; // Use full URL as route path
+            $id = null;         // No ID
+        }
 
-     if (isset($this->routes[$routePath])) {
-         $route = $this->routes[$routePath];
-         $controllerMethod = explode('@', $route[0]);
-         $controllerName = $controllerMethod[0];
-         $methodName = $controllerMethod[1];
-         $routeMethod = $route[1] ?? 'GET'; // Default to GET if no method is specified
-         $controllers = isset($urlParts[1]) ? $urlParts[1] : null;
+        if (isset($this->routes[$routePath])) {
+            $route = $this->routes[$routePath];
+            $controllerMethod = explode('@', $route[0]);
+            $controllerName = $controllerMethod[0];
+            $methodName = $controllerMethod[1];
+            $routeMethod = $route[1] ?? 'GET'; // Default to GET if no method is specified
+            $controllers = isset($urlParts[1]) ? $urlParts[1] : null;
 
-         // Check if route allows the request method
-         if ((is_array($routeMethod) && in_array($method, $routeMethod)) || $method === $routeMethod) {
-             if (file_exists('controllers/' . $controllerName . '.php')) {
-                 require_once 'controllers/' . $controllerName . '.php';
-                 $controller = new $controllerName;
+            // Check if route allows the request method
+            if ((is_array($routeMethod) && in_array($method, $routeMethod)) || $method === $routeMethod) {
+                if (file_exists('controllers/' . $controllerName . '.php')) {
+                    require_once 'controllers/' . $controllerName . '.php';
+                    $controller = new $controllerName;
 
-                 if (method_exists($controller, $methodName)) {
-                     // Call the method with or without ID
-                     if ($id !== null) {
-                         $controller->$methodName($id);
-                     } else {
-                         $controller->$methodName();
-                     }
-                     return;
-                 } else {
-                     die("ERROR: Method $methodName not found in $controllerName.");
-                 }
-             } else {
-                 die("ERROR: Controller $controllerName not found.");
-             }
-         } else {
-             die("ERROR: Method not allowed for URL '$url'. Expected $routeMethod.");
-         }
-     } else {
-         die("ERROR: Route not found for URL '$url' and method $method.");
-     }
- }
+                    if (method_exists($controller, $methodName)) {
+                        // Call the method with or without ID
+                        if ($id !== null) {
+                            $controller->$methodName($id);
+                        } else {
+                            $controller->$methodName();
+                        }
+                        return;
+                    } else {
+                        die("ERROR: Method $methodName not found in $controllerName.");
+                    }
+                } else {
+                    die("ERROR: Controller $controllerName not found.");
+                }
+            } else {
+                die("ERROR: Method not allowed for URL '$url'. Expected $routeMethod.");
+            }
+        } else {
+            die("ERROR: Route not found for URL '$url' and method $method.");
+        }
+    }
 
- private function getUrl()
- {
-     $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-     $url = trim($url, '/');  // Trim leading and trailing slashes
+    private function getUrl()
+    {
+        $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+        $url = trim($url, '/');  // Trim leading and trailing slashes
 
-     if (strpos($url, '?') !== false) {
-         $url = strstr($url, '?', true);  // Remove query strings for clean URL
-     }
+        if (strpos($url, '?') !== false) {
+            $url = strstr($url, '?', true);  // Remove query strings for clean URL
+        }
 
-     return $url;
- }
+        return $url;
+    }
 }
