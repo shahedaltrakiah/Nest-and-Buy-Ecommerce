@@ -195,8 +195,9 @@ class CustomerController extends Controller
         // Get filter and sort criteria from URL parameters
         $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
         $sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
+        $imageFilter = isset($_GET['image_filter']) ? $_GET['image_filter'] : 'with_images';
 
-        // Filter reviews based on selected criteria
+// Filter reviews based on selected criteria
         if ($filter === 'my' && $user) {
             // Filter out only the user's reviews
             $reviews = array_filter($reviews, function ($review) use ($user) {
@@ -204,10 +205,24 @@ class CustomerController extends Controller
             });
         }
 
-        // Sort reviews by rating
+// Filter reviews based on image criteria
+        if ($imageFilter === 'with_images') {
+            // Keep only reviews that have images
+            $reviews = array_filter($reviews, function ($review) {
+                return !empty($review['image_url']); // Assuming review has an 'image' field
+            });
+        } elseif ($imageFilter === 'without_images') {
+            // Keep only reviews that do not have images
+            $reviews = array_filter($reviews, function ($review) {
+                return empty($review['image_url']); // Assuming review has an 'image' field
+            });
+        }
+
+// Sort reviews by rating
         usort($reviews, function ($a, $b) use ($sortOrder) {
             return $sortOrder === 'ASC' ? $a['rating'] <=> $b['rating'] : $b['rating'] <=> $a['rating'];
         });
+
 
         // Pass the error message and updated reviews to the view
         $this->view('customers/products_details', [

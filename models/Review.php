@@ -7,17 +7,28 @@ class Review extends Model {
 
     // Method to add a new review
     public function addReview($data) {
+        // Handle image upload
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $imagePath = 'uploads/' . basename($_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
+            $data['image_url'] = $imagePath; // Add the image URL to the data array
+        } else {
+            $data['image_url'] = null; // If no image, set to null
+        }
+
         $statement = $this->pdo->prepare(
-            "INSERT INTO reviews (product_id, customer_id, rating, comment, created_at) 
-             VALUES (:product_id, :customer_id, :rating, :comment, NOW())"
+            "INSERT INTO reviews (product_id, customer_id, rating, comment, image_url, created_at) 
+         VALUES (:product_id, :customer_id, :rating, :comment, :image_url, NOW())"
         );
         return $statement->execute([
             ':product_id' => $data['product_id'],
             ':customer_id' => $data['customer_id'],
             ':rating' => $data['rating'],
-            ':comment' => $data['comment']
+            ':comment' => $data['comment'],
+            ':image_url' => $data['image_url'] // Include the image URL
         ]);
     }
+
 
     // Method to get reviews for a specific product
     public function getReviewsByProductId($productId) {
