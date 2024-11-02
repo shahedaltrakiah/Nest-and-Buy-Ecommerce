@@ -8,13 +8,20 @@
             <div class="product-slider d-flex flex-row">
 
                 <!-- Main Product Image -->
-                <div class="main-image-container">
+                <div class="main-image-container position-relative">
                     <?php
                     $allImages = explode(',', $product['all_images']);
                     $mainImage = trim($allImages[0]);
                     ?>
                     <img id="main-image" width="540" height="540" src="/public/<?= htmlspecialchars($mainImage); ?>"
                          class="img-fluid rounded shadow" alt="<?= htmlspecialchars($product['product_name']); ?>">
+
+                    <form action="/customer/profile/add" method="post" class="wishlist-button">
+                        <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+                        <button type="submit" class="btn action-button">
+                            <i class="fa-solid fa-heart"></i>
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Thumbnails Section to the Right of Main Image with Scroll -->
@@ -28,8 +35,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Product Details Section -->
         <div class="col-lg-5 col-xl-5">
             <div>
                 <h2><?= htmlspecialchars(ucwords(str_replace('-', ' ', $product['product_name']))); ?></h2>
@@ -51,26 +56,20 @@
 
                 <div class="d-flex align-items-center mb-5 mt-5">
                     <?php if ($product['stock_quantity'] > 0): ?>
-                        <form action="/customer/cart" method="post" class="me-3 d-flex align-items-center">
+                        <form action="/customer/cart" method="post" class="button-form me-3">
                             <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
-                            <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock_quantity']; ?>" class="form-control quantity-input me-2" required>
-                            <button type="submit" class="btn btn-primary add-to-cart">
-                                <i class="fa-solid fa-cart-plus"></i> Add to Cart
+                            <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock_quantity']; ?>" class="quantity-input form-control me-2" required>
+                            <button type="submit" class="btn btn-primary action-button">
+                                <i class="fa-solid fa-cart-plus"></i>
                             </button>
                         </form>
                     <?php else: ?>
                         <button class="btn btn-secondary me-3" disabled>Out of Stock</button>
                     <?php endif; ?>
-
-                    <form action="/customer/profile/add" method="post" class="ms-2">
-                        <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa-solid fa-heart"></i>
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Reviews Section (Side-by-Side Layout) -->
@@ -134,7 +133,58 @@
 <?php require 'views/partials/footer.php'; ?>
 
 <style>
+    /* Wishlist Button */
+    .wishlist-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    .wishlist-button .action-button {
+        background-color: transparent; /* Remove the background */
+        color: #4c6a63; /* Set the color to match your desired color */
+        border: none; /* Remove any border */
+        padding: 0; /* Remove padding to keep it compact */
+        cursor: pointer; /* Ensure it looks clickable */
+    }
+
+    .wishlist-button .action-button:hover {
+        color: #3B5D50; /* Optional: Change color on hover for better UX */
+    }
+
     /* Product Image Styles */
+    .quantity-input {
+        width: 60px;
+        height: 40px;
+        padding: 0;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .action-button {
+        width: 60px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        border-radius: 5px;
+        background-color: #4c6a63;
+        color: white;
+        border: none;
+    }
+
+    .button-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
     .product-slider {
         display: flex;
         flex-direction: column;
@@ -178,11 +228,15 @@
     }
 
     .customer-reviews::-webkit-scrollbar {
-        display: none;
+        width: 8px;
     }
 
-    .customer-reviews {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+    .customer-reviews::-webkit-scrollbar-thumb {
+        background-color: #888;
+        border-radius: 10px;
+    }
+
+    .customer-reviews::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 </style>
