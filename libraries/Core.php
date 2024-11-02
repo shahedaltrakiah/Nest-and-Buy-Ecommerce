@@ -27,6 +27,7 @@ class Core
 
         // Customer Routes
         'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
+        'customers/rest_password' => ['CustomerController@restPassword', ['GET', 'POST']],
         'customers/index' => ['CustomerController@index', 'GET'],
         'customers/about' => ['CustomerController@about', 'GET'],
         'customers/contact' => ['CustomerController@contact', ['GET', 'POST']],
