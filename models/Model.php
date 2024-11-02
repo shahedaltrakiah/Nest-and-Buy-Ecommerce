@@ -52,16 +52,21 @@ class Model
 
     public function update($id, $data)
     {
+        // Add the id to the data array so it can be bound to the SQL statement
+        $data['id'] = $id;
+    
+        // Prepare the fields for the SQL statement
         $fields = '';
         foreach ($data as $key => $value) {
             $fields .= $key . '=:' . $key . ',';
         }
-
-        $fields = rtrim($fields, ',');
-        $sql = "UPDATE $this->table SET $fields WHERE id = :id";
+    
+        $fields = rtrim($fields, ','); // Remove trailing comma
+        $sql = "UPDATE $this->table SET $fields WHERE id = :id"; // Ensure the query has :id
         $statement = $this->pdo->prepare($sql);
-        $statement->execute($data);
+        $statement->execute($data); // Execute with the modified data array
     }
+    
 
     public function delete($id)
     {
