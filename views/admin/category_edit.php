@@ -9,7 +9,7 @@
                     <div class="card shadow-lg border-0">
                         <div class="m-4 d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <img src="<?= !empty($category['image_url']) ? htmlspecialchars($category['image_url']) : '/public/images/default-category.png'; ?>" 
+                                <img src="/public/<?= htmlspecialchars($category['image_url']) ?>"
                                      alt="Category Image" class="rounded-circle" style="width: 100px; height: 100px;">
                                 <h3 class="text-success ms-3">
                                     <?php

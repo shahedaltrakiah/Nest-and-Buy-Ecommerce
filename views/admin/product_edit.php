@@ -7,8 +7,8 @@
                 <div class="card shadow-lg border-0">
     <div class="d-flex justify-content-between align-items-center p-4">
         <div class="d-flex align-items-center">
-            <img src="<?php $product['product_name']?> " alt="Product Image" class="rounded-circle"
-                style="width: 100px; height: 100px;">
+<!--            <img src="/public/--><?php //= htmlspecialchars($product['image_url']) ?><!--" alt="Product Image" class="rounded-circle"-->
+<!--                style="width: 100px; height: 100px;">-->
             <h3 class="text-success ms-3 fw-bold">
                 <?php
                 $formattedName = str_replace('-', ' ', strtolower($product['product_name']));

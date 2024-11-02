@@ -10,7 +10,7 @@
                     <div class="card shadow-lg border-0">
                         <div class="m-4 d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <img src="<?= !empty($customer['image_url']) ? htmlspecialchars($customer['image_url']) :'/public/images/admin-user-profile.png'; ?>"
+                                <img src="/public/<?= !empty($customer['image_url']) ? htmlspecialchars($customer['image_url']) :'/public/images/user-profile.png'; ?>"
                                     alt="Profile Image" class="rounded-circle" style="width: 100px; height: 100px;">
                                 <h3 class="text-success ms-3">
                                     <?php
