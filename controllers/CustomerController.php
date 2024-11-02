@@ -182,8 +182,8 @@ class CustomerController extends Controller
             } else {
                 $errorMessage = "Please log in to submit a review.";
             }
-
         }
+
 
 
         // Get filter and sort criteria from URL parameters
