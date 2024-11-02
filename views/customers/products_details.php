@@ -24,6 +24,16 @@
                     </form>
                 </div>
 
+                <?php if (isset($errorMessage)): ?>
+                    <script>
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Login First',
+                            text: '<?php echo $errorMessage; ?>',
+                            confirmButtonText: 'OK'
+                        });
+                    </script>
+                <?php endif; ?>
                 <!-- Thumbnails Section to the Right of Main Image with Scroll -->
                 <div class="sub-images d-flex flex-column ms-3 customer-reviews" style="max-height: 400px; overflow-y: auto;">
                     <?php foreach ($allImages as $image):

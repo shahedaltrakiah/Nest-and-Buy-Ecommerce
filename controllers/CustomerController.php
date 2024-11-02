@@ -182,6 +182,7 @@ class CustomerController extends Controller
             } else {
                 $errorMessage = "Please log in to submit a review.";
             }
+
         }
 
 
