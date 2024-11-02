@@ -103,22 +103,23 @@
                     }
                     ?>
                 </div>
-                <div class="d-flex align-items-center mb-5 mt-5">
+                <div class="d-flex align-items-center mb-5 mt-3 ">
                     <?php if ($product['stock_quantity'] > 0): ?>
                         <form action="/customer/cart" method="post" class="button-form me-3 d-flex align-items-center gap-2">
                             <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
 
                             <!-- Quantity Input Field -->
                             <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock_quantity']; ?>"
-                                   class="quantity-input form-control mb-2" style="height: 50px; max-width: 100px; text-align: center;" required>
+                                   class="quantity-input form-control mb-2" style="height: 50px; width: 150px; text-align: center; margin-top: -10px;" required>
 
                             <!-- Add to Cart Button -->
-                            <button type="submit" class="btn btn-primary action-button" style="height: 50px; width: 60px;">
-                                <i class="fa-solid fa-cart-plus"></i>
+                            <button type="submit" class="btn btn-primary action-button" style="height: 50px; width: 200px;">
+                                <i class="fa-solid fa-cart-plus" style="margin-right: 5px;"></i> ADD TO CART
                             </button>
                         </form>
                     <?php else: ?>
-                        <button class="btn btn-secondary me-3" disabled>Out of Stock</button>
+
+                        <button class="btn btn-secondary action-button" style="height: 50px; width: 200px;"  disabled>Out of Stock</button>
                     <?php endif; ?>
                 </div>
 
@@ -138,7 +139,7 @@
             </div>
 
         </div>
-        <div class="d-flex justify-content-between my-5" style="width: 100%;">
+        <div class="d-flex justify-content-between my-5 mt-3" style="width: 100%;">
 
             <!-- Review Submission Form -->
             <div class="review-form-container col-md-5">
@@ -167,10 +168,10 @@
             <div class="vr mx-3"></div>
 
             <!-- Display Reviews with Scrolling -->
-            <div class="customer-reviews col-md-6" id="reviews-section">
-                <div class="reviews-filter mb-4">
+            <div class="customer-reviews col-md-6 " id="reviews-section" >
+                <div class="reviews-filter ">
                     <form method="GET" action="">
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center ">
                             <select name="filter" class="form-select me-3">
                                 <option value="all" <?= isset($_GET['filter']) && $_GET['filter'] === 'all' ? 'selected' : ''; ?>>All Reviews</option>
                                 <option value="my" <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'selected' : ''; ?>>My Reviews</option>
@@ -186,7 +187,7 @@
 
                 <?php if (!empty($reviews)): ?>
                     <?php foreach ($reviews as $review): ?>
-                        <div class="review mt-3 p-3 border rounded bg-light">
+                        <div class="review mt-1 p-3 border rounded bg-light">
                             <p><strong>Rating:</strong>
                                 <?php
                                 $rating = (int)$review['rating'];
