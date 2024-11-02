@@ -1374,5 +1374,21 @@ a {
   margin-bottom: 15px; /* Adjust this value to your desired spacing */
 }
 
+.btn-green {
+  background-color: #3B5D50;
+  color: white;
+  padding: 15px;
+}
+
+.btn-yellow {
+  background-color: #ffc107;
+  color: black;
+  padding: 15px;
+}
+
+.dot {
+  font-weight: bold;
+}
+
 
 
