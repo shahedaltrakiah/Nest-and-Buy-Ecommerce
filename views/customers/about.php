@@ -120,10 +120,10 @@
                     </div>
                     <h3 class="mt-3">MohammadNoor Saqer</h3>
                     <p>Scrum Master</p>
-                    <a href="https://www.linkedin.com/in/jeremywalker" target="_blank">
+                    <a href="https://www.linkedin.com/in/mohammadnoor-saqer-187261182/" target="_blank">
                         <i class="fab fa-linkedin fa-2x" style="margin-right: 10px;"></i>
                     </a>
-                    <a href="https://github.com/jeremywalker" target="_blank">
+                    <a href="https://github.com/mohammadnoorsaqer" target="_blank">
                         <i class="fab fa-github fa-2x"></i>
                     </a>
                 </div>
@@ -170,10 +170,10 @@
                     </div>
                     <h3 class="mt-3">Husam AlSaket</h3>
                     <p>Developer</p>
-                    <a href="https://www.linkedin.com/in/emilybrown" target="_blank">
+                    <a href="https://www.linkedin.com/in/husamalsaket/" target="_blank">
                         <i class="fab fa-linkedin fa-2x" style="margin-right: 10px;"></i>
                     </a>
-                    <a href="https://github.com/emilybrown" target="_blank">
+                    <a href="https://github.com/HusamAlSaket" target="_blank">
                         <i class="fab fa-github fa-2x"></i>
                     </a>
                 </div>
@@ -186,10 +186,10 @@
                     </div>
                     <h3 class="mt-3">Mousa Ala'aldin</h3>
                     <p>Developer</p>
-                    <a href="https://www.linkedin.com/in/michaelgreen" target="_blank">
+                    <a href="https://www.linkedin.com/in/mousa-alaaldeen" target="_blank">
                         <i class="fab fa-linkedin fa-2x" style="margin-right: 10px;"></i>
                     </a>
-                    <a href="https://github.com/michaelgreen" target="_blank">
+                    <a href="https://github.com/Mousa-alaaldeen" target="_blank">
                         <i class="fab fa-github fa-2x"></i>
                     </a>
                 </div>
