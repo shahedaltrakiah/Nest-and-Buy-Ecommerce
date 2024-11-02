@@ -36,19 +36,24 @@ $total_pages = ceil($total_items / $items_per_page);
 						<div class="row g-2 align-items-center">
 							<!-- Search Form -->
 							<div class="col-auto">
-								<form class="d-flex align-items-center" method="GET" action="">
-									<input type="text" id="search-docs" name="search"
-										value="<?= htmlspecialchars($search_query) ?>"
-										class="form-control rounded-pill border-primary me-2"
-										placeholder="Search Products..." aria-label="Search"
-										style=" border: 1px solid #d1e7dd;">
-									<button type="submit" class="btn btn-success rounded-pill">
-										<i class="fas fa-search text-white"></i>
-									</button>
-								</form>
+                                <form class="docs-search-form row gx-1 align-items-center" method="GET" action="">
+                                    <div class="col-auto">
+                                        <input type="text" id="search-docs" name="search"
+                                               value="<?php echo htmlspecialchars($search_query); ?>"
+                                               class="form-control bg-light border-success rounded-pill"
+                                               placeholder="Search Products....">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn rounded-pill"
+                                                style="background-color: #5bb377; border-color: #5bb377;">
+                                            <i class="fas fa-search text-white"></i>
+                                        </button>
+                                    </div>
+                                </form>
+
 							</div>
 							<!-- Add New Product Button -->
-							<div class="col-auto">
+							<div class="col-auto mt-3">
 								<a class="btn btn-success text-white d-flex align-items-center rounded-pill px-3 py-2"
 									href="#" data-bs-toggle="modal" data-bs-target="#createProductModal">
 									<i class="bi bi-plus-circle me-2"></i> Add New Products
@@ -59,59 +64,6 @@ $total_pages = ceil($total_items / $items_per_page);
 				</div>
 			</div>
 
-			<!-- Edit Product Modal -->
-			<!-- <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
-				aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<form action="/admin/product_update/<?= htmlspecialchars($product['id']); ?>" method="POST">
-							<div class="modal-header">
-								<h5 class="modal-title" id="editProfileModalLabel">Edit Product</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<div class="row">
-									<div class="col-md-6">
-										<label>Product ID</label>
-										<input type="text" class="form-control" name="id"
-											value="<?= htmlspecialchars($product['id']); ?>" readonly>
-									</div>
-									<div class="col-md-6">
-										<label>Price</label>
-										<input type="text" class="form-control" name="price"
-											value="<?= htmlspecialchars($product['price']); ?>">
-									</div>
-									<div class="col-md-12 mt-3">
-										<label>Description</label>
-										<textarea class="form-control" name="description"
-											rows="2"><?= htmlspecialchars($product['description']); ?></textarea>
-									</div>
-									<div class="col-md-6 mt-3">
-										<label>Category ID</label>
-										<input type="text" class="form-control" name="category_id"
-											value="<?= htmlspecialchars($product['category_id']); ?>">
-									</div>
-									<div class="col-md-6 mt-3">
-										<label>Average Rating</label>
-										<input type="text" class="form-control" name="average_rating"
-											value="<?= htmlspecialchars($product['average_rating']); ?>">
-									</div>
-									<div class="col-md-6 mt-3">
-										<label>Stock Quantity</label>
-										<input type="text" class="form-control" name="stock_quantity"
-											value="<?= htmlspecialchars($product['stock_quantity']); ?>">
-									</div>
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="submit" class="btn btn-primary">Save Changes</button>
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div> -->
 			<!-- Create Product Modal -->
 			<div class="modal fade" id="createProductModal" tabindex="-1" aria-labelledby="createProductModalLabel"
 				aria-hidden="true">

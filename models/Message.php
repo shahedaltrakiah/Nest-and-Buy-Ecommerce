@@ -25,5 +25,15 @@ class Message extends Model {
         return $statement->execute();
     }
 
+    public function getMessagesWithCustomerNames()
+    {
+        $sql = "SELECT messages.*, 
+                   CONCAT(customers.first_name, ' ', customers.last_name) AS customer_name
+            FROM messages
+            LEFT JOIN customers ON messages.customer_id = customers.id";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }

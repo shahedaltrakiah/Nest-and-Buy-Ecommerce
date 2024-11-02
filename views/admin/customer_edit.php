@@ -8,8 +8,8 @@
                 <div class="main-container">
                     <!-- Profile Card -->
                     <div class="card shadow-lg border-0">
-                        <div class="m-4 d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
+                        <div class="m-4 d-flex justify-content-between align-items-center text-start">
+                            <div class="d-flex align-items-center text-start">
                                 <img src="/public/<?= !empty($customer['image_url']) ? htmlspecialchars($customer['image_url']) :'/public/images/user-profile.png'; ?>"
                                     alt="Profile Image" class="rounded-circle" style="width: 100px; height: 100px;">
                                 <h3 class="text-success ms-3">
@@ -21,7 +21,6 @@
                                     echo htmlspecialchars($formattedFirstName . ' ' . $formattedLastName);
                                     ?>
                                 </h3>
-
                             </div>
                             <button class="btn btn-success text-white" data-bs-toggle="modal"
                                 data-bs-target="#editProfileModal">
@@ -31,33 +30,33 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label>Customer ID</label>
+                                    <label class="mb-2" >Customer ID</label>
                                     <input type="text" class="form-control"
                                         value="<?= htmlspecialchars($customer['id']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>Email</label>
+                                    <label class="mb-2">Email</label>
                                     <input type="text" class="form-control"
                                         value="<?= htmlspecialchars($customer['email']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>First Name</label>
+                                    <label class="mb-2">First Name</label>
                                     <input type="text" class="form-control"
                                         value="<?= htmlspecialchars($customer['first_name']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>Last Name</label>
+                                    <label class="mb-2">Last Name</label>
                                     <input type="text" class="form-control"
                                         value="<?= htmlspecialchars($customer['last_name']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label>Phone Number</label>
+                                    <label class="mb-2">Phone Number</label>
                                     <input type="text" class="form-control"
                                         value="<?= htmlspecialchars($customer['phone_number']); ?>" readonly>
                                 </div>
-                                <div class="col-md-12 mt-3">
-                                    <label>Address</label>
-                                    <textarea class="form-control" rows="2"
+                                <div class="col-md-6 mb-3">
+                                    <label class="mb-2" >Address</label>
+                                    <textarea class="form-control" rows="1"
                                         readonly><?= htmlspecialchars($customer['address']); ?></textarea>
                                 </div>
                             </div>

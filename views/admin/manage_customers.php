@@ -72,7 +72,7 @@ $paginated_customers = array_slice($filtered_customers, $start_index, $items_per
                                 </form>
                             </div>
                             <!-- Create Customer Button -->
-                            <div class="col-auto">
+                            <div class="col-auto mt-3">
                                 <a class="btn btn-success text-white d-flex align-items-center rounded-pill" href="#"
                                     data-bs-toggle="modal" data-bs-target="#createCustomerModal">
                                     <i class="bi bi-plus-circle me-2"></i> Add New Customer

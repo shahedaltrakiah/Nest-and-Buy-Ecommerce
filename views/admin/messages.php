@@ -39,15 +39,19 @@ $total_pages = ceil($total_items / $items_per_page);
                         <div class="row g-2 align-items-center">
                             <!-- Search Form -->
                             <div class="col-auto">
-                                <form class="d-flex align-items-center" method="GET" action="">
-                                    <input type="text" id="search-docs" name="search"
-                                        value="<?= htmlspecialchars($search_query) ?>"
-                                        class="form-control rounded-pill border-primary me-2"
-                                        placeholder="Search Messages..." aria-label="Search"
-                                        style="border: 1px solid #d1e7dd;">
-                                    <button type="submit" class="btn btn-success rounded-pill">
-                                        <i class="fas fa-search text-white"></i>
-                                    </button>
+                                <form class="docs-search-form row gx-1 align-items-center" method="GET" action="">
+                                    <div class="col-auto">
+                                        <input type="text" id="search-docs" name="search"
+                                               value="<?= htmlspecialchars($search_query) ?>"
+                                               class="form-control bg-light border-success rounded-pill"
+                                               placeholder="Search Messages....">
+                                    </div>
+                                    <div class="col-auto">
+                                        <button type="submit" class="btn rounded-pill"
+                                                style="background-color: #5bb377; border-color: #5bb377;">
+                                            <i class="fas fa-search text-white"></i>
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -59,7 +63,7 @@ $total_pages = ceil($total_items / $items_per_page);
                 <thead class="table-success">
                     <tr class="text-center">
                         <th>ID</th>
-                        <th>Admin ID</th>
+                        <th>Customer Name</th>
                         <th>Content</th>
                         <th>Status</th>
                         <th>Created At</th>
@@ -69,9 +73,9 @@ $total_pages = ceil($total_items / $items_per_page);
                 <?php foreach ($paginated_messages as $message): ?>
                     <tr class="text-center">
                         <td><?php echo htmlspecialchars($message['id']); ?></td>
-                        <td><?php echo htmlspecialchars($message['admin_id']); ?></td>
+                        <td><?= htmlspecialchars($message['customer_name'] ?? 'N/A') ?></td>
                         <td><?php echo htmlspecialchars($message['content']); ?></td>
-                        <td><?php echo htmlspecialchars($message['status']); ?></td>
+                        <td><?php echo htmlspecialchars(ucwords(strtolower($message['status']))); ?></td>
                         <td><?php echo htmlspecialchars($message['created_at']); ?></td>
                     </tr>
                 <?php endforeach; ?>

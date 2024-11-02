@@ -80,7 +80,7 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                                         </div>
                                     </form>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-auto mt-3">
                                     <a class="btn btn-success text-white d-flex align-items-center rounded-pill"
                                        href="#"
                                        data-bs-toggle="modal" data-bs-target="#createCategoryModal">

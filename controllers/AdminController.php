@@ -661,9 +661,10 @@ public function addCoupon()
 }
     public function messages()
     {
-        $messages = $this->model('Message')->all();
+        $messages = $this->model('Message')->getMessagesWithCustomerNames();
         $this->view('admin/messages', ['messages' => $messages]);
     }
+
     public function manageAdmin()
     {
         // Logic for managing admin accounts
