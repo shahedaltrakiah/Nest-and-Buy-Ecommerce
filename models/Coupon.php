@@ -11,4 +11,16 @@ class Coupon extends Model {
         $statement->execute(['code' => $code]);
         return $statement->fetch(\PDO::FETCH_ASSOC);
     }
+    public function decrementUsageLimit($coupon_id)
+    {
+        $statement = $this->pdo->prepare("UPDATE $this->table SET usage_limit = usage_limit - 1 WHERE id = :id");
+        $statement->execute(['id' => $coupon_id]);
+    }
+    
+    public function incrementUsageLimit($coupon_id)
+    {
+        $statement = $this->pdo->prepare("UPDATE $this->table SET usage_limit = usage_limit + 1 WHERE id = :id");
+        $statement->execute(['id' => $coupon_id]);
+    }
 }
+

@@ -81,11 +81,23 @@ class CartController extends Controller
             $coupon_code = $_POST['coupon_code'];
             $couponModel = new Coupon();
             $coupon = $couponModel->getCouponByCode($coupon_code);
-
+    
             if ($coupon) {
                 if (strtotime($coupon['expiration_date']) >= time()) {
-                    $_SESSION['discount'] = $coupon['discount'];
-                    $_SESSION['success_message'] = 'Coupon applied successfully!';
+                    // Check if usage limit is greater than zero
+                    if ($coupon['usage_limit'] > 0) {
+                        $_SESSION['discount'] = $coupon['discount'];
+                        $_SESSION['success_message'] = 'Coupon applied successfully!';
+    
+                        // Decrease usage limit by 1
+                        $couponModel->decrementUsageLimit($coupon['id']);
+    
+                        // Save the original usage limit and coupon ID to restore if removed
+                        $_SESSION['original_usage_limit'] = $coupon['usage_limit'];
+                        $_SESSION['coupon_id'] = $coupon['id'];
+                    } else {
+                        $_SESSION['error_message'] = 'This coupon has reached its usage limit.';
+                    }
                 } else {
                     $_SESSION['error_message'] = 'This coupon has expired.';
                 }
@@ -96,19 +108,36 @@ class CartController extends Controller
             exit();
         }
     }
+    
 
     public function removeCoupon()
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
+    
+        // Check if the original usage limit and coupon ID are stored in the session
+        if (isset($_SESSION['original_usage_limit']) && isset($_SESSION['coupon_id'])) {
+            $couponModel = new Coupon();
+    
+            // Restore the usage limit by increasing it back by 1
+            $couponModel->incrementUsageLimit($_SESSION['coupon_id']);
+    
+            // Clear the stored limit and coupon ID from the session
+            unset($_SESSION['original_usage_limit']);
+            unset($_SESSION['coupon_id']);
+        }
+    
+        // Remove the discount and success message from the session
         unset($_SESSION['discount']);
         unset($_SESSION['success_message']);
-
+    
         $_SESSION['success_message'] = 'Coupon removed successfully!';
         header('Location: /customers/cart');
         exit();
     }
+    
+    
 
     public function checkout()
     {
