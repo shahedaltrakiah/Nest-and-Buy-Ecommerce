@@ -78,9 +78,9 @@
     <div class="col-6 col-lg-3">
         <div class="app-card app-card-stat shadow-sm h-100 hover-animation">
             <div class="app-card-body p-3 p-lg-4">
-                <h4 class="stats-type mb-1">Projects</h4>
+                <h4 class="stats-type mb-1">Users</h4>
                 <div class="stats-figure d-flex align-items-center justify-content-center">
-                    <img src="https://www.svgrepo.com/show/428770/planning-managing-agenda.svg" alt="Planning Managing Agenda Icon" width="30" height="40" class="me-2">
+                    <img src="https://www.svgrepo.com/show/499764/user.svg" alt="Planning Managing Agenda Icon" width="30" height="40" class="me-2">
                     <span class="fw-bold fs-4 text-center">23</span>
                 </div>
                 <div class="d-flex align-items-center justify-content-center stats-meta text-success">
