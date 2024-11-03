@@ -172,10 +172,14 @@
             </form>
 
             <!-- Divider Line -->
-            <hr class="mb-5" style="width: 75%; border: none; border-top: dotted #3B5D50; margin: 0 auto;">
+            <hr class="mb-3" style="width: 75%; border: none; border-top: dotted #3B5D50; margin: 0 auto;">
 
             <!-- Display Reviews Section -->
             <div class="customer-reviews w-100" id="reviews-section">
+                <div class="col-md-6 mb-5">
+                    <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Customers Review</h4>
+                </div>
+
                 <div class="reviews-filter mb-3">
                     <form method="GET" action="">
                         <div class="d-flex justify-content-between align-items-center">
