@@ -39,7 +39,18 @@
                                     <?= htmlspecialchars($review['comment']); ?>
                                 </td>
                                 <td><?= date('d M Y', strtotime($review['created_at'])); ?></td>
-                                <td><?= htmlspecialchars($review['status']); ?></td>
+                                <td class="<?php
+    if ($review['status'] === 'pending') {
+        echo 'text-warning';
+    } elseif ($review['status'] === 'rejected') {
+        echo 'text-danger';
+    } elseif ($review['status'] === 'accepted') {
+        echo 'text-success';
+    }
+?>">
+    <?= htmlspecialchars(ucfirst($review['status'])); ?>
+</td>
+
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <form id="acceptForm-<?= htmlspecialchars($review['id']); ?>" action="/admin/acceptReview" method="POST" class="ms-2">
