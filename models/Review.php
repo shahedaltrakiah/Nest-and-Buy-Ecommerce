@@ -1,5 +1,5 @@
 <?php
-
+require_once 'models/Model.php';
 class Review extends Model {
     public function __construct() {
         parent::__construct('reviews');
@@ -46,7 +46,15 @@ class Review extends Model {
         $statement = $this->pdo->prepare("DELETE FROM reviews WHERE id = :id");
         return $statement->execute([':id' => $reviewId]);
     }
-
+    public function acceptReview($reviewId) {
+        $statement = $this->pdo->prepare("UPDATE reviews SET status = 'accepted' WHERE id = :id");
+        return $statement->execute([':id' => $reviewId]);
+    }
+    
+    public function rejectReview($reviewId) {
+        $statement = $this->pdo->prepare("UPDATE reviews SET status = 'rejected' WHERE id = :id");
+        return $statement->execute([':id' => $reviewId]);
+    }
 
 
 
