@@ -92,15 +92,35 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/admin/super_manage_admin">
 								<span class="nav-icon">
-								<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-gear" fill="currentColor"
-                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M8 1a7 7 0 1 0 7 7A7 7 0 0 0 8 1zm3.784 7.99a5.946 5.946 0 0 1-1.272.2.742.742 0 0 0-.682.582 1.07 1.07 0 0 1-.316.643l-.37.37a5.37 5.37 0 0 1-.643.316.742.742 0 0 0-.582.682 5.951 5.951 0 0 1-.2 1.272 5.94 5.94 0 0 1-1.173 1.173 5.946 5.946 0 0 1-1.272.2.742.742 0 0 0-.682-.582 1.07 1.07 0 0 1-.643-.316l-.37-.37a5.37 5.37 0 0 1-.316-.643.742.742 0 0 0-.582-.682 5.951 5.951 0 0 1-1.272-.2 5.94 5.94 0 0 1-1.173-1.173 5.946 5.946 0 0 1-.2-1.272.742.742 0 0 0 .582-.682 1.07 1.07 0 0 1 .316-.643l.37-.37a5.37 5.37 0 0 1 .643-.316.742.742 0 0 0 .682-.582 5.951 5.951 0 0 1 .2-1.272 5.94 5.94 0 0 1 1.173-1.173 5.946 5.946 0 0 1 1.272-.2.742.742 0 0 0 .682.582 1.07 1.07 0 0 1 .643.316l.37.37a5.37 5.37 0 0 1 .316.643.742.742 0 0 0 .582.682 5.951 5.951 0 0 1 1.272.2 5.94 5.94 0 0 1 1.173 1.173 5.946 5.946 0 0 1 .2 1.272.742.742 0 0 0-.582.682 1.07 1.07 0 0 1-.316.643l-.37.37a5.37 5.37 0 0 1-.643.316.742.742 0 0 0-.682.582z"/>
-                                </svg>
+								<i class="fa-solid fa-user-tie"></i>
 								</span>
-                                <span class="nav-link-text">Manage Admin</span>
+                                <span class="nav-link-text">Manage Admins</span>
                             </a>
                         </li>
                     <?php endif; ?>
+
+                    <li class="nav-item">
+                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                        <a class="nav-link" href="/admin/manage_customers">
+							<span class="nav-icon">
+							<i class="fas fa-users"></i>
+
+									</span>
+                            <span class="nav-link-text"> Manage Customers</span>
+                        </a><!--//nav-link-->
+                    </li><!--//nav-item-->
+
+                    <li class="nav-item">
+                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                        <a class="nav-link ac" href="/admin/manage_category">
+								<span class="nav-icon">
+								<i class="fas fa-receipt"></i>
+								</span>
+
+                            <span class="nav-link-text"> Manage Category</span>
+                        </a><!--//nav-link-->
+                    </li><!--//nav-item-->
+
                     <li class="nav-item">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
                         <a class="nav-link" href="/admin/manage_products">
@@ -115,33 +135,13 @@
                             <span class="nav-link-text"> Manage Products</span>
                         </a><!--//nav-link-->
                     </li><!--//nav-item-->
-                    <li class="nav-item">
-                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                        <a class="nav-link" href="/admin/manage_customers">
-							<span class="nav-icon">
-							<i class="fas fa-users"></i>
 
-									</span>
-                            <span class="nav-link-text"> Manage Customers</span>
-                        </a><!--//nav-link-->
-                    </li><!--//nav-item-->
-                    <li class="nav-item">
-                        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                        <a class="nav-link ac" href="/admin/manage_category">
-								<span class="nav-icon">
-								<i class="fas fa-tags"></i>
 
-								</span>
-
-                            <span class="nav-link-text"> Manage Category</span>
-                        </a><!--//nav-link-->
-                    </li><!--//nav-item-->
                     <li class="nav-item">
                         <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
                         <a class="nav-link" href="/admin/manage_orders">
 								<span class="nav-icon">
-								<i class="fas fa-receipt"></i>
-
+                                    <i class="bi bi-box-seam me-2"></i>
 								</span>
 
                             <span class="nav-link-text"> Manage Orders</span>

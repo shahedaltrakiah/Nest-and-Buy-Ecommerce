@@ -5,8 +5,9 @@
         <div class="container-xl">
             <div class="row g-3 mb-4 align-items-center justify-content-between shadow-sm p-3 bg-light rounded">
                 <div class="col-auto">
-                    <h1 class="app-page-title mb-0 text-success fw-bold">
-                        <i class="fas fa-tags me-3"></i>Manage Coupons
+                    <h1 class="app-page-title mb-0 text-success fw-bold"
+                        style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
+                        <i class="fas fa-tags me-3"></i> Coupons
                     </h1>
                 </div>
                 <div class="col-auto">

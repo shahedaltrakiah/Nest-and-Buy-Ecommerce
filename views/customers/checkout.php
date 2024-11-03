@@ -11,51 +11,26 @@
                 <h2 class="h3 mb-3 text-black">Billing Details</h2>
                 <div class="p-3 p-lg-5 border bg-white">
                     <form action="/customers/cart/checkout" method="POST" onsubmit="return validateForm()">
-                        <div class="form-group row">
-                            <div class="col-md-6 mb-3">
-                                <label for="c_fname" class="text-black">First Name <span
-                                            class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_fname" name="c_fname" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="c_lname" class="text-black">Last Name <span
-                                            class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_lname" name="c_lname" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <div class="col-md-12 mb-3">
-                                <label for="c_address" class="text-black">Address <span
-                                            class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_address" name="c_address"
-                                       placeholder="Street address" required>
-                            </div>
-                        </div>
 
-                        <div class="form-group row">
-                            <div class="col-md-6 mb-3">
-                                <label for="c_state_country" class="text-black">State / Country <span
-                                            class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_state_country" name="c_state_country"
-                                       required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="c_postal_zip" class="text-black">Postal / Zip <span
-                                            class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="c_postal_zip" name="c_postal_zip" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-3">
+                        <div class="form-group row ">
                             <div class="col-md-6">
                                 <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" id="c_email_address" name="c_email_address"
-                                       required>
+                                        placeholder="Email" required>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="c_phone" name="c_phone"
                                        placeholder="Phone Number" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-3">
+                            <div class="col-md-12 mb-3">
+                                <label for="c_address" class="text-black">Address <span
+                                            class="text-danger">*</span></label>
+                                <textarea rows="4" type="text" class="form-control" id="c_address" name="c_address"
+                                          placeholder="Street address" required></textarea>
                             </div>
                         </div>
 

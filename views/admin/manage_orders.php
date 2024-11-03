@@ -23,7 +23,8 @@ $total_pages = ceil($total_items / $items_per_page);
                 <div class="col-auto">
                     <h1 class="app-page-title mb-0 text-success fw-bold"
                         style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
-                        <i class="fas fa-users me-3"></i>Orders
+                        <i class="bi bi-box-seam me-2"></i>
+                        Orders
                     </h1>
                 </div>
                 <div class="col-auto">

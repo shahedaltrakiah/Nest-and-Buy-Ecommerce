@@ -32,7 +32,7 @@
     <!-- End Hero Section -->
 
     <!-- Start Category Slider Section -->
-    <div class="product-section untree_co-section">
+    <div class="product-section untree_co-section" id="category">
         <div class="container">
             <div class="row mb-4">
                 <div class="col-md-12 text-center">
@@ -242,7 +242,7 @@
 
 
     <!-- Start Popular Product -->
-    <div class="popular-product product-section">
+    <div class="popular-product product-section" id="bserseller">
         <div class="container">
             <h2 class="section-title mb-5">Best Sellers</h2>
             <div id="popularProductSlider" class="carousel slide testimonial-slider-wrap text-center"
@@ -297,7 +297,7 @@
     <!-- End Popular Product -->
 
     <!-- Start Testimonial Slider -->
-    <div class="testimonial-section">
+    <div class="testimonial-section" id="testimonial">
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 mx-auto text-center">

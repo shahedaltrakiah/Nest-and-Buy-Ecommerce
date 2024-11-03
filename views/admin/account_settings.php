@@ -131,7 +131,7 @@ require "views/partials/admin_header.php";
                                     </svg>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                     <div class="app-card-body px-4 w-100">

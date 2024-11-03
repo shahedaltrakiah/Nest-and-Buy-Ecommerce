@@ -9,7 +9,7 @@
                     <div class="col-auto">
                         <h1 class="app-page-title mb-4 text-success fw-bold"
                             style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
-                            <i class="fas fa-user-shield me-2"></i>Manage Admins
+                            <i class="fas fa-user-shield me-2"></i> Admins
                         </h1>
                     </div>
 

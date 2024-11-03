@@ -27,7 +27,12 @@ $total_pages = ceil($total_items / $items_per_page);
 				<div class="col-auto">
 					<h1 class="app-page-title mb-0 text-success fw-bold"
 						style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
-						<i class="bi bi-box-seam me-2"></i> Products
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-columns-gap"
+                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
+                        </svg>
+                        Products
 					</h1>
 				</div>
 				<!-- Utilities and Search Form -->

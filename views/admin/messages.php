@@ -30,7 +30,8 @@ $total_pages = ceil($total_items / $items_per_page);
                 <div class="col-auto">
                     <h1 class="app-page-title mb-0 text-success fw-bold"
                         style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
-                        <i class="bi bi-chat-square-dots me-2"></i> Messages
+                        <i class="fas fa-comments"></i>
+                        Messages
                     </h1>
                 </div>
                 <!-- Utilities and Search Form -->

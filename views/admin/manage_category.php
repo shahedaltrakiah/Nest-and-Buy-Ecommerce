@@ -54,7 +54,8 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                     <div class="col-auto">
                         <h1 class="app-page-title mb-0 text-success fw-bold"
                             style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
-                            <i class="fas fa-tags me-3"></i>Category
+                            <i class="fas fa-receipt"></i>
+                            Category
 
                         </h1>
                     </div>
