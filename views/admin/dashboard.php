@@ -49,7 +49,7 @@
                 <h4 class="stats-type mb-1">Total Sales</h4>
                 <div class="stats-figure d-flex align-items-center justify-content-center">
                     <img src="https://www.svgrepo.com/show/474976/sales-performance.svg" alt="Sales Performance Icon" width="30" height="40" class="me-2">
-                    <span class="fw-bold fs-4 text-center">$12,628</span>
+                    <span class="fw-bold fs-4 text-center"><sup>JD</sup>  12,628</span>
                 </div>
                 <div class="d-flex align-items-center justify-content-center stats-meta text-success">
                     <span class="fw-bold fs-4 text-center">20%</span>
@@ -65,7 +65,7 @@
                 <h4 class="stats-type mb-1">Expenses</h4>
                 <div class="stats-figure d-flex align-items-center justify-content-center">
                     <img src="https://www.svgrepo.com/show/233959/money.svg" alt="Money Icon" width="30" height="40" class="me-2">
-                    <span class="fw-bold fs-4 text-center">$2,250</span>
+                    <span class="fw-bold fs-4 text-center"> <sup>JD</sup>  2,250</span>
                 </div>
                 <div class="d-flex align-items-center justify-content-center stats-meta text-success">
                     <span class="fw-bold fs-4 text-center">5%</span>

@@ -108,9 +108,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.loginSuccess) {
-                        showAlert('success', 'Login successful! Redirecting...').then(() => {
-                            window.location.href = '/customers/index'; // Redirect after alert
-                        });
+                        window.location.href = '/customers/index';
                     } else {
                         showAlert('error', 'Invalid credentials. Please try again.');
                     }
