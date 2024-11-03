@@ -33,7 +33,19 @@ class Order extends Model
             throw new Exception("Missing required fields: customer_id and total_amount");
         }
     }
-    
+    public function updateStatus($orderId, $status)
+{
+    $stmt = $this->pdo->prepare("UPDATE $this->table SET status = ?, updated_at = NOW() WHERE id = ?");
+    $stmt->execute([$status, $orderId]);
+
+    return $stmt->rowCount(); // Return the number of affected rows
+}
+public function getStatusById($orderId)
+{
+    $stmt = $this->pdo->prepare("SELECT status FROM $this->table WHERE id = ?");
+    $stmt->execute([$orderId]);
+    return $stmt->fetchColumn(); // Returns the status of the order
+}
 
 
 }

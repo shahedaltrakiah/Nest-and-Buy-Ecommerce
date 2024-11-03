@@ -43,6 +43,7 @@ class Core
         'admin/Coupon' => ['AdminController@manageCoupons', 'GET'],
         'admin/CouponDelete' => ['AdminController@CouponDelete', 'POST'],
         'admin/addCoupon' => ['AdminController@addCoupon', 'POST'],
+        'admin/changeOrderStatus' => ['AdminController@changeOrderStatus', 'POST'],
 
 
         // Super Admin Routes
