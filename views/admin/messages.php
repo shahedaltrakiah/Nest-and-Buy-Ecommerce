@@ -62,23 +62,26 @@ $total_pages = ceil($total_items / $items_per_page);
             <table class="table table-hover table-borderless shadow-sm rounded">
                 <thead class="table-success">
                     <tr class="text-center">
-                        <th>ID</th>
                         <th>Customer ID</th>
                         <th>Customer Name</th>
                         <th>Content</th>
                         <th>Status</th>
                         <th>Created At</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                 <?php foreach ($paginated_messages as $message): ?>
                     <tr class="text-center">
-                        <td><?php echo htmlspecialchars($message['id']); ?></td>
                         <td><?php echo htmlspecialchars($message['customer_id']); ?></td>
                         <td><?= htmlspecialchars($message['customer_name'] ?? 'N/A') ?></td>
                         <td><?php echo htmlspecialchars($message['content']); ?></td>
                         <td><?php echo htmlspecialchars(ucwords(strtolower($message['status']))); ?></td>
                         <td><?php echo htmlspecialchars($message['created_at']); ?></td>
+                        <td>
+                            <button class="btn btn-outline-success" onclick="window.open('https://mail.google.com/mail/u/0/?ogbl#inbox', '_blank')">Reply</button>
+                        </td>
+
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

@@ -133,7 +133,6 @@ $total_pages = ceil($total_items / $items_per_page);
 						<th>ID</th>
 						<th>Image</th>
 						<th>Product Name</th>
-						<th>Description</th>
 						<th>Price</th>
 						<th>Average Rating</th>
 						<th>Stock Quantity</th>
@@ -157,9 +156,6 @@ $total_pages = ceil($total_items / $items_per_page);
 								$formattedName = ucwords($formattedName);
 								echo $formattedName;
 								?>
-							</td>
-							<td class="text-truncate " style="max-width: 150px;">
-								<?php echo htmlspecialchars($product['description']); ?>
 							</td>
 							<td>JD<?php echo number_format($product['price'], 2); ?></td>
 							<td><?php echo number_format($product['average_rating'], 1); ?>/5</td>

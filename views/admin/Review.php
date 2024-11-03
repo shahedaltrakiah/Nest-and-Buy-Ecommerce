@@ -30,10 +30,11 @@
                                     <td><?= htmlspecialchars($review['customer_id']); ?></td>
                                     <td><?= htmlspecialchars($review['product_id']); ?></td>
                                     <td>
-                                        <?php for ($i = 5; $i >= 1; $i--): ?>
+                                        <?php for ($i = 1; $i <= 5; $i++): ?>
                                             <i class="bi bi-star<?= ($i <= $review['rating']) ? '-fill' : '' ?> text-success"></i>
                                         <?php endfor; ?>
                                     </td>
+
                                     <td class="text-truncate" style="max-width: 150px;">
                                         <?= htmlspecialchars($review['comment']); ?>
                                     </td>
