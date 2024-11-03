@@ -128,48 +128,55 @@
 
     </div>
 
-    <!-- Reviews Section (Side-by-Side Layout) -->
+    <!-- Reviews Section -->
     <div class="reviews-section my-5 d-flex flex-column">
-        <div class="row">
             <div class="col-md-6">
                 <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Write a Review</h4>
             </div>
-            <div class="col-md-6 ">
-                <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Customer Reviews</h4>
-            </div>
 
-        </div>
-        <div class="d-flex justify-content-between my-5 mt-3" style="width: 100%;">
+        <div class="my-5 mt-3" style="width: 100%;">
 
             <!-- Review Submission Form -->
+
             <form method="POST" action="" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="rating" class="form-label">Rating</label>
-                    <div class="star-rating">
-                        <?php for ($i = 1; $i <= 5; $i++): ?>
-                            <i class="fa fa-star" data-value="<?= $i; ?>" onclick="setRating(<?= $i; ?>)" id="star-<?= $i; ?>"></i>
-                        <?php endfor; ?>
-                        <input type="hidden" name="rating" id="rating" required>
+                <!-- Rating and Upload Image side by side -->
+                <div class="d-flex justify-content-between mb-3">
+                    <!-- Rating Section -->
+                    <div class="me-2" style="flex: 1;">
+                        <label for="rating" class="form-label">Rating</label>
+                        <div class="star-rating">
+                            <?php for ($i = 1; $i <= 5; $i++): ?>
+                                <i class="fa fa-star" data-value="<?= $i; ?>" onclick="setRating(<?= $i; ?>)" id="star-<?= $i; ?>"></i>
+                            <?php endfor; ?>
+                            <input type="hidden" name="rating" id="rating" required>
+                        </div>
+                    </div>
+
+                    <!-- Upload Image Section -->
+                    <div class="ms-2" style="flex: 1;">
+                        <label for="image" class="form-label">Upload Image</label>
+                        <input type="file" name="image" id="image" class="form-control" accept="image/*">
                     </div>
                 </div>
+
+                <!-- Comment Section -->
                 <div class="mb-3">
                     <label for="comment" class="form-label">Comment</label>
                     <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
                 </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Upload Image</label>
-                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
+
+                <!-- Submit Button aligned to bottom right -->
+                <div class="d-flex justify-content-end mt-3">
+                    <button type="submit" class="btn btn-primary action-button mt-3" style="height: 50px; width: 200px;">Submit Review</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit Review</button>
             </form>
 
-
             <!-- Divider Line -->
-            <div class="vr mx-3"></div>
+            <hr class="mb-5" style="width: 75%; border: none; border-top: dotted #3B5D50; margin: 0 auto;">
 
-            <!-- Display Reviews with Scrolling -->
-            <div class="customer-reviews col-md-6 " id="reviews-section" >
-                <div class="reviews-filter">
+            <!-- Display Reviews Section -->
+            <div class="customer-reviews w-100" id="reviews-section">
+                <div class="reviews-filter mb-3">
                     <form method="GET" action="">
                         <div class="d-flex justify-content-between align-items-center">
                             <select name="filter" class="form-select me-2 mb-1">
@@ -184,49 +191,51 @@
                                 <option value="with_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'with_images' ? 'selected' : ''; ?>>Show Reviews with Images</option>
                                 <option value="without_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'without_images' ? 'selected' : ''; ?>>Show Reviews without Images</option>
                             </select>
-                            <button type="submit" class="btn btn-primary action-button me-2 mb-1" style="font-weight: lighter">Filter</button>
+                            <button type="submit" class="btn btn-primary action-button me-2 mb-1">Filter</button>
                         </div>
                     </form>
                 </div>
 
                 <?php if (!empty($reviews)): ?>
-                <?php foreach ($reviews as $review): ?>
-                <div class="review mt-1 p-3 border rounded bg-light d-flex align-items-start position-relative">
-                    <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
-                        <?php if ($user['id'] === $review['customer_id']): ?>
-                            <!-- Delete Review Button -->
-                            <button class="delete-review  btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
-                        <?php endif; ?>
-                    </div>
-                    <div class="review-info me-3">
-                        <p><strong>Rating:</strong>
-                            <?php
-                            $rating = (int)$review['rating'];
-                            for ($i = 1; $i <= 5; $i++) {
-                                echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
-                            }
-                            ?>
-                        </p>
-                        <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
-                        <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
-                        <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
-                    </div>
-                    <div class="review-image justify-content-center">
-                        <?php if (!empty($review['image_url'])): ?>
-                            <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" height="120" width="120">
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <?php endforeach; ?>
+                    <?php foreach ($reviews as $review): ?>
+                        <div class="review mt-1 p-3 border rounded bg-light d-flex position-relative">
+                            <!-- Delete Button -->
+                            <?php if (isset($user) && $user['id'] === $review['customer_id']): ?>
+                                <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
+                                    <button class="delete-review btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
+                                </div>
+                            <?php endif; ?>
 
+                            <!-- Review Content -->
+                            <div class="review-info me-3" style="flex: 1;">
+                                <p><strong>Rating:</strong>
+                                    <?php
+                                    $rating = (int)$review['rating'];
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
+                                    }
+                                    ?>
+                                </p>
+                                <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
+                                <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
+                                <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
+                            </div>
 
+                            <!-- Review Image Centered -->
+                            <div class="review-image d-flex justify-content-center align-items-center">
+                                <?php if (!empty($review['image_url'])): ?>
+                                    <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" style="height: 120px; width: 120px;">
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 <?php else: ?>
                     <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
                 <?php endif; ?>
-
-
             </div>
+
         </div>
+
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -259,15 +268,10 @@
             });
         });
     });
-</script>
-
-<script>
     function changeMainImage(src) {
         document.getElementById("main-image").src = src;
     }
-</script>
 
-<script>
     // JavaScript to handle star rating selection
     function setRating(rating) {
         // Set the hidden input value to the selected rating
