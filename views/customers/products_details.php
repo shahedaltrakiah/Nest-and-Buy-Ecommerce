@@ -201,44 +201,45 @@
                     </form>
                 </div>
 
-
                 <?php if (!empty($reviews)): ?>
-                    <?php foreach ($reviews as $review): ?>
-                        <div class="review mt-1 p-3 border rounded bg-light d-flex position-relative">
-                            <!-- Delete Button -->
-                            <?php if (isset($user) && $user['id'] === $review['customer_id']): ?>
-                                <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
-                                    <button class="delete-review btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
-                                </div>
-                            <?php endif; ?>
-
-                            <!-- Review Content -->
-                            <div class="review-info me-3" style="flex: 1;">
-                                <p><strong>Rating:</strong>
-                                    <?php
-                                    $rating = (int)$review['rating'];
-                                    for ($i = 1; $i <= 5; $i++) {
-                                        echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
-                                    }
-                                    ?>
-                                </p>
-                                <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
-                                <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
-                                <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
-                            </div>
-
-                            <!-- Review Image Centered -->
-                            <div class="review-image d-flex justify-content-center align-items-center">
-                                <?php if (!empty($review['image_url'])): ?>
-                                    <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" style="height: 120px; width: 120px;">
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
+    <?php foreach ($reviews as $review): ?>
+        <?php if ($review['status'] === 'accepted'): // Display only accepted reviews ?>
+            <div class="review mt-1 p-3 border rounded bg-light d-flex position-relative">
+                <!-- Delete Button -->
+                <?php if (isset($user) && $user['id'] === $review['customer_id']): ?>
+                    <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
+                        <button class="delete-review btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
+                    </div>
                 <?php endif; ?>
+
+                <!-- Review Content -->
+                <div class="review-info me-3" style="flex: 1;">
+                    <p><strong>Rating:</strong>
+                        <?php
+                        $rating = (int)$review['rating'];
+                        for ($i = 1; $i <= 5; $i++) {
+                            echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
+                        }
+                        ?>
+                    </p>
+                    <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
+                    <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
+                    <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
+                </div>
+
+                <!-- Review Image Centered -->
+                <div class="review-image d-flex justify-content-center align-items-center">
+                    <?php if (!empty($review['image_url'])): ?>
+                        <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" style="height: 120px; width: 120px;">
+                    <?php endif; ?>
+                </div>
             </div>
+        <?php endif; // End of accepted review check ?>
+    <?php endforeach; ?>
+<?php else: ?>
+    <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
+<?php endif; ?>
+
 
         </div>
 
