@@ -1,6 +1,6 @@
 <?php
 
-require 'models/Model.php';
+require_once 'models/Model.php';
 
 class Category extends Model
 {
@@ -9,6 +9,15 @@ class Category extends Model
     {
         parent::__construct('categories');
 
+    }
+    public function getAllCategories()
+    {
+        $statement = $this->pdo->prepare("
+        SELECT id, category_name
+        FROM $this->table
+        ");
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
 }

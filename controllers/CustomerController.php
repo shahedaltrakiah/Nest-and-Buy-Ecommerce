@@ -102,7 +102,6 @@ class CustomerController extends Controller
     }
 
 
-
     // Category details page
     public function categoryView($id)
     {

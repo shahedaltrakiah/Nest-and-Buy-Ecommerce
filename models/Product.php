@@ -1,6 +1,6 @@
 <?php
 
-require 'models/Model.php';
+require_once 'models/Model.php';
 
 class Product extends Model
 {
@@ -203,6 +203,25 @@ class Product extends Model
                     WHERE pi.product_id = p.id 
                     LIMIT 1) AS image_url FROM products p WHERE product_name LIKE :query");
         $statement->bindValue(':query', '%' . $query . '%');
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    public function getProductWithImage($id)
+    {
+        $statement = $this->pdo->prepare("
+            SELECT p.*, pi.image_url 
+            FROM $this->table p 
+            LEFT JOIN productimages pi ON p.id = pi.product_id 
+            WHERE p.id = :id
+        ");
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllProducts()
+    {
+        $statement = $this->pdo->prepare("SELECT * FROM $this->table");
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }

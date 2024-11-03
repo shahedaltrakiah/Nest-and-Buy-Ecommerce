@@ -13,18 +13,44 @@ class Core
         'admin/manage_category' => ['AdminController@manageCategory', 'GET'],
         'admin/manage_products' => ['AdminController@manageProducts', 'GET'],
         'admin/manage_orders' => ['AdminController@manageOrders', 'GET'],
-        'admin/manage_customers' => ['AdminController@manageCustomers', 'GET'],
+        'admin/manage_customers' => ['AdminController@manageCustomers', ['POST', 'GET']],
         'admin/manage_coupon' => ['AdminController@manageCoupon', 'GET'],
+        'admin/coupon_create' => ['AdminController@createCoupon', ['POST', 'GET']],
+        'admin/coupon_edit' => ['AdminController@editCoupon', 'GET'], // Specify POST for updates
+        'admin/coupon_update' => ['AdminController@updateCoupon', 'POST'], // Specify POST for updates
+        'admin/deleteCoupon' => ['AdminController@deleteCoupon', ['GET', 'POST']],
         'admin/messages' => ['AdminController@messages', 'GET'],
-        'admin/account_settings' => ['AdminController@accountSettings', 'GET'],
+        'admin/account_settings' => ['AdminController@accountSettings', ['GET', 'POST']],
         'admin/logout' => ['AdminController@logout', 'GET'],
-        'admin/product_view' => ['AdminController@viewProduct', 'GET'],
-        'admin/product_edit' => ['AdminController@editProduct', 'GET'],
-        'admin/product_update' => ['AdminController@updateProduct', 'POST'],
-        
-        // Super Admin Routes
-        'admin/super_manage_admin' => ['AdminController@manageAdmin', 'GET'],
+        'admin/product_create' => ['AdminController@createProduct', ['POST', 'GET']],
+        'admin/product_edit' => ['AdminController@editProduct', 'GET'], // Specify POST for updates
+        'admin/product_update' => ['AdminController@updateProduct', 'POST'], // Specify POST for updates
+        'admin/deleteProduct' => ['AdminController@deleteProduct', ['GET', 'POST']],
+        'admin/category_create' => ['AdminController@createCategory', ['POST', 'GET']],
+        'admin/category_view' => ['AdminController@viewCategory', 'GET'],
+        'admin/category_edit' => ['AdminController@editCategory', 'GET'], // Specify POST for updates
+        'admin/category_update' => ['AdminController@updateCategory', 'POST'], // Specify POST for updates
+        'admin/deleteCategory' => ['AdminController@deleteCategory', ['GET', 'POST']],
+        'admin/customer_edit' => ['AdminController@editCustomer', 'GET', 'GET'], // Specify POST for updates
+        'admin/Review' => ['AdminController@manageReviews', 'GET'],
+        'admin/deleteReview' => ['AdminController@removeReviewAdmin', 'POST'],
+        'admin/customer_update' => ['AdminController@updateCustomer', 'POST', 'GET'], // Specify POST for updates
+        'admin/customer_create' => ['AdminController@createCustomer', ['POST', 'GET']],
+        'admin/deleteCustomer' => ['AdminController@deleteCustomer', ['GET', 'POST']],
+        'admin/manage_testimonials' => ['AdminController@displayTestimonials', ['GET', 'POST']],
+        'admin/Coupon' => ['AdminController@manageCoupons', 'GET'],
+        'admin/CouponDelete' => ['AdminController@CouponDelete', 'POST'],
+        'admin/addCoupon' => ['AdminController@addCoupon', 'POST'],
 
+
+        // Super Admin Routes
+        //    'admin/super_manage_admin' => ['AdminController@manageAdmin', ['GET', 'POST']],
+        //    'super_admin/add_admin' => ['SuperAdminController@addAdmin', ['GET', 'POST']],
+        //    'admin/deleteAdmin' => ['AdminController@manageAdmin', ['GET', 'POST']],
+
+        'admin/super_manage_admin' => ['AdminController@manageAdmin', ['GET', 'POST']],
+        'admin/add_admin' => ['AdminController@addAdmin', ['GET', 'POST']],
+        'admin/delete_admin' => ['AdminController@deleteAdmin', ['GET', 'POST']],
         // Customer Routes
         'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
         'customers/rest_password' => ['CustomerController@restPassword', ['GET', 'POST']],
