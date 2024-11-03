@@ -203,6 +203,11 @@ class CustomerController extends Controller
         $sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
         $imageFilter = isset($_GET['image_filter']) ? $_GET['image_filter'] : 'with_images';
 
+// Initialize filter and sorting values
+        $filter = $_GET['filter'] ?? 'all';
+        $sortOrder = $_GET['sort'] ?? 'asc';
+        $imageFilter = $_GET['image_filter'] ?? 'all';
+
 // Filter reviews based on selected criteria
         if ($filter === 'my' && $user) {
             // Filter out only the user's reviews
@@ -215,18 +220,20 @@ class CustomerController extends Controller
         if ($imageFilter === 'with_images') {
             // Keep only reviews that have images
             $reviews = array_filter($reviews, function ($review) {
-                return !empty($review['image_url']); // Assuming review has an 'image' field
+                return !empty($review['image_url']); // Assuming review has an 'image_url' field
             });
         } elseif ($imageFilter === 'without_images') {
             // Keep only reviews that do not have images
             $reviews = array_filter($reviews, function ($review) {
-                return empty($review['image_url']); // Assuming review has an 'image' field
+                return empty($review['image_url']); // Assuming review has an 'image_url' field
             });
         }
 
+// No additional filtering for 'all', so all reviews remain unchanged.
+
 // Sort reviews by rating
         usort($reviews, function ($a, $b) use ($sortOrder) {
-            return $sortOrder === 'ASC' ? $a['rating'] <=> $b['rating'] : $b['rating'] <=> $a['rating'];
+            return $sortOrder === 'asc' ? $a['rating'] <=> $b['rating'] : $b['rating'] <=> $a['rating'];
         });
 
 

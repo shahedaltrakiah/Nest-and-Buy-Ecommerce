@@ -180,14 +180,15 @@
                     <form method="GET" action="">
                         <div class="d-flex justify-content-between align-items-center">
                             <select name="filter" class="form-select me-2 mb-1">
-                                <option value="all" <?= isset($_GET['filter']) && $_GET['filter'] === 'all' ? 'selected' : ''; ?>>All Reviews</option>
+                                <option value="all" <?= empty($_GET['filter']) || $_GET['filter'] === 'all' ? 'selected' : ''; ?>>All Reviews</option>
                                 <option value="my" <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'selected' : ''; ?>>My Reviews</option>
                             </select>
                             <select name="sort" class="form-select me-2 mb-1">
-                                <option value="asc" <?= isset($_GET['sort']) && $_GET['sort'] === 'asc' ? 'selected' : ''; ?>>Ascending</option>
+                                <option value="asc" <?= !isset($_GET['sort']) || $_GET['sort'] === 'asc' ? 'selected' : ''; ?>>Ascending</option>
                                 <option value="desc" <?= isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'selected' : ''; ?>>Descending</option>
                             </select>
                             <select name="image_filter" class="form-select me-2 mb-1">
+                                <option value="all" <?= empty($_GET['image_filter']) || $_GET['image_filter'] === 'all' ? 'selected' : ''; ?>>Show All Reviews</option>
                                 <option value="with_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'with_images' ? 'selected' : ''; ?>>Show Reviews with Images</option>
                                 <option value="without_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'without_images' ? 'selected' : ''; ?>>Show Reviews without Images</option>
                             </select>
@@ -195,6 +196,7 @@
                         </div>
                     </form>
                 </div>
+
 
                 <?php if (!empty($reviews)): ?>
                     <?php foreach ($reviews as $review): ?>
