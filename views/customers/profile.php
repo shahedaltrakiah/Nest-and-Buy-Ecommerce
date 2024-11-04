@@ -147,9 +147,7 @@
             </tbody>
         </table>
     </div>
-
-<!-- Modals for Viewing Order Details -->
-<?php foreach ($orders as $order): ?>
+    <?php foreach ($orders as $order): ?>
     <div class="modal fade" id="orderDetailsModal<?= $order['order_id'] ?>" tabindex="-1"
          aria-labelledby="orderDetailsModalLabel<?= $order['order_id'] ?>" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -199,33 +197,53 @@
     </div>
 
     <script>
-    // Set a 30-second countdown for each order
-    function startTimer(orderId, duration) {
-        let timerDisplay = document.getElementById('timer' + orderId);
-        let cancelButton = document.getElementById('cancelButton' + orderId);
-        let endTime = Date.now() + duration * 1000;
+function startTimer(orderId, duration) {
+    const timerDisplay = document.getElementById('timer' + orderId);
+    const cancelButton = document.getElementById('cancelButton' + orderId);
+    const endTimeKey = 'order_' + orderId + '_endTime';
+    const finishedKey = 'order_' + orderId + '_finished'; // New key for finished status
 
-        const interval = setInterval(() => {
-            let now = Date.now();
-            let remaining = endTime - now;
-
-            if (remaining <= 0) {
-                clearInterval(interval);
-                timerDisplay.textContent = 'Time is up!';
-                cancelButton.style.display = 'none'; // Hide the cancel button
-                return;
-            }
-
-            let seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-            timerDisplay.textContent = `${seconds}s`;
-        }, 1000);
+    // Check if the timer has already finished
+    if (localStorage.getItem(finishedKey)) {
+        timerDisplay.textContent = 'Time is up!';
+        cancelButton.style.display = 'none'; // Hide the cancel button
+        return; // Stop further execution
     }
 
-    // Start the timer for this order (30 seconds)
-    startTimer(<?= $order['order_id'] ?>, 30);
-</script>
+    let endTime = localStorage.getItem(endTimeKey);
+    if (!endTime) {
+        // Set a new end time if it doesn't exist
+        endTime = Date.now() + duration * 1000;
+        localStorage.setItem(endTimeKey, endTime);
+    } else {
+        endTime = parseInt(endTime, 10); // Convert to a number
+    }
 
+    const interval = setInterval(() => {
+        const now = Date.now();
+        const remaining = endTime - now;
+
+        if (remaining <= 0) {
+            clearInterval(interval);
+            timerDisplay.textContent = 'Time is up!';
+            cancelButton.style.display = 'none'; // Hide the cancel button
+            localStorage.setItem(finishedKey, 'true'); // Mark timer as finished
+            localStorage.removeItem(endTimeKey); // Clear stored end time
+            return;
+        }
+
+        const seconds = Math.floor((remaining / 1000) % 60);
+        timerDisplay.textContent = `${seconds}s`;
+    }, 1000);
+}
+
+// Start the timer for this order (10 seconds)
+startTimer(<?= $order['order_id'] ?>, 10);
+
+    </script>
 <?php endforeach; ?>
+
+
 
 
 
@@ -381,7 +399,7 @@
         $('.remove-btn').on('click', function (e) {
             e.preventDefault(); // Prevent the default form submission
             const form = $(this).closest('form'); // Get the closest form
-            const itemName = form.find('input[name="product_name"]').val(); // You may want to adjust this to get the actual product name instead
+            const itemName ='this item '// You may want to adjust this to get the actual product name instead
             removeItem(itemName, form); // Call the removeItem function
         });
 
