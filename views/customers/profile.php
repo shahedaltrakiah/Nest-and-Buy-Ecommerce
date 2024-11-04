@@ -8,7 +8,7 @@
     <div class="profile-card">
         <button class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
         <div class="profile-info">
-            <img src="<?php echo isset($_SESSION['user']['image_url']) ? '/public/' . $_SESSION['user']['image_url'] : '/public/images/user-profile.png'; ?>"
+         <img src="<?= htmlspecialchars($_SESSION['user']['image_url'] ?? '/public/images/user-profile.png') ?>"
                  alt="Profile Image">
 
             <div>

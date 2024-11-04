@@ -65,7 +65,6 @@ class CustomerController extends Controller
         }
         $this->view('customers/login_and_register');
     }
-
     // Rest Password for customers
     public function restPassword()
     {
