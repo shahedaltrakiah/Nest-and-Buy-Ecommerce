@@ -16,8 +16,16 @@ $start_index = ($current_page - 1) * $items_per_page;
 $paginated_orders = array_slice($filtered_orders, $start_index, $items_per_page);
 $total_items = count($filtered_orders);
 $total_pages = ceil($total_items / $items_per_page);
-?>
+$search_status = isset($_GET['status']) ? $_GET['status'] : '';
+if ($search_status) {
+    $paginated_orders = array_filter($orders, function($order) use ($search_status) {
+        return $order['status'] === $search_status;
+    });
+} else {
 
+    $paginated_orders = $orders;
+}
+?>
 <div class="app-wrapper">
     <div class="app-content pt-3 p-md-3 p-lg-4">
         <div class="container-xl">
@@ -47,82 +55,73 @@ $total_pages = ceil($total_items / $items_per_page);
                 </div>
             </div>
 
+            <div class="row g-3 mb-4 align-items-center justify-content-between shadow-sm p-3 bg-light rounded">
+                <div class="col-auto">
+                    <div class="btn-group" role="group" aria-label="Order Status Filters">
+                        <a href="?status=" class="btn btn-outline-success <?= $search_status === '' ? 'active' : ''; ?>">All Orders</a>
+                        <a href="?status=pending" class="btn btn-outline-warning <?= $search_status === 'pending' ? 'active' : ''; ?>">Pending</a>
+                        <a href="?status=completed" class="btn btn-outline-success <?= $search_status === 'completed' ? 'active' : ''; ?>">Completed</a>
+                        <a href="?status=canceled" class="btn btn-outline-danger <?= $search_status === 'canceled' ? 'active' : ''; ?>">Canceled</a>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
-    <table class="table table-hover table-borderless shadow-sm rounded">
-        <thead class="table-success">
-            <tr class="text-center">
-                <th class="text-nowrap">ID</th>
-                <th class="text-nowrap">Customer ID</th>
-                <th class="text-nowrap">Order Date</th>
-                <th class="text-nowrap">Status</th>
-                <th class="text-nowrap">Total Amount</th>
-                <th class="text-nowrap">Created At</th>
-                <th class="text-nowrap">Updated At</th>
-                <th class="text-nowrap">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($paginated_orders as $order): ?>
-                <tr class="text-center">
-                    <td><?= htmlspecialchars($order['id']); ?></td>
-                    <td><?= htmlspecialchars($order['customer_id']); ?></td>
-                    <td><?= htmlspecialchars($order['order_date']); ?></td>
-                    <td>
-                        <span class="badge bg-<?php
-                        if ($order['status'] == 'completed') {
-                            echo 'success';
-                        } elseif ($order['status'] == 'canceled') {
-                            echo 'danger';
-                        } else {
-                            echo 'warning';
-                        } ?>">
-                            <?= htmlspecialchars(ucfirst($order['status'])) ?>
-                        </span>
-                    </td>
-                    <td><?= htmlspecialchars($order['total_amount']); ?></td>
-                    <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['created_at']))); ?></td>
-                    <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['updated_at']))); ?></td>
-                    <td>
-                        <form action="/admin/changeOrderStatus" method="POST" class="d-inline">
-                            <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']); ?>">
-                            <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($order['status']); ?>">
-                            <select name="status" <?= ($order['status'] === 'completed' || $order['status'] === 'canceled') ? 'disabled' : ''; ?>>
-                                <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                                <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                                <!-- <option value="canceled" <?= $order['status'] === 'canceled' ? 'selected' : ''; ?>>Canceled</option> -->
-                            </select>
-                        </form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
-
-
-
-            <nav class="app-pagination">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item <?= $current_page <= 1 ? 'disabled' : '' ?>">
-                        <a class="page-link bg-primary text-white"
-                           href="?page=<?= $current_page - 1 ?>&search=<?= urlencode($search_query) ?>" tabindex="-1"
-                           aria-disabled="true">Previous</a>
-                    </li>
-                    <?php for ($page = 1; $page <= $total_pages; $page++): ?>
-                        <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
-                            <a class="page-link <?= $page == $current_page ? 'bg-success text-white' : 'bg-light text-dark' ?>"
-                               href="?page=<?= $page ?>&search=<?= urlencode($search_query) ?>"><?= $page ?></a>
-                        </li>
-                    <?php endfor; ?>
-                    <li class="page-item <?= $current_page >= $total_pages ? 'disabled' : '' ?>">
-                        <a class="page-link bg-primary text-white"
-                           href="?page=<?= $current_page + 1 ?>&search=<?= urlencode($search_query) ?>">Next</a>
-                    </li>
-                </ul>
-            </nav>
+                <table class="table table-hover table-borderless shadow-sm rounded">
+                    <thead class="table-success">
+                        <tr class="text-center">
+                            <th class="text-nowrap">ID</th>
+                            <th class="text-nowrap">Customer ID</th>
+                            <th class="text-nowrap">Order Date</th>
+                            <th class="text-nowrap">Status</th>
+                            <th class="text-nowrap">Total Amount</th>
+                            <th class="text-nowrap">Created At</th>
+                            <th class="text-nowrap">Updated At</th>
+                            <th class="text-nowrap">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($paginated_orders as $order): ?>
+                            <tr class="text-center">
+                                <td><?= htmlspecialchars($order['id']); ?></td>
+                                <td><?= htmlspecialchars($order['customer_id']); ?></td>
+                                <td><?= htmlspecialchars($order['order_date']); ?></td>
+                                <td>
+                                    <span class="badge bg-<?php
+                                    if ($order['status'] == 'completed') {
+                                        echo 'success';
+                                    } elseif ($order['status'] == 'canceled') {
+                                        echo 'danger';
+                                    } else {
+                                        echo 'warning';
+                                    } ?>">
+                                        <?= htmlspecialchars(ucfirst($order['status'])) ?>
+                                    </span>
+                                </td>
+                                <td><?= htmlspecialchars($order['total_amount']); ?></td>
+                                <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['created_at']))); ?></td>
+                                <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['updated_at']))); ?></td>
+                                <td>
+                                    <form action="/admin/changeOrderStatus" method="POST" class="d-inline">
+                                        <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']); ?>">
+                                        <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($order['status']); ?>">
+                                        <select name="status" <?= ($order['status'] === 'completed' || $order['status'] === 'canceled') ? 'disabled' : ''; ?>>
+                                            <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                                            <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                                            <!-- <option value="canceled" <?= $order['status'] === 'canceled' ? 'selected' : ''; ?>>Canceled</option> -->
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+
+
 
 <?php
 require "views/partials/admin_footer.php";

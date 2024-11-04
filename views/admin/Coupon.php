@@ -38,7 +38,7 @@
                                 <td>
                                     <form id="deleteForm-<?= htmlspecialchars($coupon['id']); ?>" action="/admin/CouponDelete" method="POST" style="display:inline;">
                                         <input type="hidden" name="couponId" value="<?= htmlspecialchars($coupon['id']); ?>">
-                                        <button type="button" class="btn btn-danger btn-sm" title="Delete" onclick="confirmDelete(<?= htmlspecialchars($coupon['id']); ?>)">
+                                        <button type="button" class="btn btn-danger btn-sm" title="Delete" onclick="confirmDeletecp(<?= htmlspecialchars($coupon['id']); ?>)">
                                         <i class="bi bi-trash"></i> <!-- Garbage icon -->
                                         </button>
                                     </form>
@@ -99,7 +99,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 
 <script>
-function confirmDelete(couponId) {
+function confirmDeletecp(couponId) {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
