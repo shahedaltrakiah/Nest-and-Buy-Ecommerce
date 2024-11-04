@@ -46,6 +46,21 @@ public function getStatusById($orderId)
     $stmt->execute([$orderId]);
     return $stmt->fetchColumn(); // Returns the status of the order
 }
+public function canCancelOrder($orderId)
+{
+    $stmt = $this->pdo->prepare("SELECT created_at FROM $this->table WHERE id = ?");
+    $stmt->execute([$orderId]);
+    $createdAt = $stmt->fetchColumn();
 
+    if ($createdAt) {
+        $orderTime = new DateTime($createdAt);
+        $currentTime = new DateTime();
+        $interval = $currentTime->diff($orderTime);
+
+        return $interval->h < 24 || $interval->days === 0; // Check if within 24 hours
+    }
+
+    return false;
+}
 
 }

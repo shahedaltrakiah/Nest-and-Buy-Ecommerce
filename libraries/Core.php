@@ -43,7 +43,7 @@ class Core
         'admin/Coupon' => ['AdminController@manageCoupons', 'GET'],
         'admin/CouponDelete' => ['AdminController@CouponDelete', 'POST'],
         'admin/addCoupon' => ['AdminController@addCoupon', 'POST'],
-        'admin/changeOrderStatus' => ['AdminController@changeOrderStatus', 'POST'],
+  'admin/changeOrderStatus' => ['AdminController@changeOrderStatus', 'POST'],
 
 
         // Super Admin Routes
@@ -80,6 +80,7 @@ class Core
         'profile/uploadImage' => ['CustomerController@uploadImage', 'POST'],
         'shop/liveSearch' => ['ShopController@liveSearch', 'GET'],
         'customers/thankyou' => ['CustomerController@thankYou', 'GET'],
+        'customers/profile/cancelOrder' => ['CustomerController@cancelOrder', ['POST']],
 
 
     ];

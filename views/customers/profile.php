@@ -148,60 +148,87 @@
         </table>
     </div>
 
-    <!-- Modals for Viewing Order Details -->
-    <?php foreach ($orders as $order): ?>
-        <div class="modal fade" id="orderDetailsModal<?= $order['order_id'] ?>" tabindex="-1"
-             aria-labelledby="orderDetailsModalLabel<?= $order['order_id'] ?>" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="orderDetailsModalLabel<?= $order['order_id'] ?>">Order Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="order-details">
-                            <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order['order_id']) ?></span>
-                            </h5>
-                            <p><strong>Date:</strong> <span
-                                        class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></span>
-                            </p>
-                            <p><strong>Status:</strong>
-                                <span class="badge bg-<?php
-                                if ($order['status'] == 'completed') {
-                                    echo 'success';
-                                } elseif ($order['status'] == 'canceled') {
-                                    echo 'danger';
-                                } else {
-                                    echo 'warning';
-                                }
-                                ?>">
-                                    <?= htmlspecialchars(ucfirst($order['status'])) ?>
-                                </span>
-                            </p>
-                            <p><strong>Total:</strong> <span
-                                        class="text-danger"><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></span>
-                            </p>
-                            <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
-                            <p><strong>Items Ordered:</strong></p>
-                            <div class="order-items">
-                                <ul class="list-group">
-                                    <?php foreach ($order['items'] as $item): ?>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <?= ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item->product_name))); ?>
-                                            <span class="badge bg-secondary"><sup> JD </sup><?= number_format($item->product_price, 2) ?></span>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
+<!-- Modals for Viewing Order Details -->
+<?php foreach ($orders as $order): ?>
+    <div class="modal fade" id="orderDetailsModal<?= $order['order_id'] ?>" tabindex="-1"
+         aria-labelledby="orderDetailsModalLabel<?= $order['order_id'] ?>" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel<?= $order['order_id'] ?>">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="order-details">
+                        <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order['order_id']) ?></span></h5>
+                        <p><strong>Date:</strong> <span class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></span></p>
+                        <p><strong>Status:</strong>
+                            <span class="badge bg-<?php
+                            if ($order['status'] == 'completed') {
+                                echo 'success';
+                            } elseif ($order['status'] == 'canceled') {
+                                echo 'danger';
+                            } else {
+                                echo 'warning';
+                            }
+                            ?>">
+                                <?= htmlspecialchars(ucfirst($order['status'])) ?>
+                            </span>
+                        </p>
+                        <p><strong>Total:</strong> <span class="text-danger"><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></span></p>
+                        <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
+                        <p><strong>Items Ordered:</strong></p>
+                        <div class="order-items">
+                            <ul class="list-group">
+                                <?php foreach ($order['items'] as $item): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?= ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item->product_name))); ?>
+                                        <span class="badge bg-secondary"><sup> JD </sup><?= number_format($item->product_price, 2) ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
+                        <p><strong>Time Left to Cancel:</strong> <span id="timer<?= $order['order_id'] ?>" class="text-danger"></span></p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" onclick="confirmCancel(<?= htmlspecialchars($order['order_id']) ?>)">Cancel Order</button>
                 </div>
             </div>
         </div>
-    <?php endforeach; ?>
+    </div>
+
+    <script>
+        // Set a 24-hour countdown for each order
+        function startTimer(orderId, duration) {
+            let timerDisplay = document.getElementById('timer' + orderId);
+            let endTime = Date.now() + duration * 1000;
+
+            const interval = setInterval(() => {
+                let now = Date.now();
+                let remaining = endTime - now;
+
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    timerDisplay.textContent = 'Time is up!';
+                    // Optionally disable the cancel button here
+                    return;
+                }
+
+                let hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+                timerDisplay.textContent = `${hours}h ${minutes}m ${seconds}s`;
+            }, 1000);
+        }
+
+        // Start the timer for this order (24 hours = 86400 seconds)
+        startTimer(<?= $order['order_id'] ?>, 86400);
+    </script>
+<?php endforeach; ?>
+
+
 
 
     <!-- Wishlist Section -->
@@ -299,7 +326,34 @@
 
             return false; // Prevent default form submission until confirmation
         }
+        function confirmCancel(orderId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, cancel it!',
+        cancelButtonText: 'No, keep it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Create a form dynamically and submit it
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/customers/profile/cancelOrder';
 
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'order_id';
+            input.value = orderId;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
         function removeItem(itemName, form) {
             Swal.fire({
                 title: 'Are you sure?',

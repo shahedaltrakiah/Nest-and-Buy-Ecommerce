@@ -410,4 +410,25 @@ class CustomerController extends Controller
         session_destroy();
         header('Location: /customers/login_and_register');
     }
+    public function cancelOrder()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $orderId = $_POST['order_id'];
+    
+            $orderModel = $this->model('Order');
+            if ($orderModel->canCancelOrder($orderId)) {
+                $orderModel->updateStatus($orderId, 'canceled');
+                // Redirect to the customer profile page after successful cancellation
+                header("Location: /customers/profile"); // Adjust the URL as needed
+                exit(); // Ensure no further code is executed
+            } else {
+                // Handle failure (order cannot be canceled)
+                // You might want to set a session message or redirect back with an error
+                $_SESSION['error'] = "Order cannot be canceled.";
+                header("Location: /customers/profile"); // Redirect to the profile or any other appropriate page
+                exit();
+            }
+        }
+    }
+    
 }
