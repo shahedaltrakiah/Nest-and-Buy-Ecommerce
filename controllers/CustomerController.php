@@ -7,64 +7,44 @@ class CustomerController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $formType = $_POST['form_type'];
-
+    
             if ($formType === 'signup') {
-                $data = [
-                    'first_name' => $_POST['first_name'],
-                    'last_name' => $_POST['last_name'],
-                    'email' => $_POST['email'],
-                    'phone' => $_POST['phone_number'],
-                    'password' => $_POST['password'],
-                    'confirm_password' => $_POST['confirm_password']
-                ];
-
-                // Check if the email is already in use
-                if ($this->model('Customer')->isEmailTaken($data['email'])) {
-                    echo json_encode(['emailTaken' => true]);
-                    exit();
-                }
-
-                // If registration is successful
-                if ($this->model('Customer')->register($data)) {
-                    echo json_encode(['registrationSuccess' => true]);
-                    exit();
-                } else {
-                    echo json_encode(['registrationSuccess' => false]);
-                    exit();
-                }
+                // Handle Signup
+                // ...
+    
             } elseif ($formType === 'signin') {
                 // Handle Sign In
                 $email = $_POST['email'];
                 $password = $_POST['password'];
-
+    
                 $user = $this->model('Customer')->login($email);
                 if ($user && password_verify($password, $user['password'])) {
                     // Define the default image path
-                    $defaultImagePath = 'images/user-profile.png';
-
+                    $defaultImagePath = '/public/images/user-profile.png'; // Adjusted path
+    
                     // Check if the user has a valid image path; use default if it's empty or incomplete
-                    $imagePath = (!empty($user['image_url']) && $user['image_url'] !== 'images/' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/' . $user['image_url']))
-                        ? $user['image_url']
+                    $imagePath = (!empty($user['image_url']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/uploads/' . $user['image_url']))
+                        ? '/public/uploads/' . $user['image_url'] // Full path to image
                         : $defaultImagePath;
-
+    
                     // Store user information in the session
                     $_SESSION['user'] = [
                         'id' => $user['id'],
-                        'image_url' => $imagePath,
+                        'image_url' => $imagePath, // Ensure this is correctly set
                         'name' => $user['first_name'] . ' ' . $user['last_name']
                     ];
-
+    
                     echo json_encode(['loginSuccess' => true]);
                     exit();
                 } else {
                     echo json_encode(['loginSuccess' => false]);
                     exit();
                 }
-
             }
         }
         $this->view('customers/login_and_register');
     }
+    
     // Rest Password for customers
     public function restPassword()
     {
@@ -324,11 +304,11 @@ class CustomerController extends Controller
         }
 
         // Validate email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Invalid email format.";
-        } elseif ($this->model('Customer')->isEmailTaken($email, $id)) {
-            $errors[] = "Email already taken! Please choose a different email address.";
-        }
+        // if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        //     $errors[] = "Invalid email format.";
+        // } elseif ($this->model('Customer')->isEmailTaken($email, $id)) {
+        //     $errors[] = "Email already taken! Please choose a different email address.";
+        // }
 
         // Validate phone number (Jordanian format: starts with 07 and has 10 digits)
         if (!preg_match('/^07\d{8}$/', $phoneNumber)) {
@@ -373,29 +353,31 @@ class CustomerController extends Controller
             }
         }
 
-        try {
-            // Update customer profile information in the database
-            $updateSuccess = $this->model('Customer')->updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageName);
-            if ($updateSuccess) {
-                if ($imageName) {
-                    $_SESSION['user']['image_url'] = 'uploads/' . $imageName; // Update image URL in session
-                }
-                header("Location: /customers/profile"); // Redirect on success
-                exit;
-            }
-        } catch (PDOException $e) {
-            // Handle specific database error for email duplication
-            if ($e->getCode() == 23000) {
-                $_SESSION['profile_errors'] = json_encode(["Email already taken! Please choose a different email address."]);
-                header("Location: /customers/profile");
-                exit;
-            } else {
-                // General error handling
-                $_SESSION['profile_errors'] = json_encode(["An error occurred while updating your profile."]);
-                header("Location: /customers/profile");
-                exit;
-            }
+try {
+    // Update customer profile information in the database
+    $updateSuccess = $this->model('Customer')->updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageName);
+    if ($updateSuccess) {
+        if ($imageName) {
+            // Include 'public/' in the image URL
+            $_SESSION['user']['image_url'] = '/public/uploads/' . $imageName; // Update image URL in session
         }
+        header("Location: /customers/profile"); // Redirect on success
+        exit;
+    }
+} catch (PDOException $e) {
+    // Handle specific database error for email duplication
+    if ($e->getCode() == 23000) {
+        $_SESSION['profile_errors'] = json_encode(["Email already taken! Please choose a different email address."]);
+        header("Location: /customers/profile");
+        exit;
+    } else {
+        // General error handling
+        $_SESSION['profile_errors'] = json_encode(["An error occurred while updating your profile."]);
+        header("Location: /customers/profile");
+        exit;
+    }
+}
+
 
         header("Location: /customers/profile");
         exit;
