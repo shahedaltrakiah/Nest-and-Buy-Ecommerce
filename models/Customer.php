@@ -85,5 +85,12 @@ class Customer extends Model
         }
     }
 
+    public function countCustomers()
+    {
+        $stmt = $this->pdo->prepare("SELECT COUNT(*) AS count FROM customers");
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ)->count;
+    }
+
 
 }

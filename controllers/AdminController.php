@@ -49,7 +49,35 @@ public function login()
     // Admin dashboard
     public function dashboard()
     {
-        $this->view('admin/dashboard');
+        $userCount = $this->model('Customer')->countCustomers();
+        $orderCount = $this->model('Order')->countOrders();
+        $orderTotal = $this->model('Order')->totalOrders();
+        $couponCount = $this->model('Coupon')->CouponCount();
+
+        // Fetch sales data for the chart
+        $salesData = $this->model('Order')->getSalesData();
+
+        $labels = [];
+        $values = [];
+
+        foreach ($salesData as $row) {
+            $labels[] = $row['order_date'];
+            $values[] = $row['total_amount'];
+        }
+
+        // Fetch most-selling products
+        $mostSellingProducts = $this->model('Product')->getMostSellingProducts();
+
+        // Pass all data to the view
+        $this->view('admin/dashboard', [
+            'userCount' => $userCount,
+            'orderCount' => $orderCount,
+            'orderTotal' => $orderTotal,
+            'couponCount' => $couponCount,
+            'labels' => json_encode($labels),
+            'values' => json_encode($values),
+            'mostSellingProducts' => $mostSellingProducts
+        ]);
     }
 
     // Manage categories

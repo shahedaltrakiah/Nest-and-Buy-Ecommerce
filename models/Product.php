@@ -227,4 +227,16 @@ class Product extends Model
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getMostSellingProducts($limit = 10) {
+        $statement = $this->pdo->prepare("SELECT p.id, p.product_name, p.price, p.average_rating, SUM(oi.quantity) AS total_sold
+            FROM products p
+            JOIN orderitems oi ON p.id = oi.product_id
+            GROUP BY p.id
+            ORDER BY total_sold DESC
+            LIMIT :limit");
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
