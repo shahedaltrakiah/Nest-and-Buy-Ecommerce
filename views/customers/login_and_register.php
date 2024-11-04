@@ -99,7 +99,7 @@
         document.getElementById('loginForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
 
-            const formData = new FormData(this); // Get form data
+            const formData = new FormData(this);
 
             fetch('/customers/login_and_register', {
                 method: 'POST',
