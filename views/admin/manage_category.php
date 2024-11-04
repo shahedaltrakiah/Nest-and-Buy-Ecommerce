@@ -215,43 +215,41 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
         </div>
     </div>
     <script>
-        function submitCategoryForm(event) {
-            event.preventDefault(); // Prevent the default form submission
+    function submitCategoryForm(event) {
+    event.preventDefault(); // Prevent the default form submission
 
-            var formData = new FormData(document.getElementById('createCategoryForm'));
+    var formData = new FormData(document.getElementById('createCategoryForm'));
 
-            fetch('/admin/category_create', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: data.message,
-                        }).then(() => {
-                            // Optionally refresh the page or update the category list
-                            location.reload(); // Reloads the page
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: data.message,
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'An unexpected error occurred. Please try again later.',
-                    });
-                });
+    fetch('/admin/category_create', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        return response.json();
+    })
+    .then(data => {
+        // Simple success message without error handling
+        Swal.fire({
+            icon: 'success',
+            title: 'Category Added',
+            text: 'Category added successfully!',
+        }).then(() => {
+            // Optionally refresh the page or update the category list
+            location.reload(); // Reloads the page
+        });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Optionally log error or alert user if needed
+    });
+}
+</script>
+<script>
+
+
 
         function confirmDelete(create, id) {
             create.preventDefault();
@@ -270,9 +268,7 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                 }
             });
         }
-    </script>
-    </script>
-
+        </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">

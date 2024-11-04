@@ -68,6 +68,7 @@ public function login()
         $this->view('admin/manage_products', ['products' => $products, 'categories' => $categories]);
 
     }
+    
 
     // Manage orders
     public function manageOrders()
@@ -75,6 +76,32 @@ public function login()
         $orders = $this->model('Order')->all();
         $this->view('admin/manage_orders', ['orders' => $orders]);
     }
+    public function changeOrderStatus()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $orderId = $_POST['orderId'];
+            $status = $_POST['status'];
+    
+            // Check if the order is already canceled or completed
+            $currentStatus = $this->model('Order')->getStatusById($orderId); // Assuming you have a method to get the current status
+            if ($currentStatus === 'canceled' || $currentStatus === 'completed') {
+                // Handle the case where the order cannot be edited
+                echo json_encode(['error' => 'This order cannot be changed.']);
+                exit;
+            }
+    
+            try {
+                $this->model('Order')->updateStatus($orderId, $status);
+                // Redirect or provide success feedback
+                header('Location: /admin/manage_orders'); // Adjust this path as necessary
+                exit;
+            } catch (Exception $e) {
+                // Handle error, perhaps log it and redirect with an error message
+                echo json_encode(['error' => "Error: " . $e->getMessage()]);
+            }
+        }
+    }
+    
 
     //view Item
     public function viewProduct($id)
@@ -493,68 +520,68 @@ public function login()
     
     // coupons 
 
-    public function manageCoupon()
-    {
-        $coupons = $this->model('Coupon')->All();
-        $this->view('admin/manage_coupon', ['coupons' => $coupons]);
-    }
-    public function editCoupon($id) {
-        $coupon = $this->model('Coupon')->find($id);
-        $this->view('admin/coupon_edit', ['coupon' => $coupon]);
-    }
-    public function createCoupon()
-    {
+    // public function manageCoupon()
+    // {
+    //     $coupons = $this->model('Coupon')->All();
+    //     $this->view('admin/manage_coupon', ['coupons' => $coupons]);
+    // }
+    // public function editCoupon($id) {
+    //     $coupon = $this->model('Coupon')->find($id);
+    //     $this->view('admin/coupon_edit', ['coupon' => $coupon]);
+    // }
+    // public function createCoupon()
+    // {
     
-        $data = [
-            'code' => $_POST['code'],
-            'discount' => $_POST['discount'],
-            'description' => $_POST['description'],
-            'usage_limit' => $_POST['usage_limit'],
-            'expiration_date' => $_POST['expiration_date'] , 
-        ];
+    //     $data = [
+    //         'code' => $_POST['code'],
+    //         'discount' => $_POST['discount'],
+    //         'description' => $_POST['description'],
+    //         'usage_limit' => $_POST['usage_limit'],
+    //         'expiration_date' => $_POST['expiration_date'] , 
+    //     ];
     
-        $this->model('Create')->create($data);
-        $_SESSION['message'] = "Coupon created successfully!";
-        header('Location: /admin/manage_coupon');
-        exit;
-    }
+    //     $this->model('Create')->create($data);
+    //     $_SESSION['message'] = "Coupon created successfully!";
+    //     header('Location: /admin/manage_coupon');
+    //     exit;
+    // }
     
-    public function updateCoupon($id) {
-        $data= [
-            'code' => $_POST['code'],
-            'discount' => $_POST['discount'],
-            'usage_limit' => $_POST['usage_limit'],
-            'expiration_date' => $_POST['expiration_date'],
-        ];
+    // public function updateCoupon($id) {
+    //     $data= [
+    //         'code' => $_POST['code'],
+    //         'discount' => $_POST['discount'],
+    //         'usage_limit' => $_POST['usage_limit'],
+    //         'expiration_date' => $_POST['expiration_date'],
+    //     ];
         
-        $coupon = $this->model('Coupon')->find($id);
+    //     $coupon = $this->model('Coupon')->find($id);
         
-        $this->model('Coupon')->update($id, $data);
+    //     $this->model('Coupon')->update($id, $data);
     
-        $_SESSION['message'] = "Coupon updated successfully!";
+    //     $_SESSION['message'] = "Coupon updated successfully!";
         
-        $this->view('admin/coupon_edit', ['coupon' => $coupon]);
+    //     $this->view('admin/coupon_edit', ['coupon' => $coupon]);
     
-        var_dump($_POST);
-        exit;
-    }
+    //     var_dump($_POST);
+    //     exit;
+    // }
     
-    public function deleteCoupon()
-    {
-        $id = $_POST['id'] ?? null;
+    // public function deleteCoupon()
+    // {
+    //     $id = $_POST['id'] ?? null;
     
-        if (!$id || !$this->model('Coupon')->find($id)) {
-            $_SESSION['error'] = "Coupon not found!";
-            header("Location: /admin/manage_coupon");
-            exit;
-        }
+    //     if (!$id || !$this->model('Coupon')->find($id)) {
+    //         $_SESSION['error'] = "Coupon not found!";
+    //         header("Location: /admin/manage_coupon");
+    //         exit;
+    //     }
     
-        $this->model('Coupon')->delete($id);
+    //     $this->model('Coupon')->delete($id);
     
-        $_SESSION['message'] = "Coupon deleted successfully!";
-        header("Location: /admin/manage_coupon");
-        exit;
-    }
+    //     $_SESSION['message'] = "Coupon deleted successfully!";
+    //     header("Location: /admin/manage_coupon");
+    //     exit;
+    // }
 
     public function manageReviews()
     {
@@ -586,6 +613,47 @@ public function login()
             }
     
             // Redirect back to the manage reviews page
+            header("Location: /admin/Review");
+            exit();
+        }
+    }
+    public function acceptReviewAdmin() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $reviewId = isset($_POST['reviewId']) ? intval($_POST['reviewId']) : 0;
+    
+            if ($reviewId > 0) {
+                $result = $this->model('Review')->acceptReview($reviewId);
+    
+                if ($result) {
+                    $_SESSION['message'] = "Review accepted successfully!";
+                } else {
+                    $_SESSION['error'] = "Error accepting review. Please try again.";
+                }
+            } else {
+                $_SESSION['error'] = "Invalid review ID.";
+            }
+    
+            header("Location: /admin/Review");
+            exit();
+        }
+    }
+    
+    public function rejectReviewAdmin() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $reviewId = isset($_POST['reviewId']) ? intval($_POST['reviewId']) : 0;
+    
+            if ($reviewId > 0) {
+                $result = $this->model('Review')->rejectReview($reviewId);
+    
+                if ($result) {
+                    $_SESSION['message'] = "Review rejected successfully!";
+                } else {
+                    $_SESSION['error'] = "Error rejecting review. Please try again.";
+                }
+            } else {
+                $_SESSION['error'] = "Invalid review ID.";
+            }
+    
             header("Location: /admin/Review");
             exit();
         }
