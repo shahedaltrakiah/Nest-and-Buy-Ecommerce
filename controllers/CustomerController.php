@@ -24,8 +24,8 @@ class CustomerController extends Controller
                     $defaultImagePath = '/public/images/user-profile.png'; // Adjusted path
 
                     // Check if the user has a valid image path; use default if it's empty or incomplete
-                    $imagePath = (!empty($user['image_url']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/uploads/' . $user['image_url']))
-                        ? '/public/uploads/' . $user['image_url'] // Full path to image
+                    $imagePath = (!empty($user['image_url']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/' . $user['image_url']))
+                        ? '/public/' . $user['image_url'] // Full path to image
                         : $defaultImagePath;
 
                     // Store user information in the session
@@ -337,8 +337,8 @@ class CustomerController extends Controller
                 exit;
             }
 
-            $imageName = time() . '_' . basename($image['name']);
-            $uploadDir = 'public/uploads/';
+            $imageName = 'uploads/'.time() . '_' . basename($image['name']);
+            $uploadDir = 'public/';
             $uploadFilePath = $uploadDir . $imageName;
 
             // Move uploaded file to the designated directory
@@ -355,7 +355,7 @@ class CustomerController extends Controller
             if ($updateSuccess) {
                 if ($imageName) {
                     // Include 'public/' in the image URL
-                    $_SESSION['user']['image_url'] = '/public/uploads/' . $imageName; // Update image URL in session
+                    $_SESSION['user']['image_url'] = '/public/' . $imageName; // Update image URL in session
                 }
                 header("Location: /customers/profile"); // Redirect on success
                 exit;

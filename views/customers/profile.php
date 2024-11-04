@@ -136,7 +136,7 @@
                     </span>
 
                     </td>
-                    <td><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></td>
+                    <td> JD <?= number_format($order['total_amount'], 2) ?></td>
                     <td>
                         <button class="view-details-btn" data-bs-toggle="modal"
                                 data-bs-target="#orderDetailsModal<?= $order['order_id'] ?>">View Details
@@ -175,7 +175,7 @@
                                 <?= htmlspecialchars(ucfirst($order['status'])) ?>
                             </span>
                         </p>
-                        <p><strong>Total:</strong> <span class="text-danger"><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></span></p>
+                        <p><strong>Total:</strong> <span class="text-danger"> JD <?= number_format($order['total_amount'], 2) ?></span></p>
                         <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
                         <p><strong>Items Ordered:</strong></p>
                         <div class="order-items">
@@ -183,7 +183,7 @@
                                 <?php foreach ($order['items'] as $item): ?>
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <?= ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item->product_name))); ?>
-                                        <span class="badge bg-secondary"><sup> JD </sup><?= number_format($item->product_price, 2) ?></span>
+                                        <span class="badge bg-secondary"> JD <?= number_format($item->product_price, 2) ?></span>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
@@ -247,8 +247,8 @@
                                 </div>
                                 <div class="card-body text-center">
                                     <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name']))); ?></h6>
-                                    <p class="card-text text-muted"><sup>
-                                            JD </sup><?= htmlspecialchars($item['price']) ?></p>
+                                    <p class="card-text text-muted">
+                                            JD <?= htmlspecialchars($item['price']) ?></p>
                                     <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
                                         <input type="hidden" name="product_id"
                                                value="<?= htmlspecialchars($item['product_id']) ?>">
@@ -365,8 +365,7 @@
                 confirmButtonText: 'Yes, remove it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit the form to remove the item
-                    form.submit(); // Submit the form after confirmation
+                    form.submit();
                     Swal.fire({
                         title: 'Removed!',
                         text: itemName + ' has been removed from your wishlist.',

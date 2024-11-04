@@ -48,14 +48,12 @@ class Model
         $sql = "INSERT INTO $this->table ($keys) VALUES ($tags)";
         $statement = $this->pdo->prepare($sql);
         $statement->execute($data);
+        return $this->pdo->lastInsertId();
     }
 
     public function update($id, $data)
     {
-        // Add the id to the data array so it can be bound to the SQL statement
         $data['id'] = $id;
-    
-        // Prepare the fields for the SQL statement
         $fields = '';
         foreach ($data as $key => $value) {
             $fields .= $key . '=:' . $key . ',';

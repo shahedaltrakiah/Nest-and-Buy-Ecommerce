@@ -154,7 +154,7 @@ public function login()
             if (in_array($imageFileType, $allowedTypes)) {
                 if (move_uploaded_file($_FILES['image_url']['tmp_name'], $targetFile)) {
 
-                    $data['image_url'] = "/public/uploads/" . basename($_FILES['image_url']['name']);
+                    $data['image_url'] = "uploads/" . basename($_FILES['image_url']['name']);
                 } else {
                     $_SESSION['message'] = "Error uploading image.";
                     return;
@@ -196,14 +196,14 @@ public function login()
             ];
             $productId = $this->model('Product')->create($productData);
 
-            $uploadDir = 'uploads/';
+            $uploadDir = '/public/uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
 
             if ($productId && isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
-                $imageName = basename($_FILES['image_url']['name']);
-                $imagePath = $uploadDir . $imageName;
+                $imageName = 'uploads/'.basename($_FILES['image_url']['name']);
+                $imagePath = $imageName;
 
 
                 if (move_uploaded_file($_FILES['image_url']['tmp_name'], $imagePath)) {
@@ -252,7 +252,7 @@ public function login()
             $customerId = $this->model('Customer')->create($customerData);
 
             // Handle file upload
-            $uploadDir = 'uploads/';
+            $uploadDir = 'public/uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -294,7 +294,7 @@ public function login()
     public function editProduct($id)
     {
         $categories = $this->model('Category')->all();
-        $product = $this->model('Product')->find($id);
+        $product = $this->model('Product')->getProductWithImage($id);
         $this->view('admin/product_edit', ['product' => $product, 'categories' => $categories]);
     }
 
@@ -319,7 +319,7 @@ public function login()
     
         // Check if an image file is uploaded
         if (!empty($_FILES['image_url']['name'])) {
-            $targetDir = 'public/uploads/';
+            $targetDir = 'uploads/';
             $targetFile = $targetDir . basename($_FILES['image_url']['name']);
             $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
     

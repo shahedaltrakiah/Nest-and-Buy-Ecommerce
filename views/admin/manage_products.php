@@ -149,11 +149,10 @@ $total_pages = ceil($total_items / $items_per_page);
 						<tr class="text-center">
 							<td><?php echo htmlspecialchars($product['id']); ?></td>
 							<td>
-								<?php
-								$imageSrc = !empty($product['image_url']) ? '/public/' . htmlspecialchars($product['image_url']) : '/public/images/product.png';
-								?>
-
-								<img src="<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
+                                <?php
+                                $imageSrc = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : 'images/product.png';
+                                ?>
+								<img src="/public/<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
 							</td>
 							<td class="text-truncate" style="max-width: 150px;">
 								<?php
