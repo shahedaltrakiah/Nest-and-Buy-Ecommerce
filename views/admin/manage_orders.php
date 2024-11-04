@@ -89,7 +89,7 @@ $total_pages = ceil($total_items / $items_per_page);
                             <select name="status" <?= ($order['status'] === 'completed' || $order['status'] === 'canceled') ? 'disabled' : ''; ?>>
                                 <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
                                 <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                                <option value="canceled" <?= $order['status'] === 'canceled' ? 'selected' : ''; ?>>Canceled</option>
+                                <!-- <option value="canceled" <?= $order['status'] === 'canceled' ? 'selected' : ''; ?>>Canceled</option> -->
                             </select>
                         </form>
                     </td>

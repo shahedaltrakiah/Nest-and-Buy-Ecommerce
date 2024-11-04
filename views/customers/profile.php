@@ -192,41 +192,41 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" onclick="confirmCancel(<?= htmlspecialchars($order['order_id']) ?>)">Cancel Order</button>
+                    <button id="cancelButton<?= $order['order_id'] ?>" class="btn btn-danger" onclick="confirmCancel(<?= htmlspecialchars($order['order_id']) ?>)">Cancel Order</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Set a 24-hour countdown for each order
-        function startTimer(orderId, duration) {
-            let timerDisplay = document.getElementById('timer' + orderId);
-            let endTime = Date.now() + duration * 1000;
+    // Set a 30-second countdown for each order
+    function startTimer(orderId, duration) {
+        let timerDisplay = document.getElementById('timer' + orderId);
+        let cancelButton = document.getElementById('cancelButton' + orderId);
+        let endTime = Date.now() + duration * 1000;
 
-            const interval = setInterval(() => {
-                let now = Date.now();
-                let remaining = endTime - now;
+        const interval = setInterval(() => {
+            let now = Date.now();
+            let remaining = endTime - now;
 
-                if (remaining <= 0) {
-                    clearInterval(interval);
-                    timerDisplay.textContent = 'Time is up!';
-                    // Optionally disable the cancel button here
-                    return;
-                }
+            if (remaining <= 0) {
+                clearInterval(interval);
+                timerDisplay.textContent = 'Time is up!';
+                cancelButton.style.display = 'none'; // Hide the cancel button
+                return;
+            }
 
-                let hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                let minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-                let seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+            let seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+            timerDisplay.textContent = `${seconds}s`;
+        }, 1000);
+    }
 
-                timerDisplay.textContent = `${hours}h ${minutes}m ${seconds}s`;
-            }, 1000);
-        }
+    // Start the timer for this order (30 seconds)
+    startTimer(<?= $order['order_id'] ?>, 30);
+</script>
 
-        // Start the timer for this order (24 hours = 86400 seconds)
-        startTimer(<?= $order['order_id'] ?>, 86400);
-    </script>
 <?php endforeach; ?>
+
 
 
 
