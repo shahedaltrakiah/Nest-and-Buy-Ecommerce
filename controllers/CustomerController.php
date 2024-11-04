@@ -85,6 +85,12 @@ class CustomerController extends Controller
         $this->view('customers/about');
     }
 
+    // About Us page
+    public function thankYou()
+    {
+        $this->view('customers/thankyou');
+    }
+
     public function contact() {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

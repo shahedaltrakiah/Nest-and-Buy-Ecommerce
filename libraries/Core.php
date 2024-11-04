@@ -76,6 +76,8 @@ class Core
         'customers/profile/update' => ['CustomerController@updateProfile', ['POST']],
         'profile/uploadImage' => ['CustomerController@uploadImage', 'POST'],
         'shop/liveSearch' => ['ShopController@liveSearch', 'GET'],
+        'customers/thankyou' => ['CustomerController@thankYou', 'GET'],
+
 
     ];
 

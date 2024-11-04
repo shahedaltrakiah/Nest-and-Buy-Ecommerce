@@ -223,7 +223,7 @@ class CartController extends Controller
 
             // Set success message and redirect
             $_SESSION['success_message'] = 'Order placed successfully!';
-            header('Location: /customers/cart'); // Redirect to the cart or confirmation page
+            header('Location: /customers/thankyou'); // Redirect to the cart or confirmation page
             exit();
         }
 
