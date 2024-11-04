@@ -12,19 +12,24 @@
 <body>
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form id="registerForm" action="/customers/login_and_register" method="POST"
-              onsubmit="return validateRegisterForm()">
+        <form id="registerForm" action="/customers/login_and_register" method="POST" onsubmit="return validateRegisterForm()">
             <h1>Create Account</h1>
             <input type="hidden" name="form_type" value="signup">
+
             <input type="text" id="firstName" name="first_name" placeholder="First Name">
             <input class="m-3" type="text" id="lastName" name="last_name" placeholder="Last Name">
+
             <input type="email" id="email" name="email" placeholder="Email">
             <input class="m-3" type="tel" id="phone" name="phone_number" placeholder="Phone Number">
+
+            <input type="text" id="address" name="address" placeholder="Address" class="m-3">
+
             <input type="password" id="password" name="password" placeholder="Password">
-            <input class="m-3" type="password" id="confirmPassword" name="confirm_password"
-                   placeholder="Confirm Password">
+            <input class="m-3" type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm Password">
+
             <button type="submit" style="margin-top: 10px;">Sign Up</button>
         </form>
+
     </div>
     <div class="form-container sign-in-container">
         <form id="loginForm" action="/customers/login_and_register" method="POST" onsubmit="return validateLoginForm()">

@@ -127,3 +127,19 @@
         return true;
     }
 </script>
+
+<?php if ($_GET['error'] === 'not_logged_in'): ?>
+    <script>
+        Swal.fire({
+            title: 'Error',
+            text: 'Customer not logged in',
+            icon: 'error',
+            confirmButtonColor: '#3B5D50',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/customers/login_and_register';
+            }
+        });
+    </script>
+<?php endif; ?>

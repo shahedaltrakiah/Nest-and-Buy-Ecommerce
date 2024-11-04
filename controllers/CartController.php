@@ -159,8 +159,7 @@ class CartController extends Controller
             $customerId = $_SESSION['user']['id'] ?? null;
 
             if ($customerId === null) {
-                $_SESSION['error_message'] = 'Customer not logged in.';
-                header('Location: /customers/login_and_register');
+                header('Location: /customers/checkout?error=not_logged_in');
                 exit();
             }
 

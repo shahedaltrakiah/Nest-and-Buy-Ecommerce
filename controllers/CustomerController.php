@@ -10,8 +10,30 @@ class CustomerController extends Controller
             $formType = $_POST['form_type'];
 
             if ($formType === 'signup') {
-                // Handle Signup
-                // ...
+                $data = [
+                    'first_name' => $_POST['first_name'],
+                    'last_name' => $_POST['last_name'],
+                    'email' => $_POST['email'],
+                    'phone' => $_POST['phone_number'],
+                    'password' => $_POST['password'],
+                    'confirm_password' => $_POST['confirm_password'],
+                    'address' => $_POST['address'],
+                ];
+
+                // Check if the email is already in use
+                if ($this->model('Customer')->isEmailTaken($data['email'])) {
+                    echo json_encode(['emailTaken' => true]);
+                    exit();
+                }
+
+                // If registration is successful
+                if ($this->model('Customer')->register($data)) {
+                    echo json_encode(['registrationSuccess' => true]);
+                    exit();
+                } else {
+                    echo json_encode(['registrationSuccess' => false]);
+                    exit();
+                }
 
             } elseif ($formType === 'signin') {
                 // Handle Sign In

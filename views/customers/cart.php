@@ -161,35 +161,6 @@ require "views/partials/header.php"; ?>
                     });
             }
         </script>
-
-        <!-- Display success or error messages here -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                <?php if (isset($_SESSION['success_message'])): ?>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: '<?= htmlspecialchars($_SESSION['success_message']); ?>',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3B5D50'
-                });
-                <?php unset($_SESSION['success_message']); // Clear message after displaying ?>
-                <?php endif; ?>
-
-                <?php if (isset($_SESSION['error_message'])): ?>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '<?= htmlspecialchars($_SESSION['error_message']); ?>',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3B5D50'
-                });
-                <?php unset($_SESSION['error_message']); // Clear message after displaying ?>
-                <?php endif; ?>
-            });
-        </script>
-
-
     </div> <!-- End of container -->
 </div> <!-- End of untree_co-section before-footer-section -->
 

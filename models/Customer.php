@@ -13,14 +13,15 @@ class Customer extends Model
     public function register($data)
     {
         $statement = $this->pdo->prepare("INSERT INTO $this->table 
-    (first_name, last_name, email, 	phone_number, password) VALUES (?, ?, ?, ?, ?)");
+    (first_name, last_name, email, 	phone_number, password,address) VALUES (?, ?, ?, ?, ?,?)");
 
         return $statement->execute([
             $data['first_name'],
             $data['last_name'],
             $data['email'],
             $data['phone'],
-            password_hash($data['password'], PASSWORD_BCRYPT)
+            password_hash($data['password'], PASSWORD_BCRYPT),
+            $data['address']
         ]);
     }
 
