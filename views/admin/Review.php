@@ -61,10 +61,10 @@
                                             <input type="hidden" name="reviewId" value="<?= htmlspecialchars($review['id']); ?>">
                                             <button type="submit" class="btn btn-danger btn-sm">Reject</button>
                                         </form>
-                                        <form id="deleteForm-<?= htmlspecialchars($review['id']); ?>" action="/admin/deleteReview" method="POST" onsubmit="return confirmDelete(event, '<?= htmlspecialchars($review['id']); ?>')" class="ms-2">
+                                        <!-- <form id="deleteForm-<?= htmlspecialchars($review['id']); ?>" action="/admin/deleteReview" method="POST" onsubmit="return confirmDelete(event, '<?= htmlspecialchars($review['id']); ?>')" class="ms-2">
                                             <input type="hidden" name="reviewId" value="<?= htmlspecialchars($review['id']); ?>">
                                             <button type="submit" class="btn btn-warning btn-sm"><i class="bi bi-trash"></i></button>
-                                        </form>
+                                        </form> -->
                                     </div>
                                 </td>
                             </tr>
@@ -83,26 +83,26 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmDelete(event, reviewId) {
-        event.preventDefault(); // Prevent the form from submitting immediately
+<!-- <script>
+//     function confirmDelete(event, reviewId) {
+//         event.preventDefault(); // Prevent the form from submitting immediately
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If the user confirms, submit the form
-                document.getElementById('deleteForm-' + reviewId).submit();
-            }
-        });
-    }
-</script>
+//         Swal.fire({
+//             title: 'Are you sure?',
+//             text: "You won't be able to revert this!",
+//             icon: 'warning',
+//             showCancelButton: true,
+//             confirmButtonColor: '#d33',
+//             cancelButtonColor: '#3085d6',
+//             confirmButtonText: 'Yes, delete it!',
+//             cancelButtonText: 'Cancel'
+//         }).then((result) => {
+//             if (result.isConfirmed) {
+//                 // If the user confirms, submit the form
+//                 document.getElementById('deleteForm-' + reviewId).submit();
+//             }
+//         });
+//     }
+// </script> -->
 
 <?php require "views/partials/admin_footer.php"; ?>
