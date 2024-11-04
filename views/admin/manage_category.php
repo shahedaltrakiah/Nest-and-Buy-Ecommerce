@@ -60,7 +60,6 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                         </h1>
                     </div>
 
-
                     <div class="col-auto">
                         <div class="page-utilities">
                             <div class="row g-2 align-items-center">
@@ -158,7 +157,7 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                                 <td><?php echo htmlspecialchars($category['id']); ?></td>
                                 <td>
                                     <?php
-                                    $imageSrc = !empty($category['image_url']) ? "/public/" . htmlspecialchars($category['image_url']) : "";
+                                    $imageSrc = !empty($category['image_url']) ? "/public/" . htmlspecialchars($category['image_url']) : "images/category-defult.png";
                                     ?>
                                     <img src="<?= $imageSrc; ?>" class="" style="width: 70px; height: 70px;">
                                 </td>
@@ -248,8 +247,6 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
 }
 </script>
 <script>
-
-
 
         function confirmDelete(create, id) {
             create.preventDefault();

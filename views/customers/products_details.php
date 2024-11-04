@@ -88,7 +88,7 @@
                     <?php endfor; ?>
                 </div>
                 <a href="#reviews-section" class="text-primary" style="cursor: pointer;"><?= count($reviews); ?> reviews</a>
-                <h4 class="product-price text-primary mt-3"><sup>JD</sup> <?= htmlspecialchars(number_format($product['price'], 2)); ?></h4>
+                <h4 class="product-price text-primary mt-3"> JD <?= htmlspecialchars(number_format($product['price'], 2)); ?></h4>
                 <p class="lh-lg mt-3"><?= htmlspecialchars($product['description']); ?></p>
 
                 <div class="availability mb-1">
@@ -299,6 +299,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <?php require 'views/partials/footer.php'; ?>
+
 <script>
     function zoomImage(img) {
         // Create a modal to display the image

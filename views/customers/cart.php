@@ -40,11 +40,11 @@ require "views/partials/header.php"; ?>
                                         <td class="product-name">
                                             <b><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?></b>
                                         </td>
-                                        <td class="product-price"><sup>JD</sup><?= number_format($product['price'], 2); ?></td>
+                                        <td class="product-price">JD<?= number_format($product['price'], 2); ?></td>
                                         <td class="product-quantity">
                                             <span><?php echo htmlspecialchars($product['quantity']); ?></span>
                                         </td>
-                                        <td class="product-total"><sup>JD</sup><?= number_format($total, 2); ?></td>
+                                        <td class="product-total">JD<?= number_format($total, 2); ?></td>
                                         <td class="product-remove">
                                             <button onclick="removeProduct('<?php echo $product_id; ?>')"
                                                     style="border: none; background: none; padding: 0; cursor: pointer; font-size: 30px;">
@@ -80,7 +80,7 @@ require "views/partials/header.php"; ?>
                         </div>
                         <div class="col-md-6 text-end">
                             <strong class="text-black">
-                                <sup>JD</sup><?php echo number_format($subtotal, 2); ?>
+                                JD<?php echo number_format($subtotal, 2); ?>
                             </strong>
                         </div>
                     </div>
@@ -92,7 +92,7 @@ require "views/partials/header.php"; ?>
                             </div>
                             <div class="col-md-6 text-end">
                                 <strong class="text-black">-
-                                    <sup>JD</sup><?php echo number_format($_SESSION['discount'], 2); ?></strong>
+                                    JD<?php echo number_format($_SESSION['discount'], 2); ?></strong>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -103,7 +103,7 @@ require "views/partials/header.php"; ?>
                         </div>
                         <div class="col-md-6 text-end">
                             <strong class="text-black">
-                                <sup>JD</sup><?php echo number_format($subtotal - ($_SESSION['discount'] ?? 0), 2); ?>
+                                JD<?php echo number_format($subtotal - ($_SESSION['discount'] ?? 0), 2); ?>
                             </strong>
                         </div>
                     </div>

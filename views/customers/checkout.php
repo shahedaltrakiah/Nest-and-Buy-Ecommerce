@@ -65,7 +65,7 @@
                                             <td><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?><strong
                                                         class="mx-2">x</strong> <?php echo htmlspecialchars($product['quantity']); ?>
                                             </td>
-                                            <td><sup>JD</sup><?php echo number_format($totalPrice, 2); ?></td>
+                                            <td>JD<?php echo number_format($totalPrice, 2); ?></td>
                                         </tr>
                                         <?php
                                     }
@@ -74,7 +74,7 @@
 
                                 <tr>
                                     <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                                    <td class="text-black"><sup>JD</sup><?php echo number_format($subtotal, 2); ?></td>
+                                    <td class="text-black">JD<?php echo number_format($subtotal, 2); ?></td>
                                 </tr>
 
                                 <?php
@@ -83,7 +83,7 @@
                                 if ($discount > 0) {
                                     echo "<tr>
                                     <td class='text-black font-weight-bold'><strong>Discount</strong></td>
-                                    <td class='text-black'><sup>-JD</sup>" . number_format($discount, 2) . "</td>
+                                    <td class='text-black'>JD" . number_format($discount, 2) . "</td>
                                   </tr>";
                                 }
 
@@ -94,7 +94,7 @@
                                 <tr>
                                     <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
                                     <td class="text-black font-weight-bold">
-                                        <strong><sup>JD</sup><?php echo number_format($totalAmount, 2); ?></strong></td>
+                                        <strong>JD<?php echo number_format($totalAmount, 2); ?></strong></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -110,29 +110,12 @@
 <?php require "views/partials/footer.php"; ?>
 <script>
     function validateForm() {
-        const firstName = document.getElementById('c_fname').value;
-        const lastName = document.getElementById('c_lname').value;
-        const postalCode = document.getElementById('c_postal_zip').value;
         const email = document.getElementById('c_email_address').value;
         const phoneInput = document.getElementById('c_phone').value;
 
-        const namePattern = /^[A-Za-z\s]+$/;
         const phonePattern = /^(\+9627|07)\d{8}$/;
-        const postalPattern = /^\d+$/;
         const emailPattern = /^[a-zA-Z][\w.-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-        if (!namePattern.test(firstName)) {
-            swal("Error", "First Name should only contain letters.", "error");
-            return false;
-        }
-        if (!namePattern.test(lastName)) {
-            swal("Error", "Last Name should only contain letters.", "error",);
-            return false;
-        }
-        if (!postalPattern.test(postalCode)) {
-            swal("Error", "Postal/Zip Code should only contain numbers.", "error");
-            return false;
-        }
         if (!emailPattern.test(email)) {
             swal("Error", "Email should not start with a number and should be valid.", "error");
             return false;
@@ -141,7 +124,6 @@
             swal("Error", "Please enter a valid Jordanian phone number.", "error");
             return false;
         }
-
         return true;
     }
 </script>

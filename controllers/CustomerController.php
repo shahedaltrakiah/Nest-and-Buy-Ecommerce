@@ -88,6 +88,8 @@ class CustomerController extends Controller
     // About Us page
     public function thankYou()
     {
+        $orderItemsData = $this->model('OrderItem')->getOrderDetails();
+
         $this->view('customers/thankyou');
     }
 
@@ -162,8 +164,6 @@ class CustomerController extends Controller
         }
     }
 
-
-
     //rania: Product details page
     public function productDetails($id)
     {
@@ -201,8 +201,6 @@ class CustomerController extends Controller
                 $errorMessage = "Please log in to submit a review.";
             }
         }
-
-
 
         // Get filter and sort criteria from URL parameters
         $filter = isset($_GET['filter']) ? $_GET['filter'] : 'all';
@@ -264,10 +262,7 @@ class CustomerController extends Controller
     {
         $this->view('customers/checkout');
     }
-    public function test() {
-        // Include the test view
-        require_once __DIR__ . '/../views/customers/test.php';
-    }
+
 
     // Profile page for customer
     public function profile()
@@ -397,11 +392,9 @@ class CustomerController extends Controller
                 exit;
             }
         }
-
         header("Location: /customers/profile");
         exit;
     }
-
 
     // Customer logout
     public function logout()

@@ -196,7 +196,7 @@ public function login()
             ];
             $productId = $this->model('Product')->create($productData);
 
-            $uploadDir = '/public/uploads/';
+            $uploadDir = 'uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -224,7 +224,7 @@ public function login()
             $_SESSION['message'] = "Please fill in all required fields.";
         }
 
-        $products = $this->model('Product')->all();
+        $products = $this->model('Product')->getProducts();
         $this->view('admin/manage_products', ['products' => $products, 'categories' => $categories]);
     }
 
@@ -252,11 +252,10 @@ public function login()
             $customerId = $this->model('Customer')->create($customerData);
 
             // Handle file upload
-            $uploadDir = 'public/uploads/';
+            $uploadDir = 'uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
-
 
             $this->view('admin/manage_customers', ['customers' => $this->model('Customer')->all()]);
         } else {
@@ -386,8 +385,7 @@ public function login()
             exit();
         }
     }
-    
-    // ===================================================
+
     public function createCategory()
     {
         if (isset($_POST['category_name']) && !empty($_FILES['image_url']['name'])) {
@@ -397,7 +395,7 @@ public function login()
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
     
-            $uploadDir = 'public/uploads/';
+            $uploadDir = 'uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }

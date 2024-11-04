@@ -1,6 +1,6 @@
 <?php require "views/partials/header.php"; ?>
 
-<div class="untree_co-section">
+<div class="untree_co-section" style="margin-top: -70px; margin-bottom: -20px;">
     <div class="container">
       <div class="row">
         <div class="col-md-12 text-center pt-5">

@@ -216,7 +216,6 @@ class CartController extends Controller
                 $orderItemModel->create($orderItemData);
             }
 
-
             // Clear the cart and discount session
             unset($_SESSION['cart']);
             unset($_SESSION['discount']);

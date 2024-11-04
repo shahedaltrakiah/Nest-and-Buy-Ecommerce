@@ -93,10 +93,4 @@ class WishlistController extends Controller {
         exit();
     }
 
-    // About Us page
-    public function thankYou()
-    {
-        $this->view('customers/thankyou');
-    }
-
 }
