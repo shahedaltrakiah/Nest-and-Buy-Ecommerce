@@ -22,45 +22,51 @@ require "views/partials/header.php"; ?>
                             </tr>
                             </thead>
                             <tbody>
-                            <?php
-                            $subtotal = 0; // Initialize subtotal
-                            if (isset($cart) && !empty($cart)):
-                                foreach ($cart as $product_id => $product):
-                                    $total = $product['price'] * $product['quantity'];
-                                    $subtotal += $total;
-                                    ?>
-                                    <tr>
-                                        <td class="product-thumbnail">
-                                            <img style="height: 80px; width: 80px; object-fit: contain;"
-                                                 src="<?= htmlspecialchars('/public/' . $product['image']) ?>"
-                                                 alt="<?= htmlspecialchars($product['name'] ?? 'Product Image') ?>">
-                                        </td>
+                            <tbody>
+    <?php
+    $subtotal = 0; // Initialize subtotal
+    if (isset($cart) && !empty($cart)):
+        foreach ($cart as $product_id => $product):
+            $total = $product['price'] * $product['quantity'];
+            $subtotal += $total;
+            ?>
+            <tr>
+                <td class="product-thumbnail">
+                    <img style="height: 80px; width: 80px; object-fit: contain;"
+                         src="<?= htmlspecialchars('/public/' . $product['image']) ?>"
+                         alt="<?= htmlspecialchars($product['name'] ?? 'Product Image') ?>">
+                </td>
+
+                <td class="product-name">
+                    <b><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?></b>
+                </td>
+                <td class="product-price">JD<?= number_format($product['price'], 2); ?></td>
+                <td class="product-quantity">
+                    <!-- Quantity Adjustment Buttons -->
+                    <form action="/customers/cart/update" method="post" class="d-flex align-items-center">
+                        <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                        <button onclick="updateQuantity('<?= $product_id ?>', -1)" class="btn  p-0 me-2">-</button>
+                        <span class="mx-2"><?= htmlspecialchars($product['quantity']); ?></span>
+                        <button onclick="updateQuantity('<?= $product_id ?>', 1)" class="btn  p-0 me-2">+</button>
+                    </form>
+                </td>
+                <td class="product-total">JD<?= number_format($total, 2); ?></td>
+                <td class="product-remove">
+                    <button onclick="removeProduct('<?php echo $product_id; ?>')"
+                            style="border: none; background: none; padding: 0; cursor: pointer; font-size: 30px;">
+                        &times;
+                    </button>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <tr>
+            <td colspan="6" class="text-center">No items in the cart</td>
+        </tr>
+    <?php endif; ?>
+</tbody>
 
 
-                                        <td class="product-name">
-                                            <b><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?></b>
-                                        </td>
-                                        <td class="product-price">JD<?= number_format($product['price'], 2); ?></td>
-                                        <td class="product-quantity">
-                                                                     <!-- Quantity Input Field -->
-   <span><?php echo htmlspecialchars($product['quantity']); ?></span>
-                        
-                                        </td>
-                                        <td class="product-total">JD<?= number_format($total, 2); ?></td>
-                                        <td class="product-remove">
-                                            <button onclick="removeProduct('<?php echo $product_id; ?>')"
-                                                    style="border: none; background: none; padding: 0; cursor: pointer; font-size: 30px;">
-                                                &times;
-                                            </button>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="6" class="text-center">No items in the cart</td>
-                                </tr>
-                            <?php endif; ?>
-                            </tbody>
                         </table>
                     </div>
 
@@ -141,6 +147,44 @@ require "views/partials/header.php"; ?>
             </div>
 
         </div> <!-- End of row -->
+        <script>
+function updateQuantity(productId, change) {
+    const quantitySpan = document.querySelector(`.product-quantity span`);
+    const currentQuantity = parseInt(quantitySpan.innerText);
+
+    let newQuantity = currentQuantity + change;
+    if (newQuantity < 1) newQuantity = 1; // Prevent negative quantity
+
+    // Determine action based on the change
+    const action = change > 0 ? 'increase' : 'decrease';
+
+    // Update quantity in the cart
+    fetch('/customers/cart/update', { // Ensure the URL matches your endpoint
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ product_id: productId, action: action })
+    })
+    .then(response => {
+        if (response.ok) {
+            // Update the UI
+            quantitySpan.innerText = newQuantity;
+            // Optionally update the total price dynamically here
+            // You can also fetch updated totals from the server if needed
+            location.reload(); // Refresh to update totals
+        } else {
+            // Handle errors here, e.g., product not found in cart
+            console.error('Error updating quantity:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error updating quantity:', error);
+    });
+}
+
+</script>
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 <?php if (isset($_SESSION['success_message'])): ?>

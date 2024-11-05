@@ -104,23 +104,21 @@
                     ?>
                 </div>
                 <div class="d-flex align-items-center mb-3 mt-3 ">
-                    <?php if ($product['stock_quantity'] > 0): ?>
-                        <form action="/customer/cart" method="post" class="button-form me-3 d-flex align-items-center gap-2">
-                            <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+    <?php if ($product['stock_quantity'] > 0): ?>
+        <form action="/customer/cart" method="post" class="button-form me-3 d-flex align-items-center gap-2">
+            <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
+            <input type="hidden" name="quantity" value="1"> <!-- Default to 1 when adding to cart -->
 
-                            <!-- Quantity Input Field -->
-                            <input type="number" name="quantity" value="1" min="1" max="<?= $product['stock_quantity']; ?>"
-                                   class="quantity-input form-control mb-2" style="height: 50px; width: 150px; text-align: center; margin-top: -10px;" required>
+            <!-- Add to Cart Button -->
+            <button type="submit" class="btn btn-primary action-button" style="height: 50px; width: 200px;">
+                <i class="fa-solid fa-cart-plus" style="margin-right: 5px;"></i> ADD TO CART
+            </button>
+        </form>
+    <?php else: ?>
+        <button class="btn btn-secondary action-button" style="height: 50px; width: 200px;" disabled>Out of Stock</button>
+    <?php endif; ?>
+</div>
 
-                            <!-- Add to Cart Button -->
-                            <button type="submit" class="btn btn-primary action-button" style="height: 50px; width: 200px;">
-                                <i class="fa-solid fa-cart-plus" style="margin-right: 5px;"></i> ADD TO CART
-                            </button>
-                        </form>
-                    <?php else: ?>
-
-                        <button class="btn btn-secondary action-button" style="height: 50px; width: 200px;"  disabled>Out of Stock</button>
-                    <?php endif; ?>
                 </div>
 
             </div>
