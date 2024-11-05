@@ -56,15 +56,16 @@ if ($search_status) {
             </div>
 
             <div class="row g-3 mb-4 align-items-center justify-content-between shadow-sm p-3 bg-light rounded">
-                <div class="col-auto">
-                    <div class="btn-group" role="group" aria-label="Order Status Filters">
-                        <a href="?status=" class="btn btn-outline-success <?= $search_status === '' ? 'active' : ''; ?>">All Orders</a>
-                        <a href="?status=pending" class="btn btn-outline-warning <?= $search_status === 'pending' ? 'active' : ''; ?>">Pending</a>
-                        <a href="?status=completed" class="btn btn-outline-success <?= $search_status === 'completed' ? 'active' : ''; ?>">Completed</a>
-                        <a href="?status=canceled" class="btn btn-outline-danger <?= $search_status === 'canceled' ? 'active' : ''; ?>">Canceled</a>
-                    </div>
-                </div>
-            </div>
+    <div class="col-12"> <!-- Changed from col-auto to col-12 -->
+        <div class="btn-group w-100" role="group" aria-label="Order Status Filters">
+            <a href="?status=" class="btn btn-outline-success <?= $search_status === '' ? 'active' : ''; ?>">All Orders</a>
+            <a href="?status=pending" class="btn btn-outline-warning <?= $search_status === 'pending' ? 'active' : ''; ?>">Pending</a>
+            <a href="?status=completed" class="btn btn-outline-success <?= $search_status === 'completed' ? 'active' : ''; ?>">Completed</a>
+            <a href="?status=canceled" class="btn btn-outline-danger <?= $search_status === 'canceled' ? 'active' : ''; ?>">Canceled</a>
+        </div>
+    </div>
+</div>
+
 
             <div class="table-responsive">
                 <table class="table table-hover table-borderless shadow-sm rounded">
