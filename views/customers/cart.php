@@ -42,8 +42,12 @@ require "views/partials/header.php"; ?>
                                         </td>
                                         <td class="product-price">JD<?= number_format($product['price'], 2); ?></td>
                                         <td class="product-quantity">
-                                                                     <!-- Quantity Input Field -->
-   <span><?php echo htmlspecialchars($product['quantity']); ?></span>
+                                        <form action="/customers/cart/update" method="post" class="d-flex align-items-center">
+                        <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                        <button onclick="updateQuantity('<?= $product_id ?>', -1)" class="btn  p-0 me-2">-</button>
+                        <span class="mx-2"><?= htmlspecialchars($product['quantity']); ?></span>
+                        <button onclick="updateQuantity('<?= $product_id ?>', 1)" class="btn  p-0 me-2">+</button>
+                    </form>
                         
                                         </td>
                                         <td class="product-total">JD<?= number_format($total, 2); ?></td>
@@ -81,7 +85,9 @@ require "views/partials/header.php"; ?>
                                 <span class="text-black">Subtotal</span>
                             </div>
                             <div class="col-md-6 text-end">
-                                <strong class="text-black" id="cartSubtotal">JD<?= number_format($subtotal, 2); ?></strong>
+                            <strong class="text-black">
+                                JD<?php echo number_format($subtotal, 2); ?>
+                            </strong>
                             </div>
 
                         </div>
@@ -108,8 +114,7 @@ require "views/partials/header.php"; ?>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <a href="checkout" class="btn btn-primary d-flex justify-content-center">Proceed to
-                                    Checkout</a>
+                            <a href="checkout" class="btn btn-primary d-flex justify-content-center">Proceed to Checkout</a>
                             </div>
                         </div>
 
@@ -138,6 +143,43 @@ require "views/partials/header.php"; ?>
                 </div>
 
         </div> <!-- End of row -->
+        <script>
+function updateQuantity(productId, change) {
+    const quantitySpan = document.querySelector(`.product-quantity span`);
+    const currentQuantity = parseInt(quantitySpan.innerText);
+
+    let newQuantity = currentQuantity + change;
+    if (newQuantity < 1) newQuantity = 1; // Prevent negative quantity
+
+    // Determine action based on the change
+    const action = change > 0 ? 'increase' : 'decrease';
+
+    // Update quantity in the cart
+    fetch('/customers/cart/update', { // Ensure the URL matches your endpoint
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ product_id: productId, action: action })
+    })
+    .then(response => {
+        if (response.ok) {
+            // Update the UI
+            quantitySpan.innerText = newQuantity;
+            // Optionally update the total price dynamically here
+            // You can also fetch updated totals from the server if needed
+            location.reload(); // Refresh to update totals
+        } else {
+            // Handle errors here, e.g., product not found in cart
+            console.error('Error updating quantity:', response.statusText);
+        }
+    })
+    .catch(error => {
+        console.error('Error updating quantity:', error);
+    });
+}
+
+</script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 <?php if (isset($_SESSION['success_message'])): ?>

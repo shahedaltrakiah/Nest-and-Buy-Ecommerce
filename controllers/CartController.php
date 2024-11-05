@@ -231,52 +231,52 @@ class CartController extends Controller
         return $subtotal - $discount;
     }
     public function updateCart()
-{
-    if (session_status() !== PHP_SESSION_ACTIVE) {
-        session_start();
-    }
-
-    // Check request method
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Get the raw POST data
-        $data = json_decode(file_get_contents('php://input'), true);
-        
-        // Check if product_id and action are set
-        if (isset($data['product_id']) && isset($data['action'])) {
-            $product_id = $data['product_id'];
-            $action = $data['action']; // This should be either 'increase' or 'decrease'
-
-            // Check if the product exists in the cart
-            if (isset($_SESSION['cart'][$product_id])) {
-                // Adjust quantity based on action
-                if ($action === 'increase') {
-                    // Increase quantity
-                    $_SESSION['cart'][$product_id]['quantity']++;
-                } elseif ($action === 'decrease') {
-                    // Decrease quantity, ensuring it doesn't go below 1
-                    if ($_SESSION['cart'][$product_id]['quantity'] > 1) {
-                        $_SESSION['cart'][$product_id]['quantity']--;
+    {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+    
+        // Check request method
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Get the raw POST data
+            $data = json_decode(file_get_contents('php://input'), true);
+            
+            // Check if product_id and action are set
+            if (isset($data['product_id']) && isset($data['action'])) {
+                $product_id = $data['product_id'];
+                $action = $data['action']; // This should be either 'increase' or 'decrease'
+    
+                // Check if the product exists in the cart
+                if (isset($_SESSION['cart'][$product_id])) {
+                    // Adjust quantity based on action
+                    if ($action === 'increase') {
+                        // Increase quantity
+                        $_SESSION['cart'][$product_id]['quantity']++;
+                    } elseif ($action === 'decrease') {
+                        // Decrease quantity, ensuring it doesn't go below 1
+                        if ($_SESSION['cart'][$product_id]['quantity'] > 1) {
+                            $_SESSION['cart'][$product_id]['quantity']--;
+                        } else {
+                            // If quantity is 1 or less, remove the product from the cart
+                            unset($_SESSION['cart'][$product_id]);
+                        }
                     } else {
-                        // If quantity is 1 or less, remove the product from the cart
-                        unset($_SESSION['cart'][$product_id]);
+                        http_response_code(400);
+                        exit('Invalid action. Use "increase" or "decrease".');
                     }
+    
+                    http_response_code(200);
                 } else {
-                    http_response_code(400);
-                    exit('Invalid action. Use "increase" or "decrease".');
+                    http_response_code(404);
+                    exit('Product not found in cart.');
                 }
-
-                http_response_code(200);
             } else {
-                http_response_code(404);
-                exit('Product not found in cart.');
+                http_response_code(400);
+                exit('Product ID and action are required.');
             }
         } else {
-            http_response_code(400);
-            exit('Product ID and action are required.');
+            http_response_code(405);
+            exit('Method not allowed. Please use POST.');
         }
-    } else {
-        http_response_code(405);
-        exit('Method not allowed. Please use POST.');
     }
-}
-}
+    }
