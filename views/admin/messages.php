@@ -87,28 +87,31 @@ $total_pages = ceil($total_items / $items_per_page);
                 <?php endforeach; ?>
                 </tbody>
             </table>
-            <nav class="app-pagination">
+            <nav class="app-pagination" style="margin-top: 50px; margin-bottom: -30px;">
                 <ul class="pagination justify-content-center">
                     <li class="page-item <?= $current_page <= 1 ? 'disabled' : '' ?>">
                         <a class="page-link bg-primary text-white"
-                            href="?page=<?= $current_page - 1 ?>&search=<?= urlencode($search_query) ?>" tabindex="-1"
-                            aria-disabled="true">Previous</a>
+                           href="?page=<?= $current_page - 1 ?>&search=<?= urlencode($search_query) ?>" tabindex="-1"
+                           aria-disabled="true">Previous</a>
                     </li>
                     <?php for ($page = 1; $page <= $total_pages; $page++): ?>
                         <li class="page-item <?= $page == $current_page ? 'active' : '' ?>">
                             <a class="page-link <?= $page == $current_page ? 'bg-success text-white' : 'bg-light text-dark' ?>"
-                                href="?page=<?= $page ?>&search=<?= urlencode($search_query) ?>"><?= $page ?></a>
+                               href="?page=<?= $page ?>&search=<?= urlencode($search_query) ?>"><?= $page ?></a>
                         </li>
                     <?php endfor; ?>
                     <li class="page-item <?= $current_page >= $total_pages ? 'disabled' : '' ?>">
                         <a class="page-link bg-primary text-white"
-                            href="?page=<?= $current_page + 1 ?>&search=<?= urlencode($search_query) ?>">Next</a>
+                           href="?page=<?= $current_page + 1 ?>&search=<?= urlencode($search_query) ?>">Next</a>
                     </li>
                 </ul>
             </nav>
         </div>
     </div>
 </div>
+
+<?php require "views/partials/admin_footer.php"; ?>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

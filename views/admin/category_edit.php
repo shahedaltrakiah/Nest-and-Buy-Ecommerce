@@ -10,7 +10,7 @@
                         <div class="m-4 d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
                                 <img src="/public/<?= htmlspecialchars($category['image_url']) ?>"
-                                     alt="Category Image" class="rounded-circle" style="width: 100px; height: 100px;">
+                                     alt="Category Image" class="img-thumbnail" style="width: 100px; height: 100px;">
                                 <h3 class="text-success ms-3">
                                     <?php
                                     $formattedName = str_replace('-', ' ', strtolower($category['category_name']));

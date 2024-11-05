@@ -7,11 +7,13 @@
                 <div class="card shadow-lg border-0">
     <div class="d-flex justify-content-between align-items-center p-4">
         <div class="d-flex align-items-center">
-<!--            --><?php
-//            $imageSrc = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : 'images/product.png';
-//            ?>
-            <img src="/public/<?php $product['image_url']; ?>" alt="Product Image" class="rounded-circle"
-            style="width: 100px; height: 100px;">
+
+            <?php
+            $imageSrc = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : 'images/product.png';
+            ?>
+            <img src="/public/<?= $imageSrc; ?>" alt="Product Image" class="img-thumbnail"
+            style="width: 100px; height: 100px; object-fit: cover;">
+
             <h3 class="text-success ms-3 fw-bold">
                 <?php
                 $formattedName = str_replace('-', ' ', strtolower($product['product_name']));

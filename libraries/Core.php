@@ -5,7 +5,6 @@ class Core
     protected $routes = [
         // Default route to customer index
         '' => ['CustomerController@index', 'GET'],
-//        'customers/rania'=>['RaniaController@Hello',['GET']],
 
         // Admin Routes
         'admin/login' => ['AdminController@login', ['GET', 'POST']],

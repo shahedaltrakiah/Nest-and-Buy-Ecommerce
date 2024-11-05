@@ -26,6 +26,8 @@
                             <th>ID</th>
                             <th>Coupon Code</th>
                             <th>Discount</th>
+                            <th>Usage Limit</th>
+                            <th>Expiration Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -35,6 +37,8 @@
                                 <td><?= htmlspecialchars($coupon['id']); ?></td>
                                 <td><?= htmlspecialchars($coupon['code']); ?></td>
                                 <td><?= htmlspecialchars($coupon['discount']); ?>%</td>
+                                <td><?php echo htmlspecialchars($coupon['usage_limit']); ?></td>
+                                <td><?php echo htmlspecialchars($coupon['expiration_date']); ?></td>
                                 <td>
                                     <form id="deleteForm-<?= htmlspecialchars($coupon['id']); ?>" action="/admin/CouponDelete" method="POST" style="display:inline;">
                                         <input type="hidden" name="couponId" value="<?= htmlspecialchars($coupon['id']); ?>">

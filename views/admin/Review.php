@@ -4,7 +4,8 @@
         <div class="container-xl">
             <div class="row g-3 mb-4 align-items-center justify-content-between shadow-sm p-3 bg-light rounded">
                 <div class="col-auto">
-                    <h1 class="app-page-title mb-0 text-success fw-bold" style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
+                    <h1 class="app-page-title mb-0 text-success fw-bold"
+                        style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
                         <i class="fas fa-star me-3"></i>Product Reviews
                     </h1>
                 </div>
@@ -40,25 +41,29 @@
                                 </td>
                                 <td><?= date('d M Y', strtotime($review['created_at'])); ?></td>
                                 <td class="<?php
-    if ($review['status'] === 'pending') {
-        echo 'text-warning';
-    } elseif ($review['status'] === 'rejected') {
-        echo 'text-danger';
-    } elseif ($review['status'] === 'accepted') {
-        echo 'text-success';
-    }
-?>">
-    <?= htmlspecialchars(ucfirst($review['status'])); ?>
-</td>
+                                if ($review['status'] === 'pending') {
+                                    echo 'text-warning';
+                                } elseif ($review['status'] === 'rejected') {
+                                    echo 'text-danger';
+                                } elseif ($review['status'] === 'accepted') {
+                                    echo 'text-success';
+                                }
+                                ?>">
+                                    <?= htmlspecialchars(ucfirst($review['status'])); ?>
+                                </td>
 
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <form id="acceptForm-<?= htmlspecialchars($review['id']); ?>" action="/admin/acceptReview" method="POST" class="ms-2">
-                                            <input type="hidden" name="reviewId" value="<?= htmlspecialchars($review['id']); ?>">
+                                        <form id="acceptForm-<?= htmlspecialchars($review['id']); ?>"
+                                              action="/admin/acceptReview" method="POST" class="ms-2">
+                                            <input type="hidden" name="reviewId"
+                                                   value="<?= htmlspecialchars($review['id']); ?>">
                                             <button type="submit" class="btn btn-success btn-sm">Accept</button>
                                         </form>
-                                        <form id="rejectForm-<?= htmlspecialchars($review['id']); ?>" action="/admin/rejectReview" method="POST" class="ms-2">
-                                            <input type="hidden" name="reviewId" value="<?= htmlspecialchars($review['id']); ?>">
+                                        <form id="rejectForm-<?= htmlspecialchars($review['id']); ?>"
+                                              action="/admin/rejectReview" method="POST" class="ms-2">
+                                            <input type="hidden" name="reviewId"
+                                                   value="<?= htmlspecialchars($review['id']); ?>">
                                             <button type="submit" class="btn btn-danger btn-sm">Reject</button>
                                         </form>
                                         <!-- <form id="deleteForm-<?= htmlspecialchars($review['id']); ?>" action="/admin/deleteReview" method="POST" onsubmit="return confirmDelete(event, '<?= htmlspecialchars($review['id']); ?>')" class="ms-2">
@@ -77,32 +82,13 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
     </div>
 </div>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- <script>
-//     function confirmDelete(event, reviewId) {
-//         event.preventDefault(); // Prevent the form from submitting immediately
 
-//         Swal.fire({
-//             title: 'Are you sure?',
-//             text: "You won't be able to revert this!",
-//             icon: 'warning',
-//             showCancelButton: true,
-//             confirmButtonColor: '#d33',
-//             cancelButtonColor: '#3085d6',
-//             confirmButtonText: 'Yes, delete it!',
-//             cancelButtonText: 'Cancel'
-//         }).then((result) => {
-//             if (result.isConfirmed) {
-//                 // If the user confirms, submit the form
-//                 document.getElementById('deleteForm-' + reviewId).submit();
-//             }
-//         });
-//     }
-// </script> -->
 
 <?php require "views/partials/admin_footer.php"; ?>

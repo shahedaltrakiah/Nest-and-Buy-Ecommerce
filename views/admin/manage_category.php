@@ -159,7 +159,7 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                                     <?php
                                     $imageSrc = !empty($category['image_url']) ? htmlspecialchars($category['image_url']) : "images/category-defult.png";
                                     ?>
-                                    <img src="/public/<?= $imageSrc; ?>" class="" style="width: 70px; height: 70px;">
+                                    <img src="/public/<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
                                 </td>
 
                                 <td class="text-truncate" style="max-width: 150px;">
@@ -190,12 +190,11 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                         </tbody>
                     </table>
                 </div>
-                <nav class="app-pagination ">
+                <nav class="app-pagination" style="margin-top: 50px; margin-bottom: -30px;">
                     <ul class="pagination justify-content-center">
                         <li class="page-item <?= $current_page <= 1 ? 'disabled' : '' ?>">
                             <a class="page-link bg-primary text-white"
-                               href="?page=<?= $current_page - 1 ?>&search=<?= urlencode($search_query) ?>"
-                               tabindex="-1"
+                               href="?page=<?= $current_page - 1 ?>&search=<?= urlencode($search_query) ?>" tabindex="-1"
                                aria-disabled="true">Previous</a>
                         </li>
                         <?php for ($page = 1; $page <= $total_pages; $page++): ?>

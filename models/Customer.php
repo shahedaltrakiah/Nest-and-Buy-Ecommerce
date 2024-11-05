@@ -10,6 +10,7 @@ class Customer extends Model
 
     }
 
+
     public function register($data)
     {
         $statement = $this->pdo->prepare("INSERT INTO $this->table 

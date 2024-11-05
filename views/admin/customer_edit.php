@@ -11,7 +11,7 @@
                         <div class="m-4 d-flex justify-content-between align-items-center text-start">
                             <div class="d-flex align-items-center text-start">
                                 <img src="/public/<?= !empty($customer['image_url']) ? htmlspecialchars($customer['image_url']) :'/public/images/user-profile.png'; ?>"
-                                    alt="Profile Image" class="rounded-circle" style="width: 100px; height: 100px;">
+                                    alt="Profile Image" class="img-thumbnail" style="width: 100px; height: 100px;">
                                 <h3 class="text-success ms-3">
                                     <?php
                                     $formattedFirstName = str_replace('-', ' ', strtolower($customer['first_name']));

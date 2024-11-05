@@ -138,6 +138,7 @@ $total_pages = ceil($total_items / $items_per_page);
 						<th>ID</th>
 						<th>Image</th>
 						<th>Product Name</th>
+                        <th>Category</th>
 						<th>Price</th>
 						<th>Average Rating</th>
 						<th>Stock Quantity</th>
@@ -154,6 +155,7 @@ $total_pages = ceil($total_items / $items_per_page);
                                 ?>
 								<img src="/public/<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
 							</td>
+                            <td><?php echo htmlspecialchars($product['category_name']); ?></td>
 							<td class="text-truncate" style="max-width: 150px;">
 								<?php
 								$formattedName = str_replace('-', ' ', strtolower($product['product_name']));
@@ -186,7 +188,7 @@ $total_pages = ceil($total_items / $items_per_page);
 				</tbody>
 			</table>
 
-			<nav class="app-pagination ">
+			<nav class="app-pagination" style="margin-top: 50px; margin-bottom: -30px;">
 				<ul class="pagination justify-content-center">
 					<li class="page-item <?= $current_page <= 1 ? 'disabled' : '' ?>">
 						<a class="page-link bg-primary text-white"
@@ -205,10 +207,11 @@ $total_pages = ceil($total_items / $items_per_page);
 					</li>
 				</ul>
 			</nav>
-			<?php require "views/partials/admin_footer.php"; ?>
 		</div>
 	</div>
 </div>
+
+<?php require "views/partials/admin_footer.php"; ?>
 
 <script>
 	function confirmDelete(event, customerId) {
