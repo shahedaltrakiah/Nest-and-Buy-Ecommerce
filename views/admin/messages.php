@@ -1,25 +1,31 @@
 <?php
 require "views/partials/admin_header.php";
 $search_query = isset($_GET['search']) ? $_GET['search'] : '';
+$search_status = isset($_GET['status']) ? $_GET['status'] : '';
+$filtered_messages = $messages;
 
-
-$filtered_messages = array_filter($messages, function ($message) use ($search_query) {
-	return stripos($message['content'], $search_query) !== false ||
-		stripos($message['status'], $search_query) !== false;
-});
-
-
-if ($search_query === '') {
-    $filtered_messages = $messages;
+// Apply filters
+if ($search_status) {
+    $filtered_messages = array_filter($filtered_messages, function ($message) use ($search_status) {
+        return $message['status'] === $search_status;
+    });
 }
 
+if ($search_query !== '') {
+    $filtered_messages = array_filter($filtered_messages, function ($message) use ($search_query) {
+        return stripos($message['content'], $search_query) !== false ||
+            stripos($message['status'], $search_query) !== false;
+    });
+}
+
+// Pagination
 $items_per_page = 20;
 $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$current_page = max($current_page, 1);
-$start_index = ($current_page - 1) * $items_per_page;
-$paginated_messages = array_slice($filtered_messages, $start_index, $items_per_page);
 $total_items = count($filtered_messages);
 $total_pages = ceil($total_items / $items_per_page);
+$current_page = max(min($current_page, $total_pages), 1);
+$start_index = ($current_page - 1) * $items_per_page;
+$paginated_messages = array_slice($filtered_messages, $start_index, $items_per_page);
 ?>
 
 <div class="app-wrapper">
@@ -60,6 +66,23 @@ $total_pages = ceil($total_items / $items_per_page);
                 </div>
             </div>
 
+            <nav id="orders-table-tab" role="group" class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+                <a style="<?= $search_status === '' ? 'background-color: #5BB377; color: #fff; font-weight: bold;' : ''; ?>"
+                   class="flex-sm-fill text-sm-center nav-link <?= $search_status === '' ? 'active' : ''; ?>" href="?status=">
+                    <i class="fas fa-list-ul"></i> All
+                </a>
+                <a style="<?= $search_status === 'resolved' ? 'background-color: #5cb85c; color: #fff; font-weight: bold;' : ''; ?>"
+                   class="flex-sm-fill text-sm-center nav-link <?= $search_status === 'resolved' ? 'active' : ''; ?>"
+                   href="?status=resolved" id="orders-completed-tab">
+                    <i class="fas fa-check-circle"></i> Resolved
+                </a>
+                <a style="<?= $search_status === 'unresolved' ? 'background-color: #d9534f; color: #fff; font-weight: bold;' : ''; ?>"
+                   class="flex-sm-fill text-sm-center nav-link <?= $search_status === 'unresolved' ? 'active' : ''; ?>"
+                   href="?status=unresolved" id="orders-cancelled-tab">
+                    <i class="fas fa-times-circle"></i> Unresolved
+                </a>
+            </nav>
+
             <table class="table table-hover table-borderless shadow-sm rounded">
                 <thead class="table-success">
                     <tr class="text-center">
@@ -77,7 +100,14 @@ $total_pages = ceil($total_items / $items_per_page);
                         <td><?php echo htmlspecialchars($message['customer_id']); ?></td>
                         <td><?= htmlspecialchars($message['customer_name'] ?? 'N/A') ?></td>
                         <td><?php echo htmlspecialchars($message['content']); ?></td>
-                        <td><?php echo htmlspecialchars(ucwords(strtolower($message['status']))); ?></td>
+                        <td class="<?php
+                        if ($message['status'] === 'unresolved') {
+                            echo 'text-danger';
+                        } elseif ($message['status'] === 'resolved') {
+                            echo 'text-success';
+                        }
+                        ?>"
+                        ><?php echo htmlspecialchars(ucwords(strtolower($message['status']))); ?></td>
                         <td><?php echo htmlspecialchars($message['created_at']); ?></td>
                         <td>
                             <button class="btn btn-outline-success" onclick="window.open('https://mail.google.com/mail/u/0/?ogbl#inbox', '_blank')">Reply</button>
@@ -116,3 +146,28 @@ $total_pages = ceil($total_items / $items_per_page);
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+<style>
+    /* Base styles for each status tab */
+    #orders-table-tab a#orders-all-tab {
+        color: #5BB377; /* Green for All */
+    }
+
+    #orders-table-tab a#orders-pending-tab {
+        color: #f0ad4e; /* Orange for Pending */
+    }
+
+    #orders-table-tab a#orders-completed-tab {
+        color: #5cb85c; /* Dark Green for Completed */
+    }
+
+    #orders-table-tab a#orders-cancelled-tab {
+        color: #d9534f; /* Red for Canceled */
+    }
+
+    /* Active state styles */
+    #orders-table-tab .nav-link.active {
+        color: #fff;
+        font-weight: bold;
+    }
+</style>
