@@ -21,6 +21,12 @@ class CartController extends Controller
                 $_SESSION['cart'] = [];
             }
 
+            $customerId = $_SESSION['user']['id'] ?? null;
+            if ($customerId === null) {
+                 header('Location: /customers/cart?error=not_logged_in');
+                 exit();
+             }
+
             if (isset($_SESSION['cart'][$product_id])) {
                 $_SESSION['cart'][$product_id]['quantity'] += $quantity;
             } else {

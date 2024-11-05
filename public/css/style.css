@@ -1390,5 +1390,41 @@ a {
   font-weight: bold;
 }
 
+/* Quantity container for alignment */
+.quantity-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Button styling */
+.quantity-btn {
+  background-color: #3B5D50; /* Dark green */
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.quantity-btn:hover {
+  background-color: #2e4a40; /* Slightly darker for hover effect */
+}
+
+/* Quantity display styling */
+#quantityDisplay {
+  font-size: 18px;
+  min-width: 24px; /* Ensures a consistent width */
+  text-align: center;
+  display: inline-block;
+}
+
+
+
+
+
 
 

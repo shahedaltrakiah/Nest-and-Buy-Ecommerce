@@ -10,93 +10,60 @@
         <div class="row">
             <div class="col-md-6 mb-5 mb-md-0">
                 <h2 class="h3 mb-3 text-black">Billing Details</h2>
-                <div class="p-3 p-lg-5 border bg-white">
-             <!-- Displaying customer info as basic information without a form -->
-<!-- Displaying customer info as basic information without a form -->
-<div class="container mt-4">
-<form id="checkoutForm" action="/customers/cart/checkout" method="POST" onsubmit="return validateForm()">
-    <h2 class="mb-4">Checkout</h2>
+                <div class=" p-4 border bg-white">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="text-black font-weight-bold" for="email">Email Address:</label>
+                            <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($customers->email); ?>" required>
+                        </div>
 
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label class="text-black font-weight-bold">First Name:</label>
-            <input type="text" name="first_name" class="form-control" value="<?php echo htmlspecialchars($customers->first_name); ?>" readonly>
-        </div>
+                        <div class="col-md-6">
+                            <label class="text-black font-weight-bold" for="phone">Phone:</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($customers->phone_number); ?>" required>
+                        </div>
+                    </div>
 
-        <div class="col-md-6">
-            <label class="text-black font-weight-bold">Last Name:</label>
-            <input type="text" name="last_name" class="form-control" value="<?php echo htmlspecialchars($customers->last_name); ?>" readonly>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label class="text-black font-weight-bold">Email Address:</label>
-            <p class="form-control-plaintext"><?php echo htmlspecialchars($customers->email); ?></p>
-        </div>
-
-        <div class="col-md-6">
-            <label class="text-black font-weight-bold">Current Address:</label>
-            <p class="form-control-plaintext"><?php echo htmlspecialchars($customers->address); ?></p>
-        </div>
-    </div>
-    
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label class="text-black font-weight-bold">Enter New Address:</label>
-            <input type="text" name="address" class="form-control" placeholder="123 Main St" required>
-        </div>
-
-        <div class="col-md-6">
-            <label class="text-black font-weight-bold">Enter Phone Number:</label>
-            <input type="text" name="phone_number" class="form-control" placeholder="(962)" required>
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-primary m-auto d-flex p-3" id="proceedBtn">Proceed to Payment</button>
-</form>
-</div>
-<?php if (isset($_SESSION['error_message']) && isset($_SESSION['show_sweet_alert'])): ?>
-    <script>
-        swal({
-            title: "Error!",
-            text: "<?php echo htmlspecialchars($_SESSION['error_message']); ?>",
-            icon: "error", // Change `type` to `icon`
-            button: "OK", // Change `confirmButtonText` to `button`
-            confirmButtonColor: '#3B5D50',
-        }).then(() => {
-            // Optional: Redirect after closing
-            window.location = '/customers/checkout'; // Redirect to checkout page if needed
-        });
-        <?php unset($_SESSION['error_message'], $_SESSION['show_sweet_alert']); // Clear the message after displaying it ?>
-    </script>
-<?php endif; ?>
-<script>
-   
-
-    document.getElementById('proceedBtn').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the form from submitting immediately
-
-        // Show SweetAlert confirmation dialog
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You are about to proceed to payment.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, proceed!',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#3B5D50',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If confirmed, submit the form
-                document.getElementById('checkoutForm').submit();
-            }
-        });
-    });
-</script>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="text-black font-weight-bold" for="address">Address:</label>
+                            <input type="text" class="form-control" id="address" name="address" value="<?php echo htmlspecialchars($customers->address); ?>" required>
+                        </div>
+                    </div>
 
 
+                    <!-- Checkout Button -->
+                        <form id="checkoutForm" action="/customers/cart/checkout" method="POST"
+                              onsubmit="return validateForm()">
+                            <button type="button" class="btn btn-primary m-auto d-flex p-3" id="proceedBtn">Proceed to
+                                Payment
+                            </button>
+                        </form>
+
+                    <!-- SweetAlert2 Script -->
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                    <script>
+                        document.getElementById('proceedBtn').addEventListener('click', function (event) {
+                            event.preventDefault(); // Prevent the form from submitting immediately
+
+                            // Show SweetAlert confirmation dialog
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You are about to proceed to payment.",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                cancelButtonText: 'Cancel',
+                                confirmButtonText: 'Yes, proceed!',
+                                confirmButtonColor: '#3b5d50',
+                                reverseButtons: true
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // If confirmed, submit the form
+                                    document.getElementById('checkoutForm').submit();
+                                }
+                            });
+                        });
+                    </script>
                 </div>
             </div>
 
@@ -123,7 +90,8 @@
                                         $subtotal += $totalPrice;
                                         ?>
                                         <tr>
-                                            <td><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?><strong
+                                            <td><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?>
+                                                <strong
                                                         class="mx-2">x</strong> <?php echo htmlspecialchars($product['quantity']); ?>
                                             </td>
                                             <td>JD<?php echo number_format($totalPrice, 2); ?></td>
