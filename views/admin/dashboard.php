@@ -47,7 +47,7 @@
             <div class="col-6 col-lg-3">
                 <div class="app-card app-card-stat shadow-sm h-100 hover-animation">
                     <div class="app-card-body p-3 p-lg-4">
-                        <h4 class="stats-type mb-1">Number of used coupons</h4>
+                        <h4 class="stats-type mb-1">coupons used</h4>
                         <div class="stats-figure d-flex align-items-center justify-content-center">
                             <img src="https://www.svgrepo.com/show/233959/money.svg" alt="Money Icon" width="30"
                                  height="40" class="me-2">
@@ -85,7 +85,7 @@
                         <h4 class="stats-type mb-1">Total Orders</h4>
                         <div class="stats-figure d-flex align-items-center justify-content-center">
                             <img src="https://www.svgrepo.com/show/289576/invoice-bill.svg" alt="Invoice Bill Icon"
-                                 width="30" height="40" class="me-2">
+                                width="30" height="40" class="me-2">
                             <span class="fw-bold fs-4 text-center"><?= htmlspecialchars($orderCount); ?></span>
                         </div>
                         <div class="d-flex align-items-center justify-content-center stats-meta text-success">
@@ -115,55 +115,59 @@
             </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script>
-            var labels = <?php echo $labels; ?>; // Labels for the x-axis
-            var dataValues = <?php echo $values; ?>; // Data points for the y-axis
+<script>
+  var labels = <?php echo $labels; ?>; // Labels for the x-axis
+  var dataValues = <?php echo $values; ?>; // Data points for the y-axis
 
-            var ctx = document.getElementById('chart-line').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar', // Change to 'bar' if you want a bar chart
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Sales Amount', // Label for the dataset
-                        data: dataValues,
-                        backgroundColor: 'rgba(40, 167, 69, 0.2)', // Light green background
-                        borderColor: 'rgba(40, 167, 69, 1)', // Dark green border
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: false, // Remove the legend
-                        },
-                        title: {
-                            display: true,
-                            text: 'Sales Over Time', // Chart title
-                        }
-                    },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Date',
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Sales Amount ($)',
-                            },
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        </script>
+  var ctx = document.getElementById('chart-line').getContext('2d');
 
+  // Slice the labels and data to show only the last 5 entries
+  labels = labels.slice(-5);
+  dataValues = dataValues.slice(-5);
+
+  var myChart = new Chart(ctx, {
+    type: 'bar', // Change to 'bar' if you want a bar chart
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Sales Amount', // Label for the dataset
+        data: dataValues,
+        backgroundColor: 'rgba(40, 167, 69, 0.2)', // Light green background
+        borderColor: 'rgba(40, 167, 69, 1)', // Dark green border
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false, // Remove the legend
+        },
+        title: {
+          display: true,
+          text: 'Sales Over Time', // Chart title
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Date',
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Sales Amount ($)',
+          },
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
         <!-- Calendar Section -->
         <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
 
@@ -230,37 +234,47 @@
         </style>
 
 
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div id="calendar" class="calendar-container"></div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="table-responsive mt-4"
-                         style="max-height: 400px; overflow-y: auto; border: 1px solid #74BE8B; border-radius: 8px; background-color: #ffffff; padding: 10px;">
-                        <h6 class="text-medium mb-30 text-center" style="color: #000000;">Most Selling Products</h6>
-                        <table class="table top-selling-table">
-                            <thead>
-                            <tr style="background-color: #74BE8B; color: #ffffff;">
-                                <th>Product Name</th>
-                                <th>Total Sold</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <?php foreach ($mostSellingProducts as $product): ?>
-                                <tr>
-                                    <td style="color: #000000;">
-                                        <?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($product['product_name']))); ?></td>
-                                    <td style="color: #74BE8B;"><?php echo htmlspecialchars($product['total_sold']); ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<div class="container mt-4">
+    <div class="row">
+        <!-- Calendar Section -->
+        <div class="col-lg-6 mb-4 d-flex">
+            <div class="calendar-container flex-fill" style="min-height: 400px; background-color: #ffffff; border: 1px solid #74BE8B; border-radius: 8px; padding: 10px;">
+                <div id="calendar"></div>
             </div>
         </div>
+
+        <!-- Most Selling Products Section -->
+        <div class="col-lg-6 mb-4 d-flex">
+            <div class="table-responsive flex-fill" style="min-height: 400px; border: 1px solid #74BE8B; border-radius: 8px; background-color: #ffffff; padding: 10px;">
+                <div class="d-flex justify-content-center align-items-center mb-3">
+                    <i class="bi bi-bar-chart-fill" style="font-size: 1.5rem; color: #74BE8B;"></i>
+                    <h5 class="ms-2" style="color: #555;">Most Selling Products</h5>
+                </div>
+                <table class="table top-selling-table">
+                    <thead>
+                        <tr style="background-color: #74BE8B; color: #ffffff;">
+                            <th>Product Name</th>
+                            <th class="text-end">Total Sold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($mostSellingProducts as $product): ?>
+                        <tr>
+                            <td class="text-dark">
+                                <?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($product['product_name']))); ?>
+                            </td>
+                            <td class="text-success text-end">
+                                <?php echo htmlspecialchars($product['total_sold']); ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 
         <style>
             .table-responsive {
