@@ -256,6 +256,7 @@ class CustomerController extends Controller
     // Cart page
     public function cart()
     {
+        
         $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : []; // Check if cart exists
         $this->view('customers/cart', ['cart' => $cart]); // Pass cart data to the view
     }
@@ -263,7 +264,14 @@ class CustomerController extends Controller
     // Checkout page
     public function checkout()
     {
-        $this->view('customers/checkout');
+        if (!isset($_SESSION['user'])) { // assuming 'customer_id' holds the user's session
+            // If not logged in, redirect to the login page
+            header("Location:../customers/login_and_register");
+        }
+        $customer = $this->model('Customer')->getCustomerById();
+        $this->view('customers/checkout',[
+            'customers' => $customer,  
+        ]);
     }
 
     // Profile page for customer

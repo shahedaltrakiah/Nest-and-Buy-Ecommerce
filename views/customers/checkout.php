@@ -15,13 +15,14 @@
                         <div class="form-group row ">
                             <div class="col-md-6">
                                 <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="c_email_address" name="c_email_address"
-                                        placeholder="Email" required>
+                                <input type="email" class="form-control" id="c_email_address" name="c_email_address" value="<?php echo htmlspecialchars($customers->email); ?>" required>
+                               
+                                        
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="c_phone" name="c_phone"
-                                       placeholder="Phone Number" required>
+                                       placeholder="Phone Number" required value="<?php echo htmlspecialchars($customers->phone_number); ?>">
                             </div>
                         </div>
 
@@ -29,8 +30,8 @@
                             <div class="col-md-12 mb-3">
                                 <label for="c_address" class="text-black">Address <span
                                             class="text-danger">*</span></label>
-                                <textarea rows="4" type="text" class="form-control" id="c_address" name="c_address"
-                                          placeholder="Street address" required></textarea>
+                                <textarea rows="4" type="text" class="form-control" id="c_address" name="c_address" 
+                                          placeholder="<?php echo htmlspecialchars($customers->address); ?>" required></textarea>
                             </div>
                         </div>
 
@@ -128,18 +129,3 @@
     }
 </script>
 
-<?php if ($_GET['error'] === 'not_logged_in'): ?>
-    <script>
-        Swal.fire({
-            title: 'Error',
-            text: 'Customer not logged in',
-            icon: 'error',
-            confirmButtonColor: '#3B5D50',
-            confirmButtonText: 'OK'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = '/customers/login_and_register';
-            }
-        });
-    </script>
-<?php endif; ?>

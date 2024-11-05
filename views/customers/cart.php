@@ -109,11 +109,11 @@ require "views/partials/header.php"; ?>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12">
-                            <a href="checkout" class="btn btn-primary d-flex justify-content-center">Proceed to
-                                Checkout</a>
-                        </div>
-                    </div>
+    <div class="col-md-12">
+        <a href="checkout" class="btn btn-primary d-flex justify-content-center">Proceed to Checkout</a>
+    </div>
+</div>
+
                 </div>
 
                 <div class="border p-4 rounded bg-white">
@@ -193,3 +193,18 @@ require "views/partials/header.php"; ?>
 
 <!-- Start Footer Section -->
 <?php require "views/partials/footer.php"; ?>
+<?php if (isset($_GET['error'])&& $_GET['error']  === 'not_logged_in'): ?>
+    <script>
+        Swal.fire({
+            title: 'Error',
+            text: 'Customer not logged in',
+            icon: 'error',
+            confirmButtonColor: '#3B5D50',
+            confirmButtonText: 'OK'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/customers/login_and_register';
+            }
+        });
+    </script>
+<?php endif; ?>

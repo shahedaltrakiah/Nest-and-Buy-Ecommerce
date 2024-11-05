@@ -158,10 +158,10 @@ class CartController extends Controller
             // Retrieve customer ID from session user array
             $customerId = $_SESSION['user']['id'] ?? null;
 
-            if ($customerId === null) {
-                header('Location: /customers/checkout?error=not_logged_in');
-                exit();
-            }
+            // if ($customerId === null) {
+            //     header('Location: /customers/checkout?error=not_logged_in');
+            //     exit();
+            // }
 
             // Prepare order data
             $orderData = [
