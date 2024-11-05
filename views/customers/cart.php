@@ -4,6 +4,7 @@ require "views/partials/header.php"; ?>
 <!-- Include SweetAlert CSS and JS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
 <div class="untree_co-section before-footer-section bg-light py-5">
     <div class="container">
         <div class="row mb-5">
@@ -42,12 +43,19 @@ require "views/partials/header.php"; ?>
                                         </td>
                                         <td class="product-price">JD<?= number_format($product['price'], 2); ?></td>
                                         <td class="product-quantity">
-                                        <form action="/customers/cart/update" method="post" class="d-flex align-items-center">
-                        <input type="hidden" name="product_id" value="<?= $product_id; ?>">
-                        <button onclick="updateQuantity('<?= $product_id ?>', -1)" class="btn  p-0 me-2">-</button>
-                        <span class="mx-2"><?= htmlspecialchars($product['quantity']); ?></span>
-                        <button onclick="updateQuantity('<?= $product_id ?>', 1)" class="btn  p-0 me-2">+</button>
-                    </form>
+                                        <form action="/customers/cart/update" method="post" class="quantity-form">
+    <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+
+    <!-- Decrease button -->
+    <button type="button" onclick="updateQuantity('<?= $product_id ?>', -1)" class="quantity-button border-0">−</button>
+
+    <!-- Quantity display -->
+    <span class="quantity-display"><?= htmlspecialchars($product['quantity']); ?></span>
+
+    <!-- Increase button -->
+    <button type="button" onclick="updateQuantity('<?= $product_id ?>', 1)" class="quantity-button border-0">+</button>
+</form>
+
                         
                                         </td>
                                         <td class="product-total">JD<?= number_format($total, 2); ?></td>

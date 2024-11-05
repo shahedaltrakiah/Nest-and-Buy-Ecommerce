@@ -230,53 +230,55 @@ class CartController extends Controller
         $discount = $_SESSION['discount'] ?? 0;
         return $subtotal - $discount;
     }
-    public function updateCart()
-    {
+    public function updateCart() {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
     
-        // Check request method
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Get the raw POST data
             $data = json_decode(file_get_contents('php://input'), true);
-            
-            // Check if product_id and action are set
+    
             if (isset($data['product_id']) && isset($data['action'])) {
                 $product_id = $data['product_id'];
-                $action = $data['action']; // This should be either 'increase' or 'decrease'
+                $action = $data['action'];
     
-                // Check if the product exists in the cart
                 if (isset($_SESSION['cart'][$product_id])) {
-                    // Adjust quantity based on action
                     if ($action === 'increase') {
-                        // Increase quantity
                         $_SESSION['cart'][$product_id]['quantity']++;
                     } elseif ($action === 'decrease') {
-                        // Decrease quantity, ensuring it doesn't go below 1
                         if ($_SESSION['cart'][$product_id]['quantity'] > 1) {
                             $_SESSION['cart'][$product_id]['quantity']--;
                         } else {
-                            // If quantity is 1 or less, remove the product from the cart
                             unset($_SESSION['cart'][$product_id]);
+                            echo json_encode(['success' => false, 'message' => 'Product removed from cart']);
+                            return;
                         }
                     } else {
                         http_response_code(400);
-                        exit('Invalid action. Use "increase" or "decrease".');
+                        echo json_encode(['success' => false, 'message' => 'Invalid action']);
+                        return;
                     }
     
-                    http_response_code(200);
+                    // Return the new quantity in the response
+                    echo json_encode([
+                        'success' => true,
+                        'newQuantity' => $_SESSION['cart'][$product_id]['quantity']
+                    ]);
+                    return;
                 } else {
                     http_response_code(404);
-                    exit('Product not found in cart.');
+                    echo json_encode(['success' => false, 'message' => 'Product not found in cart']);
+                    return;
                 }
             } else {
                 http_response_code(400);
-                exit('Product ID and action are required.');
+                echo json_encode(['success' => false, 'message' => 'Product ID and action are required']);
+                return;
             }
         } else {
             http_response_code(405);
-            exit('Method not allowed. Please use POST.');
+            echo json_encode(['success' => false, 'message' => 'Method not allowed. Please use POST.']);
         }
     }
+    
     }
