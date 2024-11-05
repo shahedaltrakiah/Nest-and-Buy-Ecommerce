@@ -127,7 +127,8 @@ $paginated_customers = array_slice($filtered_customers, $start_index, $items_per
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn app-btn-primary">Create Customer</button>
-                                <button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-danger text-white"
+                                    data-bs-dismiss="modal">Close</button>
                             </div>
                         </form>
                     </div>
@@ -157,7 +158,8 @@ $paginated_customers = array_slice($filtered_customers, $start_index, $items_per
                                     <?php
                                     $imageSrc = !empty($customer['image_url']) ? htmlspecialchars($customer['image_url']) : 'images/user-profile.png';
                                     ?>
-                                    <img src="/public/<?= $imageSrc; ?>" class="img-thumbnail" style="width: 50px; height: 50px;">
+                                    <img src="/public/<?= $imageSrc; ?>" class="img-thumbnail"
+                                        style="width: 50px; height: 50px;">
                                 </td>
                                 <td class="text-center" style="max-width: 150px;">
                                     <?php echo htmlspecialchars($customer['first_name']); ?>
@@ -227,34 +229,9 @@ $paginated_customers = array_slice($filtered_customers, $start_index, $items_per
         </div>
     </div>
 </div>
-<script>
-  function confirmDelete(e, id) {
-    e.preventDefault(); 
-    Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById("deleteForm-" + id).submit();
-            Swal.fire("Deleted!", "The customer has been deleted.", "success");
-        }
-    });
-}
-
-document.querySelectorAll('.delete-button').forEach(button => {
-    button.addEventListener('click', (e) => {
-        const id = button.dataset.id; 
-        confirmDelete(e, id);
-    });
-</script>
 
 <script>
-    document.getElementById('createCustomerForm').addEventListener('submit', function(create) {
+    document.getElementById('createCustomerForm').addEventListener('submit', function (create) {
         create.preventDefault(); // Prevent the default form submission
 
         // Get values from the input fields
@@ -300,6 +277,19 @@ document.querySelectorAll('.delete-button').forEach(button => {
     }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<?php if (isset($_SESSION['message']) && !empty($_SESSION['message'])): ?>
+    <script>
+        Swal.fire({
+            icon: '<?= htmlspecialchars($_SESSION['messageType']) ?>',
+            title: '<?= ucfirst(htmlspecialchars($_SESSION['messageType'])) ?>',
+            text: '<?= htmlspecialchars($_SESSION['message']) ?>',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    <?php unset($_SESSION['message'], $_SESSION['messageType']); ?>
+<?php endif; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
@@ -307,5 +297,4 @@ document.querySelectorAll('.delete-button').forEach(button => {
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
 <?php require "views/partials/admin_footer.php"; ?>
