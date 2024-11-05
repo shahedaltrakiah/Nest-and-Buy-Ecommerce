@@ -130,9 +130,9 @@
 
     <!-- Reviews Section -->
     <div class="reviews-section my-5 d-flex flex-column">
-            <div class="col-md-6">
-                <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Write a Review</h4>
-            </div>
+        <div class="col-md-6">
+            <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Write a Review</h4>
+        </div>
 
         <div class="my-5 mt-3" style="width: 100%;">
 
@@ -196,280 +196,279 @@
                                 <option value="with_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'with_images' ? 'selected' : ''; ?>>Show Reviews with Images</option>
                                 <option value="without_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'without_images' ? 'selected' : ''; ?>>Show Reviews without Images</option>
                             </select>
-                            <button type="submit" class="btn btn-primary action-button me-2 mb-1">Filter</button>
+                            <button type="submit" class="btn btn-primary action-button me-2 mb-1 p-3" style='font-size:14px '>Filter</button>
                         </div>
                     </form>
                 </div>
 
                 <?php if (!empty($reviews)): ?>
-    <?php foreach ($reviews as $review): ?>
-        <?php if ($review['status'] === 'accepted'): // Display only accepted reviews ?>
-            <div class="review mt-1 p-3 border rounded bg-light d-flex position-relative">
-                <!-- Delete Button -->
-                <?php if (isset($user) && $user['id'] === $review['customer_id']): ?>
-                    <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
-                        <button class="delete-review btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
-                    </div>
+                    <?php foreach ($reviews as $review): ?>
+                        <?php if ($review['status'] === 'accepted'): // Display only accepted reviews ?>
+                            <div class="review mt-1 p-3 border rounded bg-light d-flex position-relative">
+                                <!-- Delete Button -->
+                                <?php if (isset($user) && $user['id'] === $review['customer_id']): ?>
+                                    <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
+                                        <button class="delete-review btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
+                                    </div>
+                                <?php endif; ?>
+
+                                <!-- Review Content -->
+                                <div class="review-info me-3" style="flex: 1;">
+                                    <p><strong>Rating:</strong>
+                                        <?php
+                                        $rating = (int)$review['rating'];
+                                        for ($i = 1; $i <= 5; $i++) {
+                                            echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
+                                        }
+                                        ?>
+                                    </p>
+                                    <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
+                                    <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
+                                    <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
+                                </div>
+
+                                <!-- Review Image Centered -->
+                                <div class="review-image d-flex justify-content-center align-items-center">
+                                    <?php if (!empty($review['image_url'])): ?>
+                                        <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" style="height: 120px; width: 120px;">
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        <?php endif; // End of accepted review check ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
                 <?php endif; ?>
 
-                <!-- Review Content -->
-                <div class="review-info me-3" style="flex: 1;">
-                    <p><strong>Rating:</strong>
-                        <?php
-                        $rating = (int)$review['rating'];
-                        for ($i = 1; $i <= 5; $i++) {
-                            echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
-                        }
-                        ?>
-                    </p>
-                    <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
-                    <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
-                    <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
-                </div>
 
-                <!-- Review Image Centered -->
-                <div class="review-image d-flex justify-content-center align-items-center">
-                    <?php if (!empty($review['image_url'])): ?>
-                        <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" style="height: 120px; width: 120px;">
-                    <?php endif; ?>
-                </div>
             </div>
-        <?php endif; // End of accepted review check ?>
-    <?php endforeach; ?>
-<?php else: ?>
-    <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
-<?php endif; ?>
-
 
         </div>
-
+    </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script>
-    document.querySelectorAll('.delete-review').forEach(button => {
-        button.addEventListener('click', function() {
-            const reviewId = this.getAttribute('data-id');
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Create a form to submit the deletion
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '';
-                    const hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'delete_review_id';
-                    hiddenInput.value = reviewId;
-                    form.appendChild(hiddenInput);
-                    document.body.appendChild(form);
-                    form.submit();
-                }
+<?php require 'views/partials/footer.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        document.querySelectorAll('.delete-review').forEach(button => {
+            button.addEventListener('click', function() {
+                const reviewId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Create a form to submit the deletion
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = '';
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'delete_review_id';
+                        hiddenInput.value = reviewId;
+                        form.appendChild(hiddenInput);
+                        document.body.appendChild(form);
+                        form.submit();
+                    }
+                });
             });
         });
-    });
-    function changeMainImage(src) {
-        document.getElementById("main-image").src = src;
-    }
+        function changeMainImage(src) {
+            document.getElementById("main-image").src = src;
+        }
 
-    // JavaScript to handle star rating selection
-    function setRating(rating) {
-        // Set the hidden input value to the selected rating
-        document.getElementById("rating").value = rating;
+        // JavaScript to handle star rating selection
+        function setRating(rating) {
+            // Set the hidden input value to the selected rating
+            document.getElementById("rating").value = rating;
 
-        // Update star appearance based on selected rating
-        for (let i = 1; i <= 5; i++) {
-            const star = document.getElementById("star-" + i);
-            if (i <= rating) {
-                star.classList.add("selected");
-            } else {
-                star.classList.remove("selected");
+            // Update star appearance based on selected rating
+            for (let i = 1; i <= 5; i++) {
+                const star = document.getElementById("star-" + i);
+                if (i <= rating) {
+                    star.classList.add("selected");
+                } else {
+                    star.classList.remove("selected");
+                }
             }
         }
-    }
-</script>
+    </script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function zoomImage(img) {
+            // Create a modal to display the image
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.zIndex = '1000';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
 
-<?php require 'views/partials/footer.php'; ?>
+            const imgClone = document.createElement('img');
+            imgClone.src = img.src;
+            imgClone.style.maxWidth = '90%';
+            imgClone.style.maxHeight = '90%';
 
-<script>
-    function zoomImage(img) {
-        // Create a modal to display the image
-        const modal = document.createElement('div');
-        modal.style.position = 'fixed';
-        modal.style.zIndex = '1000';
-        modal.style.top = '0';
-        modal.style.left = '0';
-        modal.style.width = '100%';
-        modal.style.height = '100%';
-        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        modal.style.display = 'flex';
-        modal.style.alignItems = 'center';
-        modal.style.justifyContent = 'center';
+            modal.appendChild(imgClone);
+            document.body.appendChild(modal);
 
-        const imgClone = document.createElement('img');
-        imgClone.src = img.src;
-        imgClone.style.maxWidth = '90%';
-        imgClone.style.maxHeight = '90%';
+            // Close modal on click
+            modal.onclick = function() {
+                document.body.removeChild(modal);
+            };
+        }
+    </script>
+    <style>
+        .review {
+            position: relative; /* Ensure the review box is a positioning context */
+        }
 
-        modal.appendChild(imgClone);
-        document.body.appendChild(modal);
+        .delete-button {
+            position: absolute;
+            top: 10px; /* Adjust this value for vertical positioning */
+            right: 10px; /* Adjust this value for horizontal positioning */
+            z-index: 10; /* Ensure it is above other content */
+        }
 
-        // Close modal on click
-        modal.onclick = function() {
-            document.body.removeChild(modal);
-        };
-    }
-</script>
+        .delete-review {
+            background: none; /* Remove background for a cleaner look */
+            border: none; /* Remove border for a cleaner look */
+            color: red; /* Set the text color for the delete button */
+            cursor: pointer; /* Change cursor to pointer for better UX */
+        }
 
-<style>
-    .review {
-        position: relative; /* Ensure the review box is a positioning context */
-    }
+        /* Star Rating Styles */
+        .star-rating {
+            display: flex;
+            gap: 5px;
+        }
 
-    .delete-button {
-        position: absolute;
-        top: 10px; /* Adjust this value for vertical positioning */
-        right: 10px; /* Adjust this value for horizontal positioning */
-        z-index: 10; /* Ensure it is above other content */
-    }
+        .star-rating .fa-star {
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
 
-    .delete-review {
-        background: none; /* Remove background for a cleaner look */
-        border: none; /* Remove border for a cleaner look */
-        color: red; /* Set the text color for the delete button */
-        cursor: pointer; /* Change cursor to pointer for better UX */
-    }
+        .star-rating .fa-star.selected {
+            color: #ffcc00;
+        }
+        /* Wishlist Button */
+        .wishlist-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
 
-/* Star Rating Styles */
-    .star-rating {
-        display: flex;
-        gap: 5px;
-    }
+        .wishlist-button .action-button {
+            background-color: transparent; /* Remove the background */
+            color: #6ca197; /* Set the color to match your desired color */
+            border: none; /* Remove any border */
+            padding: 0; /* Remove padding to keep it compact */
+            cursor: pointer; /* Ensure it looks clickable */
+        }
 
-    .star-rating .fa-star {
-        font-size: 24px;
-        color: #ccc;
-        cursor: pointer;
-        transition: color 0.2s;
-    }
+        .wishlist-button .action-button:hover {
+            color: #3B5D50; /* Optional: Change color on hover for better UX */
+        }
 
-    .star-rating .fa-star.selected {
-        color: #ffcc00;
-    }
-    /* Wishlist Button */
-    .wishlist-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-    }
+        /* Product Image Styles */
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            padding: 0;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .wishlist-button .action-button {
-        background-color: transparent; /* Remove the background */
-        color: #6ca197; /* Set the color to match your desired color */
-        border: none; /* Remove any border */
-        padding: 0; /* Remove padding to keep it compact */
-        cursor: pointer; /* Ensure it looks clickable */
-    }
+        .action-button {
+            width: 60px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            border-radius: 5px;
+            background-color: #4c6a63;
+            color: white;
+            border: none;
+        }
 
-    .wishlist-button .action-button:hover {
-        color: #3B5D50; /* Optional: Change color on hover for better UX */
-    }
+        .button-form {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    /* Product Image Styles */
-    .quantity-input {
-        width: 60px;
-        height: 40px;
-        padding: 0;
-        border: 1px solid #ced4da;
-        border-radius: 5px;
-        text-align: center;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+        .product-slider {
+            display: flex;
+            flex-direction: column;
+        }
 
-    .action-button {
-        width: 60px;
-        height: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1rem;
-        border-radius: 5px;
-        background-color: #4c6a63;
-        color: white;
-        border: none;
-    }
+        .main-image-container {
+            border: 3px solid #3B5D50;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
 
-    .button-form {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
+        .sub-images {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
 
-    .product-slider {
-        display: flex;
-        flex-direction: column;
-    }
+        .s_product_text {
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .main-image-container {
-        border: 3px solid #3B5D50;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        margin-bottom: 15px;
-    }
+        .reviews-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
 
-    .sub-images {
-        max-height: 400px;
-        overflow-y: auto;
-        padding-right: 10px;
-    }
+        .review-form-container, .customer-reviews {
+            height: 100%;
+            max-height: 400px;
+        }
 
-    .s_product_text {
-        padding: 15px;
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
+        .customer-reviews {
+            overflow-y: auto;
+        }
 
-    .reviews-section {
-        background-color: #f8f9fa;
-        border-radius: 10px;
-        padding: 20px;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-    }
+        .customer-reviews::-webkit-scrollbar {
+            display: none;
+            width: 8px;
+        }
 
-    .review-form-container, .customer-reviews {
-        height: 100%;
-        max-height: 400px;
-    }
+        .customer-reviews::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 10px;
+        }
 
-    .customer-reviews {
-        overflow-y: auto;
-    }
-
-    .customer-reviews::-webkit-scrollbar {
-        display: none;
-        width: 8px;
-    }
-
-    .customer-reviews::-webkit-scrollbar-thumb {
-        background-color: #888;
-        border-radius: 10px;
-    }
-
-    .customer-reviews::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-</style>
+        .customer-reviews::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
