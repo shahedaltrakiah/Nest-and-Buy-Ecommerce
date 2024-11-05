@@ -7,12 +7,11 @@ class Order extends Model
     {
         parent::__construct('orders');
     }
-
     public function create($data)
     {
-        if (isset($data['customer_id'], $data['total_amount'])) {
-            $stmt = $this->pdo->prepare("INSERT INTO orders (customer_id, order_date, status, coupon_id, total_amount, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
-
+        if (isset($data['customer_id'], $data['total_amount'], $data['address'], $data['phone_number'])) {
+            $stmt = $this->pdo->prepare("INSERT INTO orders (customer_id, order_date, status, coupon_id, total_amount, address, phone_number, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    
             try {
                 $stmt->execute([
                     $data['customer_id'],
@@ -20,21 +19,23 @@ class Order extends Model
                     $data['status'],
                     $data['coupon_id'],
                     $data['total_amount'],
+                    $data['address'],
+                    $data['phone_number'],
                     $data['created_at'],
                     $data['updated_at']
                 ]);
-
+    
                 // Return the last inserted order ID
                 return $this->pdo->lastInsertId();
             } catch (PDOException $e) {
-                // Log the error message or output for debugging
                 error_log("Database error: " . $e->getMessage());
                 throw new Exception("Database error: " . $e->getMessage());
             }
         } else {
-            throw new Exception("Missing required fields: customer_id and total_amount");
+            throw new Exception("Missing required fields: customer_id, total_amount, address, and phone_number");
         }
     }
+    
 
     public function updateStatus($orderId, $status)
     {

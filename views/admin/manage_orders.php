@@ -91,46 +91,51 @@ if ($search_status) {
                         <th class="text-nowrap">Total Amount</th>
                         <th class="text-nowrap">Created At</th>
                         <th class="text-nowrap">Updated At</th>
+                        <th class="text-nowrap">address</th>
+                        <th class="text-nowrap">PhoneNumber</th>
                         <th class="text-nowrap">Actions</th>
+
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach ($paginated_orders as $order): ?>
-                        <tr class="text-center">
-                            <td><?= htmlspecialchars($order['id']); ?></td>
-                            <td><?= htmlspecialchars($order['customer_id']); ?></td>
-                            <td><?= htmlspecialchars($order['order_date']); ?></td>
-                            <td>
-                                    <span class="badge bg-<?php
-                                    if ($order['status'] == 'completed') {
-                                        echo 'success';
-                                    } elseif ($order['status'] == 'canceled') {
-                                        echo 'danger';
-                                    } else {
-                                        echo 'warning';
-                                    } ?>">
-                                        <?= htmlspecialchars(ucfirst($order['status'])) ?>
-                                    </span>
-                            </td>
-                            <td><?= htmlspecialchars($order['total_amount']); ?></td>
-                            <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['created_at']))); ?></td>
-                            <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['updated_at']))); ?></td>
-                            <td>
-                                <form action="/admin/changeOrderStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']); ?>">
-                                    <input type="hidden" name="currentStatus"
-                                           value="<?= htmlspecialchars($order['status']); ?>">
-                                    <select name="status"
-                                            style="padding: 5px; border: 1px solid #ddd; border-radius: 4px; background-color: #f8f9fa; color: #333; font-size: 14px;"
-                                        <?= ($order['status'] === 'completed' || $order['status'] === 'canceled') ? 'disabled' : ''; ?>>
-                                        <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                                        <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                                    </select>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                    </tbody>
+    <?php foreach ($paginated_orders as $order): ?>
+        <tr class="text-center">
+            <td><?= htmlspecialchars($order['id']); ?></td>
+            <td><?= htmlspecialchars($order['customer_id']); ?></td>
+            <td><?= htmlspecialchars($order['order_date']); ?></td>
+            <td>
+                <span class="badge bg-<?php
+                if ($order['status'] == 'completed') {
+                    echo 'success';
+                } elseif ($order['status'] == 'canceled') {
+                    echo 'danger';
+                } else {
+                    echo 'warning';
+                } ?>">
+                    <?= htmlspecialchars(ucfirst($order['status'])) ?>
+                </span>
+            </td>
+            <td><?= htmlspecialchars($order['total_amount']); ?></td>
+            <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['created_at']))); ?></td>
+            <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['updated_at']))); ?></td>
+            <td><?= htmlspecialchars($order['address']); ?></td> <!-- New column for address -->
+            <td><?= htmlspecialchars($order['phone_number']); ?></td> <!-- New column for phone number -->
+            <td>
+                <form action="/admin/changeOrderStatus" method="POST" class="d-inline">
+                    <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']); ?>">
+                    <input type="hidden" name="currentStatus" value="<?= htmlspecialchars($order['status']); ?>">
+                    <select name="status"
+                            style="padding: 5px; border: 1px solid #ddd; border-radius: 4px; background-color: #f8f9fa; color: #333; font-size: 14px;"
+                        <?= ($order['status'] === 'completed' || $order['status'] === 'canceled') ? 'disabled' : ''; ?>>
+                        <option value="pending" <?= $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                        <option value="completed" <?= $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                    </select>
+                </form>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
+
                 </table>
             </div>
             <nav class="app-pagination" style="margin-top: 50px; margin-bottom: -30px;">

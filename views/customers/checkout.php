@@ -1,6 +1,7 @@
 <?php require "views/partials/header.php"; ?>
 
 <!-- Include SweetAlert CSS and JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
@@ -13,6 +14,21 @@
              <!-- Displaying customer info as basic information without a form -->
 <!-- Displaying customer info as basic information without a form -->
 <div class="container mt-4">
+<form id="checkoutForm" action="/customers/cart/checkout" method="POST" onsubmit="return validateForm()">
+    <h2 class="mb-4">Checkout</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="text-black font-weight-bold">First Name:</label>
+            <input type="text" name="first_name" class="form-control" value="<?php echo htmlspecialchars($customers->first_name); ?>" readonly>
+        </div>
+
+        <div class="col-md-6">
+            <label class="text-black font-weight-bold">Last Name:</label>
+            <input type="text" name="last_name" class="form-control" value="<?php echo htmlspecialchars($customers->last_name); ?>" readonly>
+        </div>
+    </div>
+
     <div class="row mb-3">
         <div class="col-md-6">
             <label class="text-black font-weight-bold">Email Address:</label>
@@ -20,28 +36,44 @@
         </div>
 
         <div class="col-md-6">
-            <label class="text-black font-weight-bold">Phone:</label>
-            <p class="form-control-plaintext"><?php echo htmlspecialchars($customers->phone_number); ?></p>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <label class="text-black font-weight-bold">Address:</label>
+            <label class="text-black font-weight-bold">Current Address:</label>
             <p class="form-control-plaintext"><?php echo htmlspecialchars($customers->address); ?></p>
         </div>
     </div>
+    
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="text-black font-weight-bold">Enter New Address:</label>
+            <input type="text" name="address" class="form-control" placeholder="123 Main St" required>
+        </div>
 
-    <!-- Checkout Button -->
-    <form id="checkoutForm" action="/customers/cart/checkout" method="POST" onsubmit="return validateForm()">
-        <button type="button" class="btn btn-primary m-auto d-flex p-3" id="proceedBtn">Proceed to Payment</button>
-    </form>
+        <div class="col-md-6">
+            <label class="text-black font-weight-bold">Enter Phone Number:</label>
+            <input type="text" name="phone_number" class="form-control" placeholder="(962)" required>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary m-auto d-flex p-3" id="proceedBtn">Proceed to Payment</button>
+</form>
 </div>
-
-<!-- SweetAlert2 Script -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<?php if (isset($_SESSION['error_message']) && isset($_SESSION['show_sweet_alert'])): ?>
+    <script>
+        swal({
+            title: "Error!",
+            text: "<?php echo htmlspecialchars($_SESSION['error_message']); ?>",
+            icon: "error", // Change `type` to `icon`
+            button: "OK", // Change `confirmButtonText` to `button`
+            confirmButtonColor: '#3B5D50',
+        }).then(() => {
+            // Optional: Redirect after closing
+            window.location = '/customers/checkout'; // Redirect to checkout page if needed
+        });
+        <?php unset($_SESSION['error_message'], $_SESSION['show_sweet_alert']); // Clear the message after displaying it ?>
+    </script>
+<?php endif; ?>
 <script>
+   
+
     document.getElementById('proceedBtn').addEventListener('click', function(event) {
         event.preventDefault(); // Prevent the form from submitting immediately
 
@@ -53,6 +85,7 @@
             showCancelButton: true,
             confirmButtonText: 'Yes, proceed!',
             cancelButtonText: 'Cancel',
+            confirmButtonColor: '#3B5D50',
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
@@ -136,23 +169,3 @@
 
 
 <?php require "views/partials/footer.php"; ?>
-<script>
-    function validateForm() {
-        const email = document.getElementById('c_email_address').value;
-        const phoneInput = document.getElementById('c_phone').value;
-
-        const phonePattern = /^(\+9627|07)\d{8}$/;
-        const emailPattern = /^[a-zA-Z][\w.-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!emailPattern.test(email)) {
-            swal("Error", "Email should not start with a number and should be valid.", "error");
-            return false;
-        }
-        if (!phonePattern.test(phoneInput)) {
-            swal("Error", "Please enter a valid Jordanian phone number.", "error");
-            return false;
-        }
-        return true;
-    }
-</script>
-

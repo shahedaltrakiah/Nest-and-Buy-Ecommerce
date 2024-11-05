@@ -139,63 +139,58 @@ class CartController extends Controller
 
     public function checkout()
     {
-        // session_start();
-
-        // Debug output to check session variables
         echo '<pre>';
+        echo "POST Data: ";
+        print_r($_POST);
+        echo "Session Data: ";
         print_r($_SESSION);
         echo '</pre>';
-
-        // Check if the cart is empty
+    
         if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
             $_SESSION['error_message'] = 'Your cart is empty.';
             header('Location: /customers/cart');
             exit();
         }
-
-        // Check if the request is POST
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve customer ID from session user array
             $customerId = $_SESSION['user']['id'] ?? null;
-
-            // if ($customerId === null) {
-            //     header('Location: /customers/checkout?error=not_logged_in');
-            //     exit();
-            // }
-
-            // Prepare order data
+    
+            // Get address and phone number from POST data
+            $address = $_POST['address'] ?? null;
+            $phoneNumber = $_POST['phone_number'] ?? null;
+    
+          // Server-side validation
+          if (empty($address) || empty($phoneNumber)) {
+            $_SESSION['error_message'] = 'Both address and phone number are required.';
+            $_SESSION['show_sweet_alert'] = true; // Set a flag for SweetAlert
+            header('Location: /customers/checkout'); // Redirect back to checkout
+            exit();
+        }
+    
             $orderData = [
                 'customer_id' => $customerId,
                 'order_date' => date('Y-m-d H:i:s'),
                 'status' => 'pending',
                 'coupon_id' => $_SESSION['discount'] ?? null,
                 'total_amount' => $this->calculateTotalAmount(),
+                'address' => $address,
+                'phone_number' => $phoneNumber,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ];
-
-            // Create order
-            // Debug: Check order data
-            echo '<pre>';
-            print_r($orderData);
-            echo '</pre>';
-
-            // Create order
+    
             $orderModel = new Order();
-
+    
             try {
                 $orderId = $orderModel->create($orderData);
                 if (empty($orderId)) {
                     throw new Exception("Order creation failed, order ID is NULL.");
-                } else {
-                    echo "Order created successfully. Order ID: " . $orderId . "<br>";
                 }
             } catch (Exception $e) {
                 echo "Error: " . $e->getMessage();
-                exit(); // Stop execution on error
+                exit();
             }
-
-            // Create order items
+    
             $orderItemModel = new OrderItem();
             foreach ($_SESSION['cart'] as $productId => $product) {
                 $orderItemData = [
@@ -204,28 +199,20 @@ class CartController extends Controller
                     'quantity' => $product['quantity'],
                     'price' => $product['price']
                 ];
-
-                // Check if order_id is correctly set
-                if (empty($orderItemData['order_id'])) {
-                    throw new Exception("Cannot create order item, order_id is NULL.");
-                }
-
                 $orderItemModel->create($orderItemData);
             }
-
-            // Clear the cart and discount session
+    
             unset($_SESSION['cart']);
             unset($_SESSION['discount']);
-
-            // Set success message and redirect
+    
             header('Location: /customers/thankyou');
             exit();
         }
-
-        // Include the checkout view for GET requests
-        include '../Ecommerce_website/views/checkout.php';
+    
+        include '../Ecommerce-website/views/checkout.php';
     }
-
+    
+    
     public function calculateTotalAmount()
     {
         $subtotal = 0;
