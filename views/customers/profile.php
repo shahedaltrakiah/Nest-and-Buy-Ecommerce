@@ -191,7 +191,7 @@
                                 <p><strong>Total:</strong> <span
                                             class="text-danger"> JD <?= number_format($order['total_amount'], 2) ?></span>
                                 </p>
-                                <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
+                                <p><strong>Shipping Address:</strong> <span class="text-muted"><?= isset($order['address']) ? htmlspecialchars($order['address']) : 'Address not provided' ?></span></p>
                                 <p><strong>Items Ordered:</strong></p>
                                 <div class="order-items">
                                     <ul class="list-group">

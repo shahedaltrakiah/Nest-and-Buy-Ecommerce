@@ -1,6 +1,7 @@
 <?php require "views/partials/header.php"; ?>
 
 <!-- Include SweetAlert CSS and JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 
@@ -136,23 +137,3 @@
 
 
 <?php require "views/partials/footer.php"; ?>
-<script>
-    function validateForm() {
-        const email = document.getElementById('c_email_address').value;
-        const phoneInput = document.getElementById('c_phone').value;
-
-        const phonePattern = /^(\+9627|07)\d{8}$/;
-        const emailPattern = /^[a-zA-Z][\w.-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-        if (!emailPattern.test(email)) {
-            swal("Error", "Email should not start with a number and should be valid.", "error");
-            return false;
-        }
-        if (!phonePattern.test(phoneInput)) {
-            swal("Error", "Please enter a valid Jordanian phone number.", "error");
-            return false;
-        }
-        return true;
-    }
-</script>
-
