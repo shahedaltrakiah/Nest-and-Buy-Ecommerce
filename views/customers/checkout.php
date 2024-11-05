@@ -10,33 +10,60 @@
             <div class="col-md-6 mb-5 mb-md-0">
                 <h2 class="h3 mb-3 text-black">Billing Details</h2>
                 <div class="p-3 p-lg-5 border bg-white">
-                    <form action="/customers/cart/checkout" method="POST" onsubmit="return validateForm()">
+             <!-- Displaying customer info as basic information without a form -->
+<!-- Displaying customer info as basic information without a form -->
+<div class="container mt-4">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="text-black font-weight-bold">Email Address:</label>
+            <p class="form-control-plaintext"><?php echo htmlspecialchars($customers->email); ?></p>
+        </div>
 
-                        <div class="form-group row ">
-                            <div class="col-md-6">
-                                <label for="c_email_address" class="text-black">Email Address <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control" id="c_email_address" name="c_email_address" value="<?php echo htmlspecialchars($customers->email); ?>" required>
-                               
-                                        
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-                                <input type="tel" class="form-control" id="c_phone" name="c_phone"
-                                       placeholder="Phone Number" required value="<?php echo htmlspecialchars($customers->phone_number); ?>">
-                            </div>
-                        </div>
+        <div class="col-md-6">
+            <label class="text-black font-weight-bold">Phone:</label>
+            <p class="form-control-plaintext"><?php echo htmlspecialchars($customers->phone_number); ?></p>
+        </div>
+    </div>
 
-                        <div class="form-group row mb-3">
-                            <div class="col-md-12 mb-3">
-                                <label for="c_address" class="text-black">Address <span
-                                            class="text-danger">*</span></label>
-                                <textarea rows="4" type="text" class="form-control" id="c_address" name="c_address" 
-                                          placeholder="<?php echo htmlspecialchars($customers->address); ?>" required></textarea>
-                            </div>
-                        </div>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <label class="text-black font-weight-bold">Address:</label>
+            <p class="form-control-plaintext"><?php echo htmlspecialchars($customers->address); ?></p>
+        </div>
+    </div>
 
-                        <button type="submit" class="btn btn-primary m-auto d-flex p-3">Proceed to Payment</button>
-                    </form>
+    <!-- Checkout Button -->
+    <form id="checkoutForm" action="/customers/cart/checkout" method="POST" onsubmit="return validateForm()">
+        <button type="button" class="btn btn-primary m-auto d-flex p-3" id="proceedBtn">Proceed to Payment</button>
+    </form>
+</div>
+
+<!-- SweetAlert2 Script -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('proceedBtn').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the form from submitting immediately
+
+        // Show SweetAlert confirmation dialog
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You are about to proceed to payment.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, proceed!',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the form
+                document.getElementById('checkoutForm').submit();
+            }
+        });
+    });
+</script>
+
+
                 </div>
             </div>
 

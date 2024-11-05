@@ -78,6 +78,8 @@ class Core
         'shop/liveSearch' => ['ShopController@liveSearch', 'GET'],
         'customers/thankyou' => ['CustomerController@thankYou', 'GET'],
         'customers/profile/cancelOrder' => ['CustomerController@cancelOrder', ['POST']],
+        
+        
     ];
 
     public function __construct()

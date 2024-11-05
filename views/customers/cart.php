@@ -42,7 +42,9 @@ require "views/partials/header.php"; ?>
                                         </td>
                                         <td class="product-price">JD<?= number_format($product['price'], 2); ?></td>
                                         <td class="product-quantity">
-                                            <span><?php echo htmlspecialchars($product['quantity']); ?></span>
+                                                                     <!-- Quantity Input Field -->
+   <span><?php echo htmlspecialchars($product['quantity']); ?></span>
+                        
                                         </td>
                                         <td class="product-total">JD<?= number_format($total, 2); ?></td>
                                         <td class="product-remove">
