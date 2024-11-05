@@ -145,6 +145,18 @@
                             });
                         }
                     </script>
+                    <?php if (isset($message) && !empty($message)): ?>
+        <script>
+            Swal.fire({
+                icon: '<?= $messageType ?>', 
+                title: '<?= ucfirst($messageType) ?>',
+                text: '<?= $message ?>',
+                showConfirmButton: false,
+                timer: 2000 
+            });
+        </script>
+    <?php $message=null; endif; ?>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 </div>
             </div>
         </div>

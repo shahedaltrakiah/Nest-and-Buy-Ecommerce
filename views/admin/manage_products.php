@@ -27,12 +27,12 @@ $total_pages = ceil($total_items / $items_per_page);
 				<div class="col-auto">
 					<h1 class="app-page-title mb-0 text-success fw-bold"
 						style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-columns-gap"
-                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                  d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
-                        </svg>
-                        Products
+						<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-columns-gap" fill="currentColor"
+							xmlns="http://www.w3.org/2000/svg">
+							<path fill-rule="evenodd"
+								d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z" />
+						</svg>
+						Products
 					</h1>
 				</div>
 				<!-- Utilities and Search Form -->
@@ -41,20 +41,20 @@ $total_pages = ceil($total_items / $items_per_page);
 						<div class="row g-2 align-items-center">
 							<!-- Search Form -->
 							<div class="col-auto">
-                                <form class="docs-search-form row gx-1 align-items-center" method="GET" action="">
-                                    <div class="col-auto">
-                                        <input type="text" id="search-docs" name="search"
-                                               value="<?php echo htmlspecialchars($search_query); ?>"
-                                               class="form-control bg-light border-success rounded-pill"
-                                               placeholder="Search Products....">
-                                    </div>
-                                    <div class="col-auto">
-                                        <button type="submit" class="btn rounded-pill"
-                                                style="background-color: #5bb377; border-color: #5bb377;">
-                                            <i class="fas fa-search text-white"></i>
-                                        </button>
-                                    </div>
-                                </form>
+								<form class="docs-search-form row gx-1 align-items-center" method="GET" action="">
+									<div class="col-auto">
+										<input type="text" id="search-docs" name="search"
+											value="<?php echo htmlspecialchars($search_query); ?>"
+											class="form-control bg-light border-success rounded-pill"
+											placeholder="Search Products....">
+									</div>
+									<div class="col-auto">
+										<button type="submit" class="btn rounded-pill"
+											style="background-color: #5bb377; border-color: #5bb377;">
+											<i class="fas fa-search text-white"></i>
+										</button>
+									</div>
+								</form>
 
 							</div>
 							<!-- Add New Product Button -->
@@ -79,7 +79,8 @@ $total_pages = ceil($total_items / $items_per_page);
 							<div class="modal-header p-0">
 								<div
 									class="w-100 bg-success text-white p-2 d-flex justify-content-between align-items-center">
-									<h5 class="modal-title text-white" id="createProductModalLabel">Create New Product</h5>
+									<h5 class="modal-title text-white" id="createProductModalLabel">Create New Product
+									</h5>
 									<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
@@ -87,29 +88,27 @@ $total_pages = ceil($total_items / $items_per_page);
 							<div class="modal-body">
 								<div class="mb-3">
 									<label for="product_name" class="form-label">Product Name</label>
-									<input type="text" class="form-control" id="product_name" name="product_name"
-										>
+									<input type="text" class="form-control" id="product_name" name="product_name">
 								</div>
 								<div class="mb-3">
 									<label for="description" class="form-label">Description</label>
-									<textarea class="form-control" id="description" name="description" rows="2"
-										></textarea>
+									<textarea class="form-control" id="description" name="description"
+										rows="2"></textarea>
 								</div>
 								<div class="row mb-3">
 									<div class="col">
 										<label for="price" class="form-label">Price (JD)</label>
-										<input type="number" class="form-control" id="price" name="price" step="0.01"
-											>
+										<input type="number" class="form-control" id="price" name="price" step="0.01">
 									</div>
 									<div class="col">
 										<label for="stock_quantity" class="form-label">Stock Quantity</label>
 										<input type="number" class="form-control" id="stock_quantity"
-											name="stock_quantity" >
+											name="stock_quantity">
 									</div>
 								</div>
 								<div class="mb-3">
 									<label for="category_id" class="form-label">Category</label>
-									<select class="form-select" id="category_id" name="category_id" >
+									<select class="form-select" id="category_id" name="category_id">
 										<option value="" disabled selected>Select a category</option>
 										<?php foreach ($categories as $category): ?>
 											<option value="<?php echo htmlspecialchars($category['id']); ?>">
@@ -121,12 +120,13 @@ $total_pages = ceil($total_items / $items_per_page);
 								<div class="mb-3">
 									<label for="image_url" class="form-label">Product Image</label>
 									<input type="file" class="form-control" id="image_url" name="image_url"
-										accept="image/*" >
+										accept="image/*">
 								</div>
 							</div>
 							<div class="modal-footer">
 								<button type="submit" class="btn btn-success text-white">Save Product</button>
-								<button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-danger text-white"
+									data-bs-dismiss="modal">Close</button>
 							</div>
 						</form>
 					</div>
@@ -138,7 +138,7 @@ $total_pages = ceil($total_items / $items_per_page);
 						<th>ID</th>
 						<th>Image</th>
 						<th>Product Name</th>
-                        <th>Category</th>
+						<th>Category</th>
 						<th>Price</th>
 						<th>Average Rating</th>
 						<th>Stock Quantity</th>
@@ -150,12 +150,13 @@ $total_pages = ceil($total_items / $items_per_page);
 						<tr class="text-center">
 							<td><?php echo htmlspecialchars($product['id']); ?></td>
 							<td>
-                                <?php
-                                $imageSrc = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : 'images/product.png';
-                                ?>
-								<img src="/public/<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
+								<?php
+								$imageSrc = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : 'images/product.png';
+								?>
+								<img src="/public/<?= $imageSrc; ?>" class="img-thumbnail"
+									style="width: 70px; height: 70px;">
 							</td>
-                            <td><?php echo htmlspecialchars($product['category_name']); ?></td>
+							<td><?php echo htmlspecialchars($product['category_name']); ?></td>
 							<td class="text-truncate" style="max-width: 150px;">
 								<?php
 								$formattedName = str_replace('-', ' ', strtolower($product['product_name']));
@@ -242,23 +243,41 @@ $total_pages = ceil($total_items / $items_per_page);
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<script>
 
-	// document.getElementById('createProductForm').addEventListener('submit', function (event) {
-	// 	var isValid = true;
-	// 	var fields = ['product_name', 'description', 'price', 'stock_quantity', 'category_id', 'image_url'];
+<?php
+if (isset($_SESSION['success'])) {
+    echo "<script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: '{$_SESSION['success']}'
+        });
+    </script>";
+    unset($_SESSION['success']);
+}
 
-	// 	fields.forEach(function (field) {
-	// 		var input = document.getElementById(field);
-	// 		if (!input.value) {
-	// 			isValid = false;
-	// 			return;
-	// 		}
-	// 	});
-	// 	if (!isValid) {
-	// 		event.preventDefault();
-	// 		swal("Error!", "Please fill all fields!", "error");
-	// 	}
-	// });
-</script>
+if (isset($_SESSION['error'])) {
+    echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{$_SESSION['error']}'
+        });
+    </script>";
+    unset($_SESSION['error']);
+}
+?>
+
+<?php if (isset($message)): ?>
+    <script>
+        Swal.fire({
+            icon: '<?= $messageType ?>',
+            title: '<?= ucfirst($messageType) ?>',
+            text: '<?= $message ?>',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+<?php endif; ?>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
