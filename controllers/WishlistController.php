@@ -63,20 +63,23 @@ class WishlistController extends Controller {
             header('Location: /customers/login_and_register');
             exit();
         }
-    
+
         // Get the product ID from the form submission
         $productId = $_POST['product_id'] ?? null;
-    
+
         if ($productId) {
             $wishlistModel = new Wishlist();
             $result = $wishlistModel->removeItem($productId); // Remove the item from the wishlist
-    
+
             if ($result) {
-                // Remove the product ID from the session wishlist array
-                if (($key = array_search($productId, $_SESSION['wishlists'])) !== false) {
-                    unset($_SESSION['wishlists'][$key]); // Remove the product ID from the array
+                // Check if the session wishlist exists and is an array
+                if (isset($_SESSION['wishlists']) && is_array($_SESSION['wishlists'])) {
+                    // Remove the product ID from the session wishlist array
+                    if (($key = array_search($productId, $_SESSION['wishlists'])) !== false) {
+                        unset($_SESSION['wishlists'][$key]); // Remove the product ID from the array
+                    }
                 }
-    
+
                 $_SESSION['wishlist_message'] = ['type' => 'success', 'text' => 'Item removed from wishlist.'];
             } else {
                 $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Failed to remove item. Please try again.'];
@@ -84,7 +87,7 @@ class WishlistController extends Controller {
         } else {
             $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Invalid product ID.'];
         }
-    
+
         // Redirect to profile page
         header('Location: /customers/profile');
         exit();

@@ -1,4 +1,5 @@
 <?php
+
 class CustomerController extends Controller
 {
 
@@ -15,7 +16,8 @@ class CustomerController extends Controller
                     'email' => $_POST['email'],
                     'phone' => $_POST['phone_number'],
                     'password' => $_POST['password'],
-                    'confirm_password' => $_POST['confirm_password']
+                    'confirm_password' => $_POST['confirm_password'],
+                    'address' => $_POST['address'],
                 ];
 
                 // Check if the email is already in use
@@ -32,6 +34,7 @@ class CustomerController extends Controller
                     echo json_encode(['registrationSuccess' => false]);
                     exit();
                 }
+
             } elseif ($formType === 'signin') {
                 // Handle Sign In
                 $email = $_POST['email'];
@@ -40,17 +43,17 @@ class CustomerController extends Controller
                 $user = $this->model('Customer')->login($email);
                 if ($user && password_verify($password, $user['password'])) {
                     // Define the default image path
-                    $defaultImagePath = 'images/user-profile.png';
+                    $defaultImagePath = '/public/images/user-profile.png'; // Adjusted path
 
                     // Check if the user has a valid image path; use default if it's empty or incomplete
-                    $imagePath = (!empty($user['image_url']) && $user['image_url'] !== 'images/' && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/' . $user['image_url']))
-                        ? $user['image_url']
+                    $imagePath = (!empty($user['image_url']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/public/' . $user['image_url']))
+                        ? '/public/' . $user['image_url'] // Full path to image
                         : $defaultImagePath;
 
                     // Store user information in the session
                     $_SESSION['user'] = [
                         'id' => $user['id'],
-                        'image_url' => $imagePath,
+                        'image_url' => $imagePath, // Ensure this is correctly set
                         'name' => $user['first_name'] . ' ' . $user['last_name']
                     ];
 
@@ -60,7 +63,6 @@ class CustomerController extends Controller
                     echo json_encode(['loginSuccess' => false]);
                     exit();
                 }
-
             }
         }
         $this->view('customers/login_and_register');
@@ -85,7 +87,14 @@ class CustomerController extends Controller
         $this->view('customers/about');
     }
 
-    public function contact() {
+    // About Us page
+    public function thankYou()
+    {
+        $this->view('customers/thankyou');
+    }
+
+    public function contact()
+    {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!isset($_SESSION['user'])) {
@@ -157,7 +166,6 @@ class CustomerController extends Controller
     }
 
 
-
     //rania: Product details page
     public function productDetails($id)
     {
@@ -195,7 +203,6 @@ class CustomerController extends Controller
                 $errorMessage = "Please log in to submit a review.";
             }
         }
-
 
 
         // Get filter and sort criteria from URL parameters
@@ -258,10 +265,6 @@ class CustomerController extends Controller
     {
         $this->view('customers/checkout');
     }
-    public function test() {
-        // Include the test view
-        require_once __DIR__ . '/../views/customers/test.php';
-    }
 
     // Profile page for customer
     public function profile()
@@ -319,11 +322,11 @@ class CustomerController extends Controller
         }
 
         // Validate email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = "Invalid email format.";
-        } elseif ($this->model('Customer')->isEmailTaken($email, $id)) {
-            $errors[] = "Email already taken! Please choose a different email address.";
-        }
+        // if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        //     $errors[] = "Invalid email format.";
+        // } elseif ($this->model('Customer')->isEmailTaken($email, $id)) {
+        //     $errors[] = "Email already taken! Please choose a different email address.";
+        // }
 
         // Validate phone number (Jordanian format: starts with 07 and has 10 digits)
         if (!preg_match('/^07\d{8}$/', $phoneNumber)) {
@@ -356,8 +359,8 @@ class CustomerController extends Controller
                 exit;
             }
 
-            $imageName = time() . '_' . basename($image['name']);
-            $uploadDir = 'public/uploads/';
+            $imageName = 'uploads/'.time() . '_' . basename($image['name']);
+            $uploadDir = 'public/';
             $uploadFilePath = $uploadDir . $imageName;
 
             // Move uploaded file to the designated directory
@@ -373,7 +376,8 @@ class CustomerController extends Controller
             $updateSuccess = $this->model('Customer')->updateCustomer($id, $firstName, $lastName, $email, $phoneNumber, $address, $imageName);
             if ($updateSuccess) {
                 if ($imageName) {
-                    $_SESSION['user']['image_url'] = 'uploads/' . $imageName; // Update image URL in session
+                    // Include 'public/' in the image URL
+                    $_SESSION['user']['image_url'] = '/public/' . $imageName; // Update image URL in session
                 }
                 header("Location: /customers/profile"); // Redirect on success
                 exit;
@@ -392,6 +396,7 @@ class CustomerController extends Controller
             }
         }
 
+
         header("Location: /customers/profile");
         exit;
     }
@@ -403,5 +408,26 @@ class CustomerController extends Controller
         unset($_SESSION['id']);
         session_destroy();
         header('Location: /customers/login_and_register');
+    }
+
+    public function cancelOrder()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $orderId = $_POST['order_id'];
+
+            $orderModel = $this->model('Order');
+            if ($orderModel->canCancelOrder($orderId)) {
+                $orderModel->updateStatus($orderId, 'canceled');
+                // Redirect to the customer profile page after successful cancellation
+                header("Location: /customers/profile"); // Adjust the URL as needed
+                exit(); // Ensure no further code is executed
+            } else {
+                // Handle failure (order cannot be canceled)
+                // You might want to set a session message or redirect back with an error
+                $_SESSION['error'] = "Order cannot be canceled.";
+                header("Location: /customers/profile"); // Redirect to the profile or any other appropriate page
+                exit();
+            }
+        }
     }
 }

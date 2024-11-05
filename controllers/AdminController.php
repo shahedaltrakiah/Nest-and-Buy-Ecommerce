@@ -49,7 +49,35 @@ public function login()
     // Admin dashboard
     public function dashboard()
     {
-        $this->view('admin/dashboard');
+        $userCount = $this->model('Customer')->countCustomers();
+        $orderCount = $this->model('Order')->countOrders();
+        $orderTotal = $this->model('Order')->totalOrders();
+        $couponCount = $this->model('Coupon')->CouponCount();
+
+        // Fetch sales data for the chart
+        $salesData = $this->model('Order')->getSalesData();
+
+        $labels = [];
+        $values = [];
+
+        foreach ($salesData as $row) {
+            $labels[] = $row['order_date'];
+            $values[] = $row['total_amount'];
+        }
+
+        // Fetch most-selling products
+        $mostSellingProducts = $this->model('Product')->getMostSellingProducts();
+
+        // Pass all data to the view
+        $this->view('admin/dashboard', [
+            'userCount' => $userCount,
+            'orderCount' => $orderCount,
+            'orderTotal' => $orderTotal,
+            'couponCount' => $couponCount,
+            'labels' => json_encode($labels),
+            'values' => json_encode($values),
+            'mostSellingProducts' => $mostSellingProducts
+        ]);
     }
 
     // Manage categories
@@ -68,6 +96,7 @@ public function login()
         $this->view('admin/manage_products', ['products' => $products, 'categories' => $categories]);
 
     }
+    
 
     // Manage orders
     public function manageOrders()
@@ -75,6 +104,32 @@ public function login()
         $orders = $this->model('Order')->all();
         $this->view('admin/manage_orders', ['orders' => $orders]);
     }
+    public function changeOrderStatus()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $orderId = $_POST['orderId'];
+            $status = $_POST['status'];
+    
+            // Check if the order is already canceled or completed
+            $currentStatus = $this->model('Order')->getStatusById($orderId); // Assuming you have a method to get the current status
+            if ($currentStatus === 'canceled' || $currentStatus === 'completed') {
+                // Handle the case where the order cannot be edited
+                echo json_encode(['error' => 'This order cannot be changed.']);
+                exit;
+            }
+    
+            try {
+                $this->model('Order')->updateStatus($orderId, $status);
+                // Redirect or provide success feedback
+                header('Location: /admin/manage_orders'); // Adjust this path as necessary
+                exit;
+            } catch (Exception $e) {
+                // Handle error, perhaps log it and redirect with an error message
+                echo json_encode(['error' => "Error: " . $e->getMessage()]);
+            }
+        }
+    }
+    
 
     //view Item
     public function viewProduct($id)
@@ -127,7 +182,7 @@ public function login()
             if (in_array($imageFileType, $allowedTypes)) {
                 if (move_uploaded_file($_FILES['image_url']['tmp_name'], $targetFile)) {
 
-                    $data['image_url'] = "/public/uploads/" . basename($_FILES['image_url']['name']);
+                    $data['image_url'] = "uploads/" . basename($_FILES['image_url']['name']);
                 } else {
                     $_SESSION['message'] = "Error uploading image.";
                     return;
@@ -175,8 +230,8 @@ public function login()
             }
 
             if ($productId && isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
-                $imageName = basename($_FILES['image_url']['name']);
-                $imagePath = $uploadDir . $imageName;
+                $imageName = 'uploads/'.basename($_FILES['image_url']['name']);
+                $imagePath = $imageName;
 
 
                 if (move_uploaded_file($_FILES['image_url']['tmp_name'], $imagePath)) {
@@ -197,7 +252,7 @@ public function login()
             $_SESSION['message'] = "Please fill in all required fields.";
         }
 
-        $products = $this->model('Product')->all();
+        $products = $this->model('Product')->getProducts();
         $this->view('admin/manage_products', ['products' => $products, 'categories' => $categories]);
     }
 
@@ -229,7 +284,6 @@ public function login()
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
-
 
             $this->view('admin/manage_customers', ['customers' => $this->model('Customer')->all()]);
         } else {
@@ -268,7 +322,7 @@ public function login()
     public function editProduct($id)
     {
         $categories = $this->model('Category')->all();
-        $product = $this->model('Product')->find($id);
+        $product = $this->model('Product')->getProductWithImage($id);
         $this->view('admin/product_edit', ['product' => $product, 'categories' => $categories]);
     }
 
@@ -293,7 +347,7 @@ public function login()
     
         // Check if an image file is uploaded
         if (!empty($_FILES['image_url']['name'])) {
-            $targetDir = 'public/uploads/';
+            $targetDir = 'uploads/';
             $targetFile = $targetDir . basename($_FILES['image_url']['name']);
             $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
     
@@ -359,8 +413,7 @@ public function login()
             exit();
         }
     }
-    
-    // ===================================================
+
     public function createCategory()
     {
         if (isset($_POST['category_name']) && !empty($_FILES['image_url']['name'])) {
@@ -370,7 +423,7 @@ public function login()
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
     
-            $uploadDir = 'public/uploads/';
+            $uploadDir = 'uploads/';
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -493,68 +546,68 @@ public function login()
     
     // coupons 
 
-    public function manageCoupon()
-    {
-        $coupons = $this->model('Coupon')->All();
-        $this->view('admin/manage_coupon', ['coupons' => $coupons]);
-    }
-    public function editCoupon($id) {
-        $coupon = $this->model('Coupon')->find($id);
-        $this->view('admin/coupon_edit', ['coupon' => $coupon]);
-    }
-    public function createCoupon()
-    {
+    // public function manageCoupon()
+    // {
+    //     $coupons = $this->model('Coupon')->All();
+    //     $this->view('admin/manage_coupon', ['coupons' => $coupons]);
+    // }
+    // public function editCoupon($id) {
+    //     $coupon = $this->model('Coupon')->find($id);
+    //     $this->view('admin/coupon_edit', ['coupon' => $coupon]);
+    // }
+    // public function createCoupon()
+    // {
     
-        $data = [
-            'code' => $_POST['code'],
-            'discount' => $_POST['discount'],
-            'description' => $_POST['description'],
-            'usage_limit' => $_POST['usage_limit'],
-            'expiration_date' => $_POST['expiration_date'] , 
-        ];
+    //     $data = [
+    //         'code' => $_POST['code'],
+    //         'discount' => $_POST['discount'],
+    //         'description' => $_POST['description'],
+    //         'usage_limit' => $_POST['usage_limit'],
+    //         'expiration_date' => $_POST['expiration_date'] , 
+    //     ];
     
-        $this->model('Create')->create($data);
-        $_SESSION['message'] = "Coupon created successfully!";
-        header('Location: /admin/manage_coupon');
-        exit;
-    }
+    //     $this->model('Create')->create($data);
+    //     $_SESSION['message'] = "Coupon created successfully!";
+    //     header('Location: /admin/manage_coupon');
+    //     exit;
+    // }
     
-    public function updateCoupon($id) {
-        $data= [
-            'code' => $_POST['code'],
-            'discount' => $_POST['discount'],
-            'usage_limit' => $_POST['usage_limit'],
-            'expiration_date' => $_POST['expiration_date'],
-        ];
+    // public function updateCoupon($id) {
+    //     $data= [
+    //         'code' => $_POST['code'],
+    //         'discount' => $_POST['discount'],
+    //         'usage_limit' => $_POST['usage_limit'],
+    //         'expiration_date' => $_POST['expiration_date'],
+    //     ];
         
-        $coupon = $this->model('Coupon')->find($id);
+    //     $coupon = $this->model('Coupon')->find($id);
         
-        $this->model('Coupon')->update($id, $data);
+    //     $this->model('Coupon')->update($id, $data);
     
-        $_SESSION['message'] = "Coupon updated successfully!";
+    //     $_SESSION['message'] = "Coupon updated successfully!";
         
-        $this->view('admin/coupon_edit', ['coupon' => $coupon]);
+    //     $this->view('admin/coupon_edit', ['coupon' => $coupon]);
     
-        var_dump($_POST);
-        exit;
-    }
+    //     var_dump($_POST);
+    //     exit;
+    // }
     
-    public function deleteCoupon()
-    {
-        $id = $_POST['id'] ?? null;
+    // public function deleteCoupon()
+    // {
+    //     $id = $_POST['id'] ?? null;
     
-        if (!$id || !$this->model('Coupon')->find($id)) {
-            $_SESSION['error'] = "Coupon not found!";
-            header("Location: /admin/manage_coupon");
-            exit;
-        }
+    //     if (!$id || !$this->model('Coupon')->find($id)) {
+    //         $_SESSION['error'] = "Coupon not found!";
+    //         header("Location: /admin/manage_coupon");
+    //         exit;
+    //     }
     
-        $this->model('Coupon')->delete($id);
+    //     $this->model('Coupon')->delete($id);
     
-        $_SESSION['message'] = "Coupon deleted successfully!";
-        header("Location: /admin/manage_coupon");
-        exit;
-    }
+    //     $_SESSION['message'] = "Coupon deleted successfully!";
+    //     header("Location: /admin/manage_coupon");
+    //     exit;
+    // }
 
     public function manageReviews()
     {
@@ -564,32 +617,68 @@ public function login()
         // Pass the reviews data to the view
         $this->view('admin/Review', ['reviews' => $reviews]);
     }
-    public function removeReviewAdmin()
-    {
+    // public function removeReviewAdmin()
+    // {
+    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    //         // Validate that the review ID is provided
+    //         $reviewId = isset($_POST['reviewId']) ? intval($_POST['reviewId']) : 0;
+    
+    //         if ($reviewId > 0) {
+    //             // Call the model to delete the review
+    //             $result = $this->model('ReviewModel')->deleteReview($reviewId);
+    
+    //             if ($result) {
+    //                 // Set a success message
+    //                 $_SESSION['message'] = "Review removed successfully!";
+    //             } else {
+    //                 // Set an error message
+    //                 $_SESSION['error'] = "Error removing review. Please try again.";
+    //             }
+    //         } else {
+    //             $_SESSION['error'] = "Invalid review ID.";
+    //         }
+    
+    //         // Redirect back to the manage reviews page
+    //         header("Location: /admin/Review");
+    //         exit();
+    //     }
+    // }
+    public function acceptReviewAdmin() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Validate that the review ID is provided
             $reviewId = isset($_POST['reviewId']) ? intval($_POST['reviewId']) : 0;
     
             if ($reviewId > 0) {
-                // Call the model to delete the review
-                $result = $this->model('ReviewModel')->deleteReview($reviewId);
+                $result = $this->model('Review')->acceptReview($reviewId);
     
-                if ($result) {
-                    // Set a success message
-                    $_SESSION['message'] = "Review removed successfully!";
-                } else {
-                    // Set an error message
-                    $_SESSION['error'] = "Error removing review. Please try again.";
-                }
-            } else {
-                $_SESSION['error'] = "Invalid review ID.";
-            }
+      
     
-            // Redirect back to the manage reviews page
+            header("Location: /admin/Review");
+            exit();
+        }
+        }
+    }
+    
+    public function rejectReviewAdmin() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $reviewId = isset($_POST['reviewId']) ? intval($_POST['reviewId']) : 0;
+    
+            if ($reviewId > 0) {
+                $result = $this->model('Review')->rejectReview($reviewId);
+    
+            //     if ($result) {
+            //         $_SESSION['message'] = "Review rejected successfully!";
+            //     } else {
+            //         $_SESSION['error'] = "Error rejecting review. Please try again.";
+            //     }
+            // } else {
+            //     $_SESSION['error'] = "Invalid review ID.";
+            // }
+    
             header("Location: /admin/Review");
             exit();
         }
     }
+}
     public function manageCoupons()
 {
     // Fetch all coupons from the Coupon model

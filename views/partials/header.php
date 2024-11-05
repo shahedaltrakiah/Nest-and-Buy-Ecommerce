@@ -60,20 +60,38 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                 <?php if (isset($_SESSION['user'])): ?>
                     <li class="nav-item dropdown" style="margin-right: -2px;">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/public/<?php echo $_SESSION['user']['image_url'] ?? '/public/images/user-profile.png'; ?>" alt="User Image"
-                                 style="width: 40px; height: 40px; border-radius: 50%; margin-top: -5px;">
-                        </a>
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+   data-bs-toggle="dropdown" aria-expanded="false">
+    <img src="<?= htmlspecialchars($_SESSION['user']['image_url'] ?? '/public/images/user-profile.png') ?>"
+         alt="User Image"
+         style="width: 40px; height: 40px; border-radius: 50%; margin-top: -5px;">
+</a>
+
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li></li>
                             <li><a class="dropdown-item" href="/customers/profile">Profile</a></li>
-                            <li><a class="dropdown-item" href="/customers/logout" onclick="confirmLogout()">Logout</a></li>
+                            <li><a class="dropdown-item" href="/customers/logout" onclick="confirmLogout()">Logout</a>
+                            </li>
                         </ul>
                     </li>
+                    <?php
+                    require_once 'models/Wishlist.php';
+
+                    $wishlistModel = new Wishlist();
+
+                    $customerId = $_SESSION['user']['id'] ?? null;
+                    $wishlistCount = 0;
+
+                    if ($customerId) {
+                        // Get the count of wishlist items for this customer
+                        $wishlistItems = $wishlistModel->getWishlistItems($customerId);
+                        $wishlistCount = count($wishlistItems);
+                    }
+                    ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/customers/profile">
                             <i class="fa-solid fa-heart"></i>
-                            <span class="wishlist-count"><?php echo isset($_SESSION['wishlists']) ? count($_SESSION['wishlists']) : 0; ?></span>
+                            <span class="wishlist-count"><?php echo $wishlistCount; ?></span>
                         </a>
                     </li>
                 <?php else: ?>

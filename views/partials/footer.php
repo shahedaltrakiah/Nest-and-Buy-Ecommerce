@@ -59,25 +59,24 @@
                 <div class="row links-wrap">
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="customers/about">About us</a></li>
-                            <li><a href="customers/shop">Shop</a></li>
-                            <li><a href="customers/contact">Contact us</a></li>
+                            <li><a href="/customers/about">About us</a></li>
+                            <li><a href="/customers/shop">Shop</a></li>
+                            <li><a href="/customers/contact">Contact us</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="#">Testimonials</a></li>
-                            <li><a href="customers/about">Our team</a></li>
-                            <li><a href="#">Live chat</a></li>
+                            <li><a href="/customers/index#category"">Category</a></li>
+                            <li><a href="/customers/shop"">Product</a></li>
+                            <li><a href="/customers/index#bserseller">Best seller</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6 col-sm-6 col-md-3">
                         <ul class="list-unstyled">
-                            <li><a href="#">Category</a></li>
-                            <li><a href="#">Product</a></li>
-                            <li><a href="#">Best seller</a></li>
+                            <li><a href="/customers/index#testimonial">Testimonials</a></li>
+                            <li><a href="/customers/about#ourTeam">Our team</a></li>
                         </ul>
                     </div>
 

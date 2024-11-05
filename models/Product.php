@@ -182,8 +182,8 @@ class Product extends Model
     public function addReview($productId, $fullName, $email, $phone, $rating, $comment)
     {
         $statement = $this->pdo->prepare("
-             INSERT INTO reviews (product_id, full_name, email, phone, rating, comment, created_at) 
-             VALUES (:product_id, :full_name, :email, :phone, :rating, :comment, NOW())
+             INSERT INTO reviews (product_id, full_name, email, phone, rating, comment, created_at, status) 
+             VALUES (:product_id, :full_name, :email, :phone, :rating, :comment, NOW(), 'pending')
          ");
         $statement->bindParam(':product_id', $productId, PDO::PARAM_INT);
         $statement->bindParam(':full_name', $fullName, PDO::PARAM_STR);
@@ -193,6 +193,7 @@ class Product extends Model
         $statement->bindParam(':comment', $comment, PDO::PARAM_STR);
         return $statement->execute();
     }
+    
 
     public function searchProducts($query)
     {
@@ -222,6 +223,18 @@ class Product extends Model
     public function getAllProducts()
     {
         $statement = $this->pdo->prepare("SELECT * FROM $this->table");
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getMostSellingProducts($limit = 10) {
+        $statement = $this->pdo->prepare("SELECT p.id, p.product_name, p.price, p.average_rating, SUM(oi.quantity) AS total_sold
+            FROM products p
+            JOIN orderitems oi ON p.id = oi.product_id
+            GROUP BY p.id
+            ORDER BY total_sold DESC
+            LIMIT :limit");
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }

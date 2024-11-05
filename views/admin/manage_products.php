@@ -27,7 +27,12 @@ $total_pages = ceil($total_items / $items_per_page);
 				<div class="col-auto">
 					<h1 class="app-page-title mb-0 text-success fw-bold"
 						style="font-size: 2rem; text-shadow: 1px 1px 2px #d4edda;">
-						<i class="bi bi-box-seam me-2"></i> Products
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-columns-gap"
+                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M6 1H1v3h5V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1H1zm14 12h-5v3h5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1h-5zM6 8H1v7h5V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1H1zm14-6h-5v7h5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1h-5z"/>
+                        </svg>
+                        Products
 					</h1>
 				</div>
 				<!-- Utilities and Search Form -->
@@ -133,7 +138,6 @@ $total_pages = ceil($total_items / $items_per_page);
 						<th>ID</th>
 						<th>Image</th>
 						<th>Product Name</th>
-						<th>Description</th>
 						<th>Price</th>
 						<th>Average Rating</th>
 						<th>Stock Quantity</th>
@@ -145,11 +149,10 @@ $total_pages = ceil($total_items / $items_per_page);
 						<tr class="text-center">
 							<td><?php echo htmlspecialchars($product['id']); ?></td>
 							<td>
-								<?php
-								$imageSrc = !empty($product['image_url']) ? '/public/' . htmlspecialchars($product['image_url']) : '/public/images/product.png';
-								?>
-
-								<img src="<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
+                                <?php
+                                $imageSrc = !empty($product['image_url']) ? htmlspecialchars($product['image_url']) : 'images/product.png';
+                                ?>
+								<img src="/public/<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
 							</td>
 							<td class="text-truncate" style="max-width: 150px;">
 								<?php
@@ -157,9 +160,6 @@ $total_pages = ceil($total_items / $items_per_page);
 								$formattedName = ucwords($formattedName);
 								echo $formattedName;
 								?>
-							</td>
-							<td class="text-truncate " style="max-width: 150px;">
-								<?php echo htmlspecialchars($product['description']); ?>
 							</td>
 							<td>JD<?php echo number_format($product['price'], 2); ?></td>
 							<td><?php echo number_format($product['average_rating'], 1); ?>/5</td>

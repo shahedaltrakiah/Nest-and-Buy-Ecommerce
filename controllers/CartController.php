@@ -136,8 +136,6 @@ class CartController extends Controller
         header('Location: /customers/cart');
         exit();
     }
-    
-    
 
     public function checkout()
     {
@@ -161,8 +159,7 @@ class CartController extends Controller
             $customerId = $_SESSION['user']['id'] ?? null;
 
             if ($customerId === null) {
-                $_SESSION['error_message'] = 'Customer not logged in.';
-                header('Location: /customers/login_and_register');
+                header('Location: /customers/checkout?error=not_logged_in');
                 exit();
             }
 
@@ -216,14 +213,12 @@ class CartController extends Controller
                 $orderItemModel->create($orderItemData);
             }
 
-
             // Clear the cart and discount session
             unset($_SESSION['cart']);
             unset($_SESSION['discount']);
 
             // Set success message and redirect
-            $_SESSION['success_message'] = 'Order placed successfully!';
-            header('Location: /customers/cart'); // Redirect to the cart or confirmation page
+            header('Location: /customers/thankyou');
             exit();
         }
 

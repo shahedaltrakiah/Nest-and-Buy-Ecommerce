@@ -102,8 +102,8 @@
                                     <h3 class="product-title">
                                         <b><?php echo ucwords(str_replace(['-', '_'], ' ', $product['product_name'])); ?></b>
                                     </h3>
-                                    <strong class="product-price"><sup>
-                                            JD </sup><?php echo htmlspecialchars($product['price']); ?></strong>
+                                    <strong class="product-price">
+                                            JD <?php echo htmlspecialchars($product['price']); ?></strong>
                                     <span class="icon-cross">
                                     <img src="../public/images/cross.svg" class="img-fluid">
                                 </span>

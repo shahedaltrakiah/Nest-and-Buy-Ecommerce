@@ -8,7 +8,7 @@
     <div class="profile-card">
         <button class="profile-edit-btn" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</button>
         <div class="profile-info">
-            <img src="<?php echo isset($_SESSION['user']['image_url']) ? '/public/' . $_SESSION['user']['image_url'] : '/public/images/user-profile.png'; ?>"
+         <img src="<?= htmlspecialchars($_SESSION['user']['image_url'] ?? '/public/images/user-profile.png') ?>"
                  alt="Profile Image">
 
             <div>
@@ -136,7 +136,7 @@
                     </span>
 
                     </td>
-                    <td><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></td>
+                    <td> JD <?= number_format($order['total_amount'], 2) ?></td>
                     <td>
                         <button class="view-details-btn" data-bs-toggle="modal"
                                 data-bs-target="#orderDetailsModal<?= $order['order_id'] ?>">View Details
@@ -147,61 +147,106 @@
             </tbody>
         </table>
     </div>
-
-    <!-- Modals for Viewing Order Details -->
     <?php foreach ($orders as $order): ?>
-        <div class="modal fade" id="orderDetailsModal<?= $order['order_id'] ?>" tabindex="-1"
-             aria-labelledby="orderDetailsModalLabel<?= $order['order_id'] ?>" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="orderDetailsModalLabel<?= $order['order_id'] ?>">Order Details</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="order-details">
-                            <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order['order_id']) ?></span>
-                            </h5>
-                            <p><strong>Date:</strong> <span
-                                        class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></span>
-                            </p>
-                            <p><strong>Status:</strong>
-                                <span class="badge bg-<?php
-                                if ($order['status'] == 'completed') {
-                                    echo 'success';
-                                } elseif ($order['status'] == 'canceled') {
-                                    echo 'danger';
-                                } else {
-                                    echo 'warning';
-                                }
-                                ?>">
-                                    <?= htmlspecialchars(ucfirst($order['status'])) ?>
-                                </span>
-                            </p>
-                            <p><strong>Total:</strong> <span
-                                        class="text-danger"><sup> JD </sup><?= number_format($order['total_amount'], 2) ?></span>
-                            </p>
-                            <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
-                            <p><strong>Items Ordered:</strong></p>
-                            <div class="order-items">
-                                <ul class="list-group">
-                                    <?php foreach ($order['items'] as $item): ?>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <?= ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item->product_name))); ?>
-                                            <span class="badge bg-secondary"><sup> JD </sup><?= number_format($item->product_price, 2) ?></span>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
+    <div class="modal fade" id="orderDetailsModal<?= $order['order_id'] ?>" tabindex="-1"
+         aria-labelledby="orderDetailsModalLabel<?= $order['order_id'] ?>" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel<?= $order['order_id'] ?>">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="order-details">
+                        <h5>Order ID: <span class="text-primary">#<?= htmlspecialchars($order['order_id']) ?></span></h5>
+                        <p><strong>Date:</strong> <span class="text-muted"><?= htmlspecialchars(date('M d, Y', strtotime($order['order_date']))) ?></span></p>
+                        <p><strong>Status:</strong>
+                            <span class="badge bg-<?php
+                            if ($order['status'] == 'completed') {
+                                echo 'success';
+                            } elseif ($order['status'] == 'canceled') {
+                                echo 'danger';
+                            } else {
+                                echo 'warning';
+                            }
+                            ?>">
+                                <?= htmlspecialchars(ucfirst($order['status'])) ?>
+                            </span>
+                        </p>
+                        <p><strong>Total:</strong> <span class="text-danger"> JD <?= number_format($order['total_amount'], 2) ?></span></p>
+                        <p><strong>Shipping Address:</strong> <span class="text-muted">Amman, Jordan</span></p>
+                        <p><strong>Items Ordered:</strong></p>
+                        <div class="order-items">
+                            <ul class="list-group">
+                                <?php foreach ($order['items'] as $item): ?>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <?= ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item->product_name))); ?>
+                                        <span class="badge bg-secondary"> JD <?= number_format($item->product_price, 2) ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
                         </div>
+                        <p><strong>Time Left to Cancel:</strong> <span id="timer<?= $order['order_id'] ?>" class="text-danger"></span></p>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelButton<?= $order['order_id'] ?>" class="btn btn-danger" onclick="confirmCancel(<?= htmlspecialchars($order['order_id']) ?>)">Cancel Order</button>
                 </div>
             </div>
         </div>
-    <?php endforeach; ?>
+    </div>
+
+    <script>
+function startTimer(orderId, duration) {
+    const timerDisplay = document.getElementById('timer' + orderId);
+    const cancelButton = document.getElementById('cancelButton' + orderId);
+    const endTimeKey = 'order_' + orderId + '_endTime';
+    const finishedKey = 'order_' + orderId + '_finished'; // New key for finished status
+
+    // Check if the timer has already finished
+    if (localStorage.getItem(finishedKey)) {
+        timerDisplay.textContent = 'Time is up!';
+        cancelButton.style.display = 'none'; // Hide the cancel button
+        return; // Stop further execution
+    }
+
+    let endTime = localStorage.getItem(endTimeKey);
+    if (!endTime) {
+        // Set a new end time if it doesn't exist
+        endTime = Date.now() + duration * 1000;
+        localStorage.setItem(endTimeKey, endTime);
+    } else {
+        endTime = parseInt(endTime, 10); // Convert to a number
+    }
+
+    const interval = setInterval(() => {
+        const now = Date.now();
+        const remaining = endTime - now;
+
+        if (remaining <= 0) {
+            clearInterval(interval);
+            timerDisplay.textContent = 'Time is up!';
+            cancelButton.style.display = 'none'; // Hide the cancel button
+            localStorage.setItem(finishedKey, 'true'); // Mark timer as finished
+            localStorage.removeItem(endTimeKey); // Clear stored end time
+            return;
+        }
+
+        const seconds = Math.floor((remaining / 1000) % 60);
+        timerDisplay.textContent = `${seconds}s`;
+    }, 1000);
+}
+
+// Start the timer for this order (10 seconds)
+startTimer(<?= $order['order_id'] ?>, 10);
+
+    </script>
+<?php endforeach; ?>
+
+
+
+
+
 
 
     <!-- Wishlist Section -->
@@ -220,8 +265,8 @@
                                 </div>
                                 <div class="card-body text-center">
                                     <h6 class="card-title text-dark"><?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($item['product_name']))); ?></h6>
-                                    <p class="card-text text-muted"><sup>
-                                            JD </sup><?= htmlspecialchars($item['price']) ?></p>
+                                    <p class="card-text text-muted">
+                                            JD <?= htmlspecialchars($item['price']) ?></p>
                                     <form class="remove-wishlist-form" action="/customers/profile/remove" method="POST">
                                         <input type="hidden" name="product_id"
                                                value="<?= htmlspecialchars($item['product_id']) ?>">
@@ -299,7 +344,34 @@
 
             return false; // Prevent default form submission until confirmation
         }
+        function confirmCancel(orderId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, cancel it!',
+        cancelButtonText: 'No, keep it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Create a form dynamically and submit it
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/customers/profile/cancelOrder';
 
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'order_id';
+            input.value = orderId;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
         function removeItem(itemName, form) {
             Swal.fire({
                 title: 'Are you sure?',
@@ -311,8 +383,7 @@
                 confirmButtonText: 'Yes, remove it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Submit the form to remove the item
-                    form.submit(); // Submit the form after confirmation
+                    form.submit();
                     Swal.fire({
                         title: 'Removed!',
                         text: itemName + ' has been removed from your wishlist.',
@@ -327,7 +398,7 @@
         $('.remove-btn').on('click', function (e) {
             e.preventDefault(); // Prevent the default form submission
             const form = $(this).closest('form'); // Get the closest form
-            const itemName = form.find('input[name="product_name"]').val(); // You may want to adjust this to get the actual product name instead
+            const itemName ='this item '// You may want to adjust this to get the actual product name instead
             removeItem(itemName, form); // Call the removeItem function
         });
 

@@ -35,6 +35,8 @@ class Core
         'admin/customer_edit' => ['AdminController@editCustomer', 'GET', 'GET'], // Specify POST for updates
         'admin/Review' => ['AdminController@manageReviews', 'GET'],
         'admin/deleteReview' => ['AdminController@removeReviewAdmin', 'POST'],
+        'admin/rejectReview' => ['AdminController@rejectReviewAdmin', 'POST'], // Route for rejecting a review
+        'admin/acceptReview' => ['AdminController@acceptReviewAdmin', 'POST'],
         'admin/customer_update' => ['AdminController@updateCustomer', 'POST', 'GET'], // Specify POST for updates
         'admin/customer_create' => ['AdminController@createCustomer', ['POST', 'GET']],
         'admin/deleteCustomer' => ['AdminController@deleteCustomer', ['GET', 'POST']],
@@ -42,16 +44,13 @@ class Core
         'admin/Coupon' => ['AdminController@manageCoupons', 'GET'],
         'admin/CouponDelete' => ['AdminController@CouponDelete', 'POST'],
         'admin/addCoupon' => ['AdminController@addCoupon', 'POST'],
+        'admin/changeOrderStatus' => ['AdminController@changeOrderStatus', 'POST'],
 
-
-        // Super Admin Routes
-        //    'admin/super_manage_admin' => ['AdminController@manageAdmin', ['GET', 'POST']],
-        //    'super_admin/add_admin' => ['SuperAdminController@addAdmin', ['GET', 'POST']],
-        //    'admin/deleteAdmin' => ['AdminController@manageAdmin', ['GET', 'POST']],
 
         'admin/super_manage_admin' => ['AdminController@manageAdmin', ['GET', 'POST']],
         'admin/add_admin' => ['AdminController@addAdmin', ['GET', 'POST']],
         'admin/delete_admin' => ['AdminController@deleteAdmin', ['GET', 'POST']],
+
         // Customer Routes
         'customers/login_and_register' => ['CustomerController@login', ['GET', 'POST']],
         'customers/rest_password' => ['CustomerController@restPassword', ['GET', 'POST']],
@@ -77,7 +76,8 @@ class Core
         'customers/profile/update' => ['CustomerController@updateProfile', ['POST']],
         'profile/uploadImage' => ['CustomerController@uploadImage', 'POST'],
         'shop/liveSearch' => ['ShopController@liveSearch', 'GET'],
-
+        'customers/thankyou' => ['CustomerController@thankYou', 'GET'],
+        'customers/profile/cancelOrder' => ['CustomerController@cancelOrder', ['POST']],
     ];
 
     public function __construct()

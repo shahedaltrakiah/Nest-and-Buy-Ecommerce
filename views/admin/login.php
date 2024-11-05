@@ -94,9 +94,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.loginSuccess) {
-                        showAlert('success', 'Login successful! Redirecting...').then(() => {
-                            window.location.href = '/admin/dashboard';
-                        });
+                        window.location.href = '/admin/dashboard';
                     } else {
                         showAlert('error', 'Invalid credentials. Please try again.');
                     }
