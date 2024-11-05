@@ -208,10 +208,12 @@ public function login()
     }
 
 
-    //create Product
+    // Create Product
     public function createProduct()
     {
         $categories = $this->model('Category')->all();
+
+        // Check if required POST data is set
         if (isset($_POST['product_name'], $_POST['price'], $_POST['description'], $_POST['category_id'], $_POST['stock_quantity'])) {
 
             $productData = [
@@ -222,36 +224,45 @@ public function login()
                 'average_rating' => $_POST['average_rating'] ?? 0,
                 'stock_quantity' => $_POST['stock_quantity'],
             ];
+
+            // Create the product and get its ID
             $productId = $this->model('Product')->create($productData);
 
-            $uploadDir = '/public/uploads/';
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
-            }
+            if ($productId) {
+                // Directory for uploads
+                $uploadDir = 'public/uploads/';
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
 
-            if ($productId && isset($_FILES['image_url']) && $_FILES['image_url']['error'] == 0) {
-                $imageName = 'uploads/'.basename($_FILES['image_url']['name']);
-                $imagePath = $imageName;
+                // Check if an image was uploaded
+                if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === 0) {
+                    // Generate a unique name for the image to prevent overwriting
+                    $imageName = uniqid() . '-' . basename($_FILES['image_url']['name']);
+                    $imagePath = $uploadDir . $imageName;
 
-
-                if (move_uploaded_file($_FILES['image_url']['tmp_name'], $imagePath)) {
-                    $imageData = [
-                        'product_id' => $productId,
-                        'image_url' => $imagePath,
-                    ];
-
-                    $this->model('ProductImage')->create($imageData);
-                    $_SESSION['message'] = "Product created successfully!";
+                    // Move the uploaded file to the designated directory
+                    if (move_uploaded_file($_FILES['image_url']['tmp_name'], $imagePath)) {
+                        $imageData = [
+                            'product_id' => $productId,
+                            'image_url' => 'uploads/' . $imageName,
+                        ];
+                        $this->model('ProductImage')->create($imageData);
+                        $_SESSION['message'] = "Product created successfully with image!";
+                    } else {
+                        $_SESSION['message'] = "Product created, but image upload failed.";
+                    }
                 } else {
-                    $_SESSION['message'] = "Failed to upload image.";
+                    $_SESSION['message'] = "Product created successfully!";
                 }
             } else {
-                $_SESSION['message'] = "Failed to create product or upload image.";
+                $_SESSION['message'] = "Failed to create product.";
             }
         } else {
             $_SESSION['message'] = "Please fill in all required fields.";
         }
 
+        // Fetch updated products list and render the view
         $products = $this->model('Product')->getProducts();
         $this->view('admin/manage_products', ['products' => $products, 'categories' => $categories]);
     }
@@ -617,32 +628,7 @@ public function login()
         // Pass the reviews data to the view
         $this->view('admin/Review', ['reviews' => $reviews]);
     }
-    // public function removeReviewAdmin()
-    // {
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         // Validate that the review ID is provided
-    //         $reviewId = isset($_POST['reviewId']) ? intval($_POST['reviewId']) : 0;
-    
-    //         if ($reviewId > 0) {
-    //             // Call the model to delete the review
-    //             $result = $this->model('ReviewModel')->deleteReview($reviewId);
-    
-    //             if ($result) {
-    //                 // Set a success message
-    //                 $_SESSION['message'] = "Review removed successfully!";
-    //             } else {
-    //                 // Set an error message
-    //                 $_SESSION['error'] = "Error removing review. Please try again.";
-    //             }
-    //         } else {
-    //             $_SESSION['error'] = "Invalid review ID.";
-    //         }
-    
-    //         // Redirect back to the manage reviews page
-    //         header("Location: /admin/Review");
-    //         exit();
-    //     }
-    // }
+
     public function acceptReviewAdmin() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $reviewId = isset($_POST['reviewId']) ? intval($_POST['reviewId']) : 0;
@@ -664,16 +650,7 @@ public function login()
     
             if ($reviewId > 0) {
                 $result = $this->model('Review')->rejectReview($reviewId);
-    
-            //     if ($result) {
-            //         $_SESSION['message'] = "Review rejected successfully!";
-            //     } else {
-            //         $_SESSION['error'] = "Error rejecting review. Please try again.";
-            //     }
-            // } else {
-            //     $_SESSION['error'] = "Invalid review ID.";
-            // }
-    
+
             header("Location: /admin/Review");
             exit();
         }
