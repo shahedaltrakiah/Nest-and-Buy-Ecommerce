@@ -90,9 +90,6 @@ if ($search_status) {
                         <th class="text-nowrap">Status</th>
                         <th class="text-nowrap">Total Amount</th>
                         <th class="text-nowrap">Created At</th>
-                        <th class="text-nowrap">Updated At</th>
-                        <th class="text-nowrap">address</th>
-                        <th class="text-nowrap">PhoneNumber</th>
                         <th class="text-nowrap">Actions</th>
 
                     </tr>
@@ -117,9 +114,7 @@ if ($search_status) {
             </td>
             <td><?= htmlspecialchars($order['total_amount']); ?></td>
             <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['created_at']))); ?></td>
-            <td class="text-nowrap"><?= htmlspecialchars(date('Y-m-d', strtotime($order['updated_at']))); ?></td>
-            <td><?= htmlspecialchars($order['address']); ?></td> <!-- New column for address -->
-            <td><?= htmlspecialchars($order['phone_number']); ?></td> <!-- New column for phone number -->
+
             <td>
                 <form action="/admin/changeOrderStatus" method="POST" class="d-inline">
                     <input type="hidden" name="orderId" value="<?= htmlspecialchars($order['id']); ?>">
