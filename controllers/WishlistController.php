@@ -7,7 +7,6 @@ class WishlistController extends Controller {
     public function __construct() {
        // session_start(); // Start the session if not already started
     }
-
     public function add() {
         // Check if the user is logged in
         if (!isset($_SESSION['user']['id'])) {
@@ -31,17 +30,19 @@ class WishlistController extends Controller {
                 $_SESSION['wishlist_message'] = ['type' => 'success', 'text' => 'Product added to wishlist.'];
             } else {
                 $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Product is already in wishlist.'];
-                
             }
-            // Redirect to profile page (make sure this page fetches wishlist items)
-            header('Location: /customers/profile'); // Ensure this points to the correct profile method
+            
+            // Redirect to the referring page (where the add to wishlist request came from)
+            $referer = $_SERVER['HTTP_REFERER'] ?? '/'; // Default to home if no referer
+            header('Location: ' . $referer);
             exit();
         } else {
             $_SESSION['wishlist_message'] = ['type' => 'error', 'text' => 'Invalid product ID.'];
-            header('Location: /customers/profile'); // Redirect with error
+            header('Location: /customers/profile'); // Redirect with error to profile
             exit();
         }
     }
+    
     public function viewWishlist() {
         // Check if the user is logged in
         if (!isset($_SESSION['user']['id'])) {
