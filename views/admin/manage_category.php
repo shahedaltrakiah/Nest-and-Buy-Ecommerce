@@ -157,9 +157,9 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                                 <td><?php echo htmlspecialchars($category['id']); ?></td>
                                 <td>
                                     <?php
-                                    $imageSrc = !empty($category['image_url']) ? "/public/" . htmlspecialchars($category['image_url']) : "images/category-defult.png";
+                                    $imageSrc = !empty($category['image_url']) ? htmlspecialchars($category['image_url']) : "images/category-defult.png";
                                     ?>
-                                    <img src="<?= $imageSrc; ?>" class="" style="width: 70px; height: 70px;">
+                                    <img src="/public/<?= $imageSrc; ?>" class="" style="width: 70px; height: 70px;">
                                 </td>
 
                                 <td class="text-truncate" style="max-width: 150px;">
