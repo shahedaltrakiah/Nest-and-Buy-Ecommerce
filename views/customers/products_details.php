@@ -1,6 +1,6 @@
 <?php require 'views/partials/header.php'; ?>
 
-<div class="container mt-5" >
+<div class="container mt-5">
     <div class="row justify-content-center mb-5 s_product_inner">
 
         <!-- Main Product Image and Thumbnails Section -->
@@ -14,15 +14,18 @@
                     $mainImage = trim($allImages[0]);
                     ?>
                     <img id="main-image" width="540" height="540" src="/public/<?= htmlspecialchars($mainImage); ?>"
-                         class="img-fluid rounded shadow" alt="<?= htmlspecialchars($product['product_name']); ?>">
+                        class="img-fluid rounded shadow" alt="<?= htmlspecialchars($product['product_name']); ?>">
 
                     <form action="/customer/profile/add" method="post" class="wishlist-button">
                         <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
-                        <button type="submit" class="btn action-button">
-                            <i class="fa-solid fa-heart" style="font-size: 30px"> </i>
+                        <button type="submit"
+                            class="btn action-button <?= in_array($product['id'], $_SESSION['wishlists'] ?? []) ? 'wishlist-added' : '' ?>">
+                            <i class="fa-solid fa-heart" style="font-size: 30px;"></i>
                         </button>
                     </form>
+
                 </div>
+
 
                 <?php if (isset($errorMessage)): ?>
                     <script>
@@ -53,19 +56,19 @@
                 <?php endif; ?>
 
                 <!-- Thumbnails Section to the Right of Main Image with Scroll -->
-                <div class="sub-images d-flex flex-column ms-3 customer-reviews" style="max-height: 400px; overflow-y: auto;">
+                <div class="sub-images d-flex flex-column ms-3 customer-reviews"
+                    style="max-height: 400px; overflow-y: auto;">
                     <?php foreach ($allImages as $image):
                         $image = trim($image); ?>
-                        <img onclick="changeMainImage(this.src)" class="sub-image img-thumbnail mb-2"
-                             width="150" height="150" src="/public/<?= htmlspecialchars($image); ?>"
-                             alt="<?= htmlspecialchars($product['product_name']); ?>" style="cursor: pointer;">
+                        <img onclick="changeMainImage(this.src)" class="sub-image img-thumbnail mb-2" width="150"
+                            height="150" src="/public/<?= htmlspecialchars($image); ?>"
+                            alt="<?= htmlspecialchars($product['product_name']); ?>" style="cursor: pointer;">
                     <?php endforeach; ?>
                 </div>
             </div>
         </div>
         <div class="col-lg-5 col-xl-5">
             <div>
-
                 <h2><?= htmlspecialchars(ucwords(str_replace('-', ' ', $product['product_name']))); ?></h2>
                 <?php
                 // Calculate Average Rating
@@ -73,7 +76,7 @@
                 $reviewCount = count($reviews);
                 if ($reviewCount > 0) {
                     foreach ($reviews as $review) {
-                        $totalRating += (int)$review['rating']; // Sum all the ratings
+                        $totalRating += (int) $review['rating']; // Sum all the ratings
                     }
                     $averageRating = $totalRating / $reviewCount; // Calculate average
                 } else {
@@ -87,8 +90,11 @@
                         <i class="fa fa-star fs-5  <?= ($i <= $averageRating) ? 'text-warning' : 'text-muted'; ?>"></i>
                     <?php endfor; ?>
                 </div>
-                <a href="#reviews-section" class="text-primary" style="cursor: pointer;"><?= count($reviews); ?> reviews</a>
-                <h4 class="product-price text-primary mt-3"> JD <?= htmlspecialchars(number_format($product['price'], 2)); ?></h4>
+                <a href="#reviews-section" class="text-primary" style="cursor: pointer;"><?= count($reviews); ?>
+                    reviews</a>
+                <h4 class="product-price text-primary mt-3"> JD
+                    <?= htmlspecialchars(number_format($product['price'], 2)); ?>
+                </h4>
                 <p class="lh-lg mt-3"><?= htmlspecialchars($product['description']); ?></p>
 
                 <div class="availability mb-1">
@@ -104,369 +110,555 @@
                     ?>
                 </div>
                 <div class="d-flex align-items-center mb-3 mt-3 ">
-    <?php if ($product['stock_quantity'] > 0): ?>
-        <form action="/customer/cart" method="post" class="button-form me-3 d-flex align-items-center gap-2">
-            <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
-            <input type="hidden" name="quantity" value="1"> <!-- Default to 1 when adding to cart -->
+                    <?php if ($product['stock_quantity'] > 0): ?>
+                        <form action="/customer/cart" method="post"
+                            class="button-form me-3 d-flex align-items-center gap-2">
+                            <input type="hidden" name="product_id" value="<?= $product['id']; ?>">
 
-            <!-- Add to Cart Button -->
-            <button type="submit" class="btn btn-primary action-button" style="height: 50px; width: 200px;">
-                <i class="fa-solid fa-cart-plus" style="margin-right: 5px;"></i> ADD TO CART
-            </button>
-        </form>
-    <?php else: ?>
-        <button class="btn btn-secondary action-button" style="height: 50px; width: 200px;" disabled>Out of Stock</button>
-    <?php endif; ?>
-</div>
+                            <div class="product_count">
+                                <span class="inumber-decrement" style="cursor: pointer;">
+                                    <i class="fa-solid fa-minus"></i>
+                                </span>
+                                <input class="input-number" type="number" name="quantity" id="quantity" value="1" min="0"
+                                    max="<?= $product['stock_quantity']; ?>" style="width: 50px;">
+                                <span class="number-increment" style="cursor: pointer;">
+                                    <i class="fa-solid fa-plus"></i>
+                                </span>
+                            </div>
 
+                            <!-- Add to Cart Button -->
+                            <button type="submit" class="btn btn-primary action-button" style="height: 50px; width: 200px;">
+                                <i class="fa-solid fa-cart-plus" style="margin-right: 5px;"></i> ADD TO CART
+                            </button>
+                        </form>
+                    <?php else: ?>
+                        <button class="btn btn-secondary action-button" style="height: 50px; width: 200px;" disabled>Out of
+                            Stock</button>
+                    <?php endif; ?>
                 </div>
 
             </div>
         </div>
-
     </div>
 
-    <!-- Reviews Section -->
-    <div class="reviews-section my-5 d-flex flex-column">
-        <div class="col-md-6">
-            <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Write a Review</h4>
-        </div>
+    <!-- Customer Reviews Section -->
+    <div class="reviews-section my-5">
+        <div class="row">
+            <!-- Left Column for Reviews -->
+            <div class="col-md-6">
+                <div class="customer-reviews">
+                    <div class="reviews-filter mb-3">
+                        <div class="d-flex align-items-center">
+                            <!-- All Reviews Button -->
+                            <button type="button"
+                                class="btn review-filter-btn <?= empty($_GET['filter']) || $_GET['filter'] === 'all' ? 'active' : ''; ?>"
+                                id="all-reviews">All Reviews</button>
 
-        <div class="my-5 mt-3" style="width: 100%;">
-
-            <!-- Review Submission Form -->
-
-            <form method="POST" action="" enctype="multipart/form-data">
-                <!-- Rating and Upload Image side by side -->
-                <div class="d-flex justify-content-between mb-3">
-                    <!-- Rating Section -->
-                    <div class="me-2" style="flex: 1;">
-                        <label for="rating" class="form-label">Rating</label>
-                        <div class="star-rating">
-                            <?php for ($i = 1; $i <= 5; $i++): ?>
-                                <i class="fa fa-star" data-value="<?= $i; ?>" onclick="setRating(<?= $i; ?>)" id="star-<?= $i; ?>"></i>
-                            <?php endfor; ?>
-                            <input type="hidden" name="rating" id="rating" required>
+                            <!-- My Reviews Button -->
+                            <button type="button"
+                                class="btn review-filter-btn <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'active' : ''; ?>"
+                                id="my-reviews" style="margin-left:10px;">My Reviews</button>
                         </div>
                     </div>
 
-                    <!-- Upload Image Section -->
-                    <div class="ms-2" style="flex: 1;">
-                        <label for="image" class="form-label">Upload Image</label>
-                        <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                    <!-- Reviews List -->
+                    <div class="reviews-list">
+                        <!-- If there are reviews -->
+                        <?php if (!empty($reviews)): ?>
+                            <?php foreach ($reviews as $review): ?>
+                                <?php if ($review['status'] === 'accepted'): ?>
+                                    <div
+                                        class="review-card d-flex flex-column p-3 border rounded bg-light mb-3 position-relative shadow-lg">
+                                        <!-- Delete Button -->
+                                        <?php if (isset($user) && $user['id'] === $review['customer_id']): ?>
+                                            <form action="" method="POST" style="display:inline;"
+                                                id="delete-review-form-<?= $review['id']; ?>">
+                                                <input type="hidden" name="delete_review_id" value="<?= $review['id']; ?>">
+                                                <button type="button"
+                                                    class="delete-review btn-danger btn-sm position-absolute top-0 end-0"
+                                                    onclick="confirmDelete(<?= $review['id']; ?>)">X</button>
+                                            </form>
+                                        <?php endif; ?>
+
+                                        <!-- Review Content -->
+                                        <div class="review-info d-flex flex-column mb-4">
+                                            <!-- User Image and Name -->
+                                            <div class="d-flex align-items-start mb-2">
+                                                <div class="reviewer-image me-3">
+                                                    <img src="/public/<?= htmlspecialchars($review['customer_image'] ?? '/public/images/user-profile.png') ?>"
+                                                        alt="User Image" class="img-thumbnail rounded-circle"
+                                                        style="width: 50px; height: 50px; object-fit: cover;">
+                                                </div>
+                                                <div class="review-text" style="flex: 1;">
+                                                    <!-- Make Name Bold and Larger -->
+                                                    <p class="reviewer-name mb-0" style="font-weight: bold; font-size: 1.2rem;">
+                                                        <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?>
+                                                    </p>
+                                                    <div class="star-rating">
+                                                        <?php
+                                                        $rating = (int) $review['rating'];
+                                                        for ($i = 1; $i <= 5; $i++) {
+                                                            echo $i <= $rating ? '<i class="fas fa-star text-warning" style="font-size: 0.8rem;"></i>' : '<i class="far fa-star text-warning" style="font-size: 0.8rem;"></i>';
+                                                        }
+                                                        ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Review Comment and Image in the Same Div -->
+                                            <div class="review-comment-container">
+                                                <div class="review-comment">
+                                                    <?= htmlspecialchars($review['comment']); ?>
+                                                </div>
+                                                <?php if (!empty($review['image_url'])): ?>
+                                                    <div class="review-image ms-3">
+                                                        <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image"
+                                                            class="img-thumbnail" style="max-width: 150%; cursor: pointer;">
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+
+                                        <!-- Review Date -->
+                                        <p class="review-date text-end mt-2">
+                                            <em><?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em>
+                                        </p>
+                                    </div>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p class="text-muted text-center">No reviews yet. Be the first to leave a review!</p>
+                        <?php endif; ?>
                     </div>
+
                 </div>
+            </div>
 
-                <!-- Comment Section -->
-                <div class="mb-3">
-                    <label for="comment" class="form-label">Comment</label>
-                    <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
-                </div>
+            <!-- Right Column for Review Form -->
+            <div class="col-md-6">
+                <div class="review-form-container">
+                    <h4 class="text-primary font-weight-bold mb-4">Write a Review</h4>
+                    <form method="POST" action="" enctype="multipart/form-data">
+                        <div class="d-flex flex-column gap-3">
+                            <!-- Rating Section -->
+                            <div class="rating-section">
+                                <label for="rating" class="form-label">Rating</label>
+                                <div class="star-rating">
+                                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                                        <i class="fa fa-star" data-value="<?= $i; ?>" onclick="setRating(<?= $i; ?>)"
+                                            id="star-<?= $i; ?>"></i>
+                                    <?php endfor; ?>
+                                    <input type="hidden" name="rating" id="rating" required>
+                                </div>
+                            </div>
 
-                <!-- Submit Button aligned to bottom right -->
-                <div class="d-flex justify-content-end mt-3">
-                    <button type="submit" class="btn btn-primary action-button mt-3" style="height: 50px; width: 200px;">Submit Review</button>
-                </div>
-            </form>
+                            <!-- Upload Image Section -->
+                            <div class="upload-section">
+                                <label for="image" class="form-label">Upload Image</label>
+                                <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                            </div>
 
-            <!-- Divider Line -->
-            <hr class="mb-3" style="width: 75%; border: none; border-top: dotted #3B5D50; margin: 0 auto;">
+                            <!-- Comment Section -->
+                            <div class="comment-section mb-3">
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea name="comment" id="comment" class="form-control" rows="3" required></textarea>
+                            </div>
 
-            <!-- Display Reviews Section -->
-            <div class="customer-reviews w-100" id="reviews-section">
-                <div class="col-md-6 mb-5">
-                    <h4 class="mt-4" style="font-weight: bold; color: #3B5D50;">Customers Review</h4>
-                </div>
-
-                <div class="reviews-filter mb-3">
-                    <form method="GET" action="">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <select name="filter" class="form-select me-2 mb-1">
-                                <option value="all" <?= empty($_GET['filter']) || $_GET['filter'] === 'all' ? 'selected' : ''; ?>>All Reviews</option>
-                                <option value="my" <?= isset($_GET['filter']) && $_GET['filter'] === 'my' ? 'selected' : ''; ?>>My Reviews</option>
-                            </select>
-                            <select name="sort" class="form-select me-2 mb-1">
-                                <option value="asc" <?= !isset($_GET['sort']) || $_GET['sort'] === 'asc' ? 'selected' : ''; ?>>Ascending</option>
-                                <option value="desc" <?= isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'selected' : ''; ?>>Descending</option>
-                            </select>
-                            <select name="image_filter" class="form-select me-2 mb-1">
-                                <option value="all" <?= empty($_GET['image_filter']) || $_GET['image_filter'] === 'all' ? 'selected' : ''; ?>>Show All Reviews</option>
-                                <option value="with_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'with_images' ? 'selected' : ''; ?>>Show Reviews with Images</option>
-                                <option value="without_images" <?= isset($_GET['image_filter']) && $_GET['image_filter'] === 'without_images' ? 'selected' : ''; ?>>Show Reviews without Images</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary action-button me-2 mb-1 p-3" style='font-size:14px '>Filter</button>
+                            <!-- Submit Button -->
+                            <div class="submit-btn d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">Submit Review</button>
+                            </div>
                         </div>
                     </form>
                 </div>
-
-                <?php if (!empty($reviews)): ?>
-                    <?php foreach ($reviews as $review): ?>
-                        <?php if ($review['status'] === 'accepted'): // Display only accepted reviews ?>
-                            <div class="review mt-1 p-3 border rounded bg-light d-flex position-relative">
-                                <!-- Delete Button -->
-                                <?php if (isset($user) && $user['id'] === $review['customer_id']): ?>
-                                    <div class="delete-button position-absolute top-0 end-0 me-2 mt-2">
-                                        <button class="delete-review btn-danger btn-sm" data-id="<?= $review['id'] ?>">X</button>
-                                    </div>
-                                <?php endif; ?>
-
-                                <!-- Review Content -->
-                                <div class="review-info me-3" style="flex: 1;">
-                                    <p><strong>Rating:</strong>
-                                        <?php
-                                        $rating = (int)$review['rating'];
-                                        for ($i = 1; $i <= 5; $i++) {
-                                            echo $i <= $rating ? '<i class="fas fa-star text-warning"></i>' : '<i class="far fa-star text-warning"></i>';
-                                        }
-                                        ?>
-                                    </p>
-                                    <p><strong>Reviewer:</strong> <?= htmlspecialchars($review['first_name'] . ' ' . $review['last_name']); ?></p>
-                                    <p><strong>Comment:</strong> <?= htmlspecialchars($review['comment']); ?></p>
-                                    <p><em>Reviewed on <?= htmlspecialchars(date("F j, Y", strtotime($review['created_at']))); ?></em></p>
-                                </div>
-
-                                <!-- Review Image Centered -->
-                                <div class="review-image d-flex justify-content-center align-items-center">
-                                    <?php if (!empty($review['image_url'])): ?>
-                                        <img src="/<?= htmlspecialchars($review['image_url']) ?>" alt="Review Image" class="review-image" onclick="zoomImage(this)" style="height: 120px; width: 120px;">
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endif; // End of accepted review check ?>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <p class="text-muted">No reviews yet. Be the first to leave a review!</p>
-                <?php endif; ?>
-
-
             </div>
-
         </div>
     </div>
-    </div>
 </div>
-<?php require 'views/partials/footer.php'; ?>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script>
-        document.querySelectorAll('.delete-review').forEach(button => {
-            button.addEventListener('click', function() {
-                const reviewId = this.getAttribute('data-id');
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Create a form to submit the deletion
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = '';
-                        const hiddenInput = document.createElement('input');
-                        hiddenInput.type = 'hidden';
-                        hiddenInput.name = 'delete_review_id';
-                        hiddenInput.value = reviewId;
-                        form.appendChild(hiddenInput);
-                        document.body.appendChild(form);
-                        form.submit();
-                    }
-                });
-            });
+
+
+
+<script>
+
+    function confirmDelete(reviewId) {
+        // SweetAlert confirmation
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            confirmButtonColor: '#C82333',
+            cancelButtonText: 'Cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-review-form-' + reviewId).submit();
+            }
         });
-        function changeMainImage(src) {
-            document.getElementById("main-image").src = src;
-        }
+    }
 
-        // JavaScript to handle star rating selection
-        function setRating(rating) {
-            // Set the hidden input value to the selected rating
-            document.getElementById("rating").value = rating;
-
-            // Update star appearance based on selected rating
-            for (let i = 1; i <= 5; i++) {
-                const star = document.getElementById("star-" + i);
-                if (i <= rating) {
-                    star.classList.add("selected");
-                } else {
-                    star.classList.remove("selected");
-                }
+    // Star rating click function
+    function setRating(value) {
+        document.getElementById("rating").value = value;
+        for (let i = 1; i <= 5; i++) {
+            const star = document.getElementById(`star-${i}`);
+            if (i <= value) {
+                star.classList.add("text-warning");
+                star.classList.remove("text-muted");
+            } else {
+                star.classList.add("text-muted");
+                star.classList.remove("text-warning");
             }
         }
-    </script>
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        function zoomImage(img) {
-            // Create a modal to display the image
-            const modal = document.createElement('div');
-            modal.style.position = 'fixed';
-            modal.style.zIndex = '1000';
-            modal.style.top = '0';
-            modal.style.left = '0';
-            modal.style.width = '100%';
-            modal.style.height = '100%';
-            modal.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-            modal.style.display = 'flex';
-            modal.style.alignItems = 'center';
-            modal.style.justifyContent = 'center';
+    // Change main image
+    function changeMainImage(src) {
+        document.getElementById("main-image").src = src;
+    }
 
-            const imgClone = document.createElement('img');
-            imgClone.src = img.src;
-            imgClone.style.maxWidth = '90%';
-            imgClone.style.maxHeight = '90%';
+    // Get elements for quantity input and buttons
+    const decrementBtn = document.querySelector('.inumber-decrement');
+    const incrementBtn = document.querySelector('.number-increment');
+    const quantityInput = document.getElementById('quantity');
+    const maxQuantity = parseInt(quantityInput.max); // Get max quantity from the input attribute
 
-            modal.appendChild(imgClone);
-            document.body.appendChild(modal);
-
-            // Close modal on click
-            modal.onclick = function() {
-                document.body.removeChild(modal);
-            };
+    // Decrease quantity
+    decrementBtn.addEventListener('click', function () {
+        let currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity > 0) {
+            quantityInput.value = currentQuantity - 1;
         }
-    </script>
-    <style>
-        .review {
-            position: relative; /* Ensure the review box is a positioning context */
-        }
+    });
 
-        .delete-button {
-            position: absolute;
-            top: 10px; /* Adjust this value for vertical positioning */
-            right: 10px; /* Adjust this value for horizontal positioning */
-            z-index: 10; /* Ensure it is above other content */
+    // Increase quantity
+    incrementBtn.addEventListener('click', function () {
+        let currentQuantity = parseInt(quantityInput.value);
+        if (currentQuantity < maxQuantity) {
+            quantityInput.value = currentQuantity + 1;
         }
+    });
 
-        .delete-review {
-            background: none; /* Remove background for a cleaner look */
-            border: none; /* Remove border for a cleaner look */
-            color: red; /* Set the text color for the delete button */
-            cursor: pointer; /* Change cursor to pointer for better UX */
+    // Prevent input value from going below 0 or above max quantity
+    quantityInput.addEventListener('input', function () {
+        let value = parseInt(quantityInput.value);
+        if (value < 0) {
+            quantityInput.value = 0;
+        } else if (value > maxQuantity) {
+            quantityInput.value = maxQuantity;
         }
+    });
 
-        /* Star Rating Styles */
-        .star-rating {
-            display: flex;
-            gap: 5px;
-        }
+    document.getElementById('all-reviews').addEventListener('click', function () {
+        window.location.href = updateURL('filter', 'all');
+    });
 
-        .star-rating .fa-star {
-            font-size: 24px;
-            color: #ccc;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
+    document.getElementById('my-reviews').addEventListener('click', function () {
+        window.location.href = updateURL('filter', 'my');
+    });
 
-        .star-rating .fa-star.selected {
-            color: #ffcc00;
-        }
-        /* Wishlist Button */
-        .wishlist-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
+    // Function to update the URL with the selected parameter and its value
+    function updateURL(param, value) {
+        const url = new URL(window.location.href); // Use current URL
+        url.searchParams.set(param, value); // Set or update the parameter in the URL
+        return url.toString(); // Return the updated URL with the new parameter
+    }
 
-        .wishlist-button .action-button {
-            background-color: transparent; /* Remove the background */
-            color: #6ca197; /* Set the color to match your desired color */
-            border: none; /* Remove any border */
-            padding: 0; /* Remove padding to keep it compact */
-            cursor: pointer; /* Ensure it looks clickable */
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.wishlist-button .action-button').forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent form submission for visual feedback
 
-        .wishlist-button .action-button:hover {
-            color: #3B5D50; /* Optional: Change color on hover for better UX */
-        }
+                const icon = this.querySelector('i');
+                // Toggle between outline and solid heart
+                if (icon.classList.contains('fa-regular')) {
+                    icon.classList.remove('fa-regular'); // Remove outline heart
+                    icon.classList.add('fa-solid'); // Add solid heart
+                    icon.style.color = '#3B5D50'; // Fill the heart with the specified color
+                } else {
+                    icon.classList.remove('fa-solid'); // Remove solid heart
+                    icon.classList.add('fa-regular'); // Add outline heart
+                    icon.style.color = '#6ca197'; // Set the original color
+                }
 
-        /* Product Image Styles */
-        .quantity-input {
-            width: 60px;
-            height: 40px;
-            padding: 0;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+                // Optionally, submit the form after color change
+                this.closest('form').submit();
+            });
+        });
+    });
 
-        .action-button {
-            width: 60px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1rem;
-            border-radius: 5px;
-            background-color: #4c6a63;
-            color: white;
-            border: none;
-        }
+</script>
 
-        .button-form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+<?php require 'views/partials/footer.php'; ?>
 
-        .product-slider {
-            display: flex;
-            flex-direction: column;
-        }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        .main-image-container {
-            border: 3px solid #3B5D50;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 15px;
-        }
+<style>
+    /* Wishlist Button */
+    .wishlist-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
 
-        .sub-images {
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
+    .wishlist-button .action-button {
+        background-color: transparent;
+        color: #6ca197;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
 
-        .s_product_text {
-            padding: 15px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
+    .wishlist-button .action-button.wishlist-added {
+        color: #3B5D50;
+        /* Color for filled heart */
+    }
 
-        .reviews-section {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-        }
 
-        .review-form-container, .customer-reviews {
-            height: 100%;
-            max-height: 400px;
-        }
+    .action-button {
+        width: 60px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        border-radius: 5px;
+        background-color: #4c6a63;
+        color: white;
+        border: none;
+    }
 
-        .customer-reviews {
-            overflow-y: auto;
-        }
+    .product-slider {
+        display: flex;
+        flex-direction: column;
+    }
 
-        .customer-reviews::-webkit-scrollbar {
-            display: none;
-            width: 8px;
-        }
+    .main-image-container {
+        border: 3px solid #3B5D50;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
+    }
 
-        .customer-reviews::-webkit-scrollbar-thumb {
-            background-color: #888;
-            border-radius: 10px;
-        }
+    .sub-images {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
 
-        .customer-reviews::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-    </style>
+    /* Hide scrollbar but keep the scrolling functionality */
+
+    .reviews-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .customer-reviews::-webkit-scrollbar {
+        display: none;
+        width: 8px;
+    }
+
+    .product_count {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background-color: #f1f1f1;
+        padding: 3px;
+        border-radius: 5px;
+        width: fit-content;
+        border: 1px, solid #3B5D50;
+        margin-top: -15px;
+    }
+
+    .inumber-decrement,
+    .number-increment {
+        cursor: pointer;
+        padding: 8px;
+        color: #333;
+    }
+
+    .input-number {
+        font-size: 16px;
+        text-align: center;
+        width: 40px;
+        background: none;
+        border: none;
+        outline: none;
+        color: #333;
+    }
+
+    /* Star Rating */
+    .star-rating i {
+        font-size: 1.5rem;
+    }
+
+    .star-rating .text-warning {
+        color: #FF6347;
+    }
+
+    .star-rating .text-muted {
+        color: #d3d3d3;
+    }
+
+    /* Reviews Section */
+    .reviews-section {
+        margin-top: 3rem;
+    }
+
+    .reviews-filter {
+        margin-bottom: 20px;
+    }
+
+    .reviews-list {
+        max-height: 400px;
+        /* You can adjust this value */
+        overflow-y: auto;
+        /* This will allow scrolling */
+    }
+
+    .review-card {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .review-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .review-info .d-flex {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .review-text {
+        flex: 1;
+    }
+
+    .review-text .reviewer-name {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #314D43;
+    }
+
+    .star-ratingg i {
+        font-size: 0.8rem;
+        /* Smaller star size */
+    }
+
+    .review-comment {
+        flex: 1;
+        padding-right: 10px;
+    }
+
+    .review-comment-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: start;
+        margin-top: 10px;
+        overflow-y: auto;
+        /* Enables scrolling within this section */
+        max-height: 150px;
+        /* Adjust the height to fit the desired area */
+        padding-right: 10px;
+        /* To prevent scrollbar overlapping content */
+    }
+
+    .review-image {
+        text-align: end;
+        width: 100px;
+        margin-right: 60px;
+    }
+
+    .review-date {
+        text-align: right;
+        margin-top: 10px;
+    }
+
+
+    /* Review Form */
+    .review-form-container {
+        padding: 2rem;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-form-container h4 {
+        font-weight: bold;
+        color: #3DB5D8;
+    }
+
+    .rating-section .star-rating {
+        display: flex;
+        gap: 5px;
+    }
+
+    .upload-section input[type="file"] {
+        font-size: 1rem;
+    }
+
+    .comment-section textarea {
+        resize: none;
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .submit-btn button {
+        background-color: #3DB5D8;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .submit-btn button:hover {
+        background-color: #2c93b0;
+    }
+
+    /* Custom Button Styles */
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+
+    /* Form Layout */
+    .form-select {
+        width: 150px;
+    }
+
+    /* Default button style */
+    .review-filter-btn {
+        border: 2px solid #314D43;
+        background-color: transparent;
+        color: #314D43;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    /* Active button style */
+    .review-filter-btn.active {
+        background-color: #314D43;
+        color: #fff;
+    }
+
+    /* Button hover effect */
+    .review-filter-btn:hover {
+        background-color: #314D43;
+        color: #fff;
+    }
+</style>

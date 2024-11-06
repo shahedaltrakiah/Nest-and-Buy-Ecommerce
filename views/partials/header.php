@@ -89,7 +89,7 @@ $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
                     }
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/customers/profile#wishlist">
+                        <a class="nav-link" href="/customers/profile">
                             <i class="fa-solid fa-heart"></i>
                             <span class="wishlist-count"><?php echo $wishlistCount; ?></span>
                         </a>

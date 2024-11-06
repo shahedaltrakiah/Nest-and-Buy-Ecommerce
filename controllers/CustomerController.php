@@ -124,11 +124,11 @@ class CustomerController extends Controller
         // Get search, category, and price range filters from GET request
         $search = isset($_GET['search']) ? trim($_GET['search']) : '';
         $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : null; // Make sure to get category_id
-        $min_price = isset($_GET['min_price']) ? (float)$_GET['min_price'] : 0;
-        $max_price = isset($_GET['max_price']) ? (float)$_GET['max_price'] : 1000;
+        $min_price = isset($_GET['min_price']) ? (float) $_GET['min_price'] : 0;
+        $max_price = isset($_GET['max_price']) ? (float) $_GET['max_price'] : 1000;
 
         // Pagination setup
-        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $currentPage = isset($_GET['page']) ? (int) $_GET['page'] : 1;
         $itemsPerPage = 8; // Number of items to display per page
 
         // Calculate total items and pages
@@ -154,8 +154,8 @@ class CustomerController extends Controller
     {
         try {
             $category_id = isset($_GET['category_id']) ? $_GET['category_id'] : null;
-            $min_price = isset($_GET['min_price']) ? (float)$_GET['min_price'] : 0;
-            $max_price = isset($_GET['max_price']) ? (float)$_GET['max_price'] : 1000;
+            $min_price = isset($_GET['min_price']) ? (float) $_GET['min_price'] : 0;
+            $max_price = isset($_GET['max_price']) ? (float) $_GET['max_price'] : 1000;
 
             $products = $this->model('Product')->getProductsByFilter($category_id, $min_price, $max_price);
 
@@ -180,8 +180,14 @@ class CustomerController extends Controller
             if (isset($_POST['delete_review_id'])) {
                 // Handle review deletion
                 $reviewId = $_POST['delete_review_id'];
+                // Call the deleteReview method from the model
                 if ($this->model('Review')->deleteReview($reviewId)) {
+                    // Redirect with a success message
                     header("Location: " . $_SERVER['REQUEST_URI'] . "?deleted=true");
+                    exit();
+                } else {
+                    // Redirect with an error message (if deletion fails)
+                    header("Location: " . $_SERVER['REQUEST_URI'] . "?deleted=false");
                     exit();
                 }
             } elseif ($user) {
@@ -210,12 +216,12 @@ class CustomerController extends Controller
         $sortOrder = isset($_GET['sort']) && $_GET['sort'] === 'desc' ? 'DESC' : 'ASC';
         $imageFilter = isset($_GET['image_filter']) ? $_GET['image_filter'] : 'with_images';
 
-// Initialize filter and sorting values
+        // Initialize filter and sorting values
         $filter = $_GET['filter'] ?? 'all';
         $sortOrder = $_GET['sort'] ?? 'asc';
         $imageFilter = $_GET['image_filter'] ?? 'all';
 
-// Filter reviews based on selected criteria
+        // Filter reviews based on selected criteria
         if ($filter === 'my' && $user) {
             // Filter out only the user's reviews
             $reviews = array_filter($reviews, function ($review) use ($user) {
@@ -223,7 +229,7 @@ class CustomerController extends Controller
             });
         }
 
-// Filter reviews based on image criteria
+        // Filter reviews based on image criteria
         if ($imageFilter === 'with_images') {
             // Keep only reviews that have images
             $reviews = array_filter($reviews, function ($review) {
@@ -236,9 +242,9 @@ class CustomerController extends Controller
             });
         }
 
-// No additional filtering for 'all', so all reviews remain unchanged.
+        // No additional filtering for 'all', so all reviews remain unchanged.
 
-// Sort reviews by rating
+        // Sort reviews by rating
         usort($reviews, function ($a, $b) use ($sortOrder) {
             return $sortOrder === 'asc' ? $a['rating'] <=> $b['rating'] : $b['rating'] <=> $a['rating'];
         });
@@ -256,7 +262,7 @@ class CustomerController extends Controller
     // Cart page
     public function cart()
     {
-        
+
         $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : []; // Check if cart exists
         $this->view('customers/cart', ['cart' => $cart]); // Pass cart data to the view
     }
@@ -269,8 +275,8 @@ class CustomerController extends Controller
             header("Location:../customers/login_and_register");
         }
         $customer = $this->model('Customer')->getCustomerById();
-        $this->view('customers/checkout',[
-            'customers' => $customer,  
+        $this->view('customers/checkout', [
+            'customers' => $customer,
         ]);
     }
 
@@ -367,7 +373,7 @@ class CustomerController extends Controller
                 exit;
             }
 
-            $imageName = 'uploads/'.time() . '_' . basename($image['name']);
+            $imageName = 'uploads/' . time() . '_' . basename($image['name']);
             $uploadDir = 'public/';
             $uploadFilePath = $uploadDir . $imageName;
 
