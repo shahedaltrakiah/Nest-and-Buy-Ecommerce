@@ -15,9 +15,9 @@
             <div class="row g-3 mb-4 align-items-center justify-content-between shadow-sm p-3 bg-light rounded">
 
                 <h1 class="app-page-title text-success"><svg width="1em" height="1em" viewBox="0 0 16 16"
-                                                             class="bi bi-house-door me-3 mt-0 mb-2 " fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        class="bi bi-house-door me-3 mt-0 mb-2 " fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
-                              d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z">
+                            d="M7.646 1.146a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5H9.5a.5.5 0 0 1-.5-.5v-4H7v4a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6zM2.5 7.707V14H6v-4a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v4h3.5V7.707L8 2.207l-5.5 5.5z">
                         </path>
                         <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"></path>
                     </svg>Dashboard</h1>
@@ -32,8 +32,8 @@
                     <div class="app-card-body p-3 p-lg-4">
                         <h4 class="stats-type mb-1">Total Sales</h4>
                         <div class="stats-figure d-flex align-items-center justify-content-center">
-                        <img src="https://www.svgrepo.com/show/233959/money.svg" alt="Money Icon" width="30"
-                        height="40" class="me-2">
+                            <img src="https://www.svgrepo.com/show/233959/money.svg" alt="Money Icon" width="30"
+                                height="40" class="me-2">
                             <span class="fw-bold fs-4 text-center"><?= htmlspecialchars($orderTotal) ?> JD </span>
                         </div>
                         <div class="d-flex align-items-center justify-content-center stats-meta text-success">
@@ -49,8 +49,8 @@
                     <div class="app-card-body p-3 p-lg-4">
                         <h4 class="stats-type mb-1">coupons used</h4>
                         <div class="stats-figure d-flex align-items-center justify-content-center">
-                        <img src="https://www.svgrepo.com/show/99650/voucher.svg" alt="Money Icon" width="30"
-                        height="40" class="me-2">
+                            <img src="https://www.svgrepo.com/show/99650/voucher.svg" alt="Money Icon" width="30"
+                                height="40" class="me-2">
                             <span class="fw-bold fs-4 text-center"><?= htmlspecialchars($couponCount); ?> </span>
                         </div>
                         <div class="d-flex align-items-center justify-content-center stats-meta text-success">
@@ -67,7 +67,7 @@
                         <h4 class="stats-type mb-1">Total Customers</h4>
                         <div class="stats-figure d-flex align-items-center justify-content-center">
                             <img src="https://www.svgrepo.com/show/499764/user.svg" alt="Planning Managing Agenda Icon"
-                                 width="30" height="40" class="me-2">
+                                width="30" height="40" class="me-2">
                             <span class="fw-bold fs-4 text-center"><?= htmlspecialchars($userCount); ?></span>
                         </div>
                         <div class="d-flex align-items-center justify-content-center stats-meta text-success">
@@ -115,59 +115,59 @@
             </div>
         </div>
 
-      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-  var labels = <?php echo $labels; ?>; 
-  var dataValues = <?php echo $values; ?>;
+        <script>
+            var labels = <?php echo $labels; ?>;
+            var dataValues = <?php echo $values; ?>;
 
-  var ctx = document.getElementById('chart-line').getContext('2d');
+            var ctx = document.getElementById('chart-line').getContext('2d');
 
 
-  labels = labels.slice(-5);
-  dataValues = dataValues.slice(-5);
+            labels = labels.slice(-5);
+            dataValues = dataValues.slice(-5);
 
-  var myChart = new Chart(ctx, {
-    type: 'bar', 
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Sales Amount', 
-        data: dataValues,
-        backgroundColor: 'rgba(40, 167, 69, 0.2)', 
-        borderColor: 'rgba(40, 167, 69, 1)', 
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false, 
-        },
-        title: {
-          display: true,
-          text: 'Sales Over Time', 
-        }
-      },
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: 'Date',
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'Sales Amount ($)',
-          },
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Sales Amount',
+                        data: dataValues,
+                        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+                        borderColor: 'rgba(40, 167, 69, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+                        title: {
+                            display: true,
+                            text: 'Sales Over Time',
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date',
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Sales Amount ($)',
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
         <!-- Calendar Section -->
         <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.css" rel="stylesheet">
 
@@ -234,58 +234,61 @@
         </style>
 
 
-<div class="row align-items-stretch">
-    <!-- Calendar Section -->
-    <div class="col-lg-6 mb-4 d-flex h-100">
-        <div class="calendar-container flex-fill" style="min-height: 400px; background-color: #ffffff; border: 1px solid #74BE8B; border-radius: 8px; padding: 10px;">
-            <div id="calendar"></div>
-        </div>
-    </div>
-    <!-- Most Selling Products Section -->
-    <div class="col-lg-6 mb-4 d-flex h-100">
-        <div class="table-responsive flex-fill" style="min-height: 400px; border: 1px solid #74BE8B; border-radius: 8px; background-color: #ffffff; padding: 10px;">
-            <div class="d-flex justify-content-center align-items-center mb-3">
-                <i class="bi bi-bar-chart-fill" style="font-size: 1.5rem; color: #74BE8B;"></i>
-                <h5 class="ms-2" style="color: #555;">Most Selling Products</h5>
+        <div class="row align-items-stretch">
+            <!-- Calendar Section -->
+            <div class="col-lg-6 mb-4 d-flex h-100">
+                <div class="calendar-container flex-fill"
+                    style="min-height: 400px; background-color: #ffffff; border: 1px solid #74BE8B; border-radius: 8px; padding: 10px;">
+                    <div id="calendar"></div>
+                </div>
             </div>
-            <table class="table top-selling-table">
-                <thead>
-                    <tr style="background-color: #74BE8B; color: #ffffff;">
-                        <th>Product Name</th>
-                        <th class="text-end">Total Sold</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($mostSellingProducts as $product): ?>
-                    <tr>
-                        <td class="text-dark">
-                            <?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($product['product_name']))); ?>
-                        </td>
-                        <td class="text-success text-end">
-                            <?php echo htmlspecialchars($product['total_sold']); ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <!-- Most Selling Products Section -->
+            <div class="col-lg-6 mb-4 d-flex h-100">
+                <div class="table-responsive flex-fill"
+                    style="min-height: 400px; border: 1px solid #74BE8B; border-radius: 8px; background-color: #ffffff; padding: 10px;">
+                    <div class="d-flex justify-content-center align-items-center mb-3">
+                        <i class="bi bi-bar-chart-fill" style="font-size: 1.5rem; color: #74BE8B;"></i>
+                        <h5 class="ms-2 my-auto" style="color: #555;">Most Selling Products</h5>
+                    </div>
+
+                    <table class="table top-selling-table">
+                        <thead>
+                            <tr style="background-color: #74BE8B; color: #ffffff;">
+                                <th>Product Name</th>
+                                <th class="text-end">Total Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($mostSellingProducts as $product): ?>
+                                <tr>
+                                    <td class="text-dark">
+                                        <?php echo ucwords(str_replace(['-', '_'], ' ', htmlspecialchars($product['product_name']))); ?>
+                                    </td>
+                                    <td class="text-success text-end">
+                                        <?php echo htmlspecialchars($product['total_sold']); ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
 
         <!-- Most Selling Products Section -->
-                        
+
 
 
         <style>
-.table-responsive {
-    max-height: 415px;
-    overflow-y: auto;
-    border: 1px solid #74BE8B;
-    border-radius: 8px;
-    background-color: #ffffff;
-    padding: 10px;
-}
+            .table-responsive {
+                max-height: 415px;
+                overflow-y: auto;
+                border: 1px solid #74BE8B;
+                border-radius: 8px;
+                background-color: #ffffff;
+                padding: 10px;
+            }
 
             .table thead th {
                 color: #ffffff;

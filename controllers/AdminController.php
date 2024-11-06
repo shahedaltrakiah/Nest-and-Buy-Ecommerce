@@ -474,15 +474,16 @@ class AdminController extends Controller
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
 
-            $uploadDir = 'uploads/';
+            $uploadDir = 'public/uploads/';
             if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0777, true);
+                mkdir($uploadDir, 0755, true);
             }
 
-            $imagePath = $uploadDir . basename($_FILES['image_url']['name']);
+            $imageName = uniqid() . '-' . basename($_FILES['image_url']['name']);
+            $imagePath = $uploadDir . $imageName;
 
             if (move_uploaded_file($_FILES['image_url']['tmp_name'], $imagePath)) {
-                $categoryData['image_url'] = $imagePath;
+                $categoryData['image_url'] = 'uploads/' . $imageName;
 
                 $categoryModel = $this->model('Category');
                 if ($categoryModel->create($categoryData)) {
