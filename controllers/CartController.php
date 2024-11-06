@@ -232,9 +232,12 @@ class CartController extends Controller
                 $subtotal += $product['price'] * $product['quantity'];
             }
         }
-        $discount = $_SESSION['discount'] ?? 0;
-        return $subtotal - $discount;
+        
+        $discountPercentage = $_SESSION['discount'] ?? 0;
+        $discountAmount = ($subtotal * $discountPercentage) / 100; // Calculate the discount as a percentage
+        return $subtotal - $discountAmount;
     }
+    
     public function updateCart() {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();

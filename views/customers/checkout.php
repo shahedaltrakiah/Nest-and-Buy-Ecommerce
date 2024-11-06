@@ -109,52 +109,57 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <?php
-                                $subtotal = 0;
+    <?php
+    $subtotal = 0;
 
-                                // Calculate subtotal
-                                if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
-                                    foreach ($_SESSION['cart'] as $productId => $product) {
-                                        $totalPrice = $product['price'] * $product['quantity'];
-                                        $subtotal += $totalPrice;
-                                        ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?>
-                                                <strong
-                                                        class="mx-2">x</strong> <?php echo htmlspecialchars($product['quantity']); ?>
-                                            </td>
-                                            <td>JD<?php echo number_format($totalPrice, 2); ?></td>
-                                        </tr>
-                                        <?php
-                                    }
-                                }
-                                ?>
+    // Calculate subtotal
+    if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+        foreach ($_SESSION['cart'] as $productId => $product) {
+            $totalPrice = $product['price'] * $product['quantity'];
+            $subtotal += $totalPrice;
+            ?>
+            <tr>
+                <td><?= htmlspecialchars(ucwords(str_replace(['-', '_'], ' ', $product['name']))); ?>
+                    <strong class="mx-2">x</strong> <?php echo htmlspecialchars($product['quantity']); ?>
+                </td>
+                <td>JD<?php echo number_format($totalPrice, 2); ?></td>
+            </tr>
+            <?php
+        }
+    }
+    ?>
 
-                                <tr>
-                                    <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                                    <td class="text-black">JD<?php echo number_format($subtotal, 2); ?></td>
-                                </tr>
+    <tr>
+        <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
+        <td class="text-black">JD<?php echo number_format($subtotal, 2); ?></td>
+    </tr>
 
-                                <?php
-                                // Calculate discount if applicable
-                                $discount = $_SESSION['discount'] ?? 0;
-                                if ($discount > 0) {
-                                    echo "<tr>
-                                    <td class='text-black font-weight-bold'><strong>Discount</strong></td>
-                                    <td class='text-black'>JD" . number_format($discount, 2) . "</td>
-                                  </tr>";
-                                }
+    <?php
+    // Calculate discount if applicable
+    $discountPercentage = $_SESSION['discount'] ?? 0;
+    if ($discountPercentage > 0) {
+        // Calculate the actual discount amount based on the percentage
+        $discountAmount = ($subtotal * $discountPercentage) / 100;
+        echo "<tr>
+            <td class='text-black font-weight-bold'><strong>Discount ({$discountPercentage}%)</strong></td>
+            <td class='text-black'>- JD" . number_format($discountAmount, 2) . "</td>
+          </tr>";
+    } else {
+        $discountAmount = 0; // No discount
+    }
 
-                                // Calculate total amount
-                                $totalAmount = $subtotal - $discount;
-                                ?>
+    // Calculate total amount
+    $totalAmount = $subtotal - $discountAmount;
+    ?>
 
-                                <tr>
-                                    <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                                    <td class="text-black font-weight-bold">
-                                        <strong>JD<?php echo number_format($totalAmount, 2); ?></strong></td>
-                                </tr>
-                                </tbody>
+    <tr>
+        <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+        <td class="text-black font-weight-bold">
+            <strong>JD<?php echo number_format($totalAmount, 2); ?></strong>
+        </td>
+    </tr>
+</tbody>
+
                             </table>
                         </div>
                     </div>
