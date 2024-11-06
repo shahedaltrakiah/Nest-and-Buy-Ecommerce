@@ -8,13 +8,13 @@
 
 ## Screenshots
 <div>
-<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img.PNG" width="500" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-imgage.PNG" width="500" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img2.PNG" width="500" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img3.PNG" width="500" height="400" >
 </div>
 <div>
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img.PNG" width="500" height="400" >
-<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img2.PNG" width="500" height="500" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img2.PNG" width="500" height="480" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img4.PNG" width="500" height="400" >
 </div>
 
