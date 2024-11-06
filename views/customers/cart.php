@@ -85,41 +85,49 @@ require "views/partials/header.php"; ?>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="border p-4 rounded bg-white mb-4">
-                        <h3 class="text-black h5 text-uppercase text-center mb-4">Cart Totals</h3>
+    <div class="border p-4 rounded bg-white mb-4">
+        <h3 class="text-black h5 text-uppercase text-center mb-4">Cart Totals</h3>
 
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <span class="text-black">Subtotal</span>
-                            </div>
-                            <div class="col-md-6 text-end">
-                            <strong class="text-black">
-                                JD<?php echo number_format($subtotal, 2); ?>
-                            </strong>
-                            </div>
+        <!-- Subtotal Row -->
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <span class="text-black">Subtotal</span>
+            </div>
+            <div class="col-md-6 text-end">
+                <strong class="text-black">
+                    JD<?php echo number_format($subtotal, 2); ?>
+                </strong>
+            </div>
+        </div>
 
-                        </div>
+        <!-- Discount Row (if applicable) -->
+        <?php if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0): ?>
+            <?php 
+                // Calculate the discount amount based on the percentage
+                $discountAmount = ($subtotal * $_SESSION['discount']) / 100;
+            ?>
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <span class="text-black">Discount (<?= $_SESSION['discount'] ?>%)</span>
+                </div>
+                <div class="col-md-6 text-end">
+                    <strong class="text-black">- JD<?php echo number_format($discountAmount, 2); ?></strong>
+                </div>
+            </div>
+        <?php endif; ?>
 
-                        <?php if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0): ?>
-                            <div class="row mb-2">
-                                <div class="col-md-6">
-                                    <span class="text-black">Discount</span>
-                                </div>
-                                <div class="col-md-6 text-end">
-                                    <strong class="text-black">-
-                                        JD<?php echo number_format($_SESSION['discount'], 2); ?></strong>
-                                </div>
-                            </div>
-                        <?php endif; ?>
+        <!-- Total Row -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <span class="text-black">Total</span>
+            </div>
+            <div class="col-md-6 text-end">
+                <strong class="text-black" id="cartFinalTotal">
+                    JD<?= number_format($subtotal - ($discountAmount ?? 0), 2); ?>
+                </strong>
+            </div>
+        </div>
 
-                        <div class="row mb-4">
-                            <div class="col-md-6">
-                                <span class="text-black">Total</span>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <strong class="text-black" id="cartFinalTotal">JD<?= number_format($subtotal - ($_SESSION['discount'] ?? 0), 2); ?></strong>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-12">
                             <a href="checkout" class="btn btn-primary d-flex justify-content-center">Proceed to Checkout</a>
