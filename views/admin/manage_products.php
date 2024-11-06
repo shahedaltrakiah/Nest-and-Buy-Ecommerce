@@ -137,8 +137,8 @@ $total_pages = ceil($total_items / $items_per_page);
 					<tr class="text-center">
 						<th>ID</th>
 						<th>Image</th>
-						<th>Product Name</th>
 						<th>Category</th>
+						<th>Product Name</th>
 						<th>Price</th>
 						<th>Average Rating</th>
 						<th>Stock Quantity</th>
