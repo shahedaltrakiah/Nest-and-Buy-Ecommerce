@@ -8,9 +8,9 @@
 
 ## Screenshots
 <div>
-<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img.PNG" width="400" height="400" >
-<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img2.PNG" width="400" height="400" >
-<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img3.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img.PNG" width="450" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img2.PNG" width="450" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img3.PNG" width="450" height="400" >
 </div>
 <div>
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img.PNG" width="400" height="400" >
