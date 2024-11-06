@@ -19,6 +19,7 @@
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/profile-imge.PNG" width="500" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/wishlist.PNG" width="500" height="400" >
   <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart.PNG" width="500" height="400" >
+   <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart2.PNG" width="500" height="400" >
 </div>
 
 
