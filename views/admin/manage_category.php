@@ -157,11 +157,11 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
                                 <td><?php echo htmlspecialchars($category['id']); ?></td>
                                 <td>
                                     <?php
-                                    $imageSrc = !empty($category['image_url']) ? htmlspecialchars($category['image_url']) : "images/category-defult.png";
+                                    $imageSrc = !empty($category['image_url']) ? htmlspecialchars($category['image_url']) : 'images/user-profile.png';
                                     ?>
-                                    <img src="/public/<?= $imageSrc; ?>" class="img-thumbnail" style="width: 70px; height: 70px;">
-                                </td>
+                                   <img src="/public/<?= htmlspecialchars($category['image_url']) . '?' . time(); ?>" class="img-thumbnail" style="width: 50px; height: 50px;">
 
+                                </td>
                                 <td class="text-truncate" style="max-width: 150px;">
                                     <?php echo htmlspecialchars($category['category_name']); ?>
                                 </td>
@@ -212,65 +212,86 @@ $paginated_categories = array_slice($filtered_categories, $start_index, $items_p
             </div>
         </div>
     </div>
-    <script>
-    function submitCategoryForm(event) {
-    event.preventDefault(); // Prevent the default form submission
+ <!-- Load SweetAlert2 only (Remove SweetAlert1) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Load Popper.js and Bootstrap for functionality if needed -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-    var formData = new FormData(document.getElementById('createCategoryForm'));
-
-    fetch('/admin/category_create', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Simple success message without error handling
-        Swal.fire({
-            icon: 'success',
-            title: 'Category Added',
-            text: 'Category added successfully!',
-        }).then(() => {
-            // Optionally refresh the page or update the category list
-            location.reload(); // Reloads the page
-        });
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Optionally log error or alert user if needed
-    });
-}
-</script>
 <script>
+    // Function to submit the category form with AJAX
+    function submitCategoryForm(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-        function confirmDelete(create, id) {
-            create.preventDefault();
+        var formData = new FormData(document.getElementById('createCategoryForm'));
+
+        fetch('/admin/category_create', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Display success message with SweetAlert2
             Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#D26D69",
-                cancelButtonColor: "#15A362",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById("deleteForm-" + id).submit();
-                    Swal.fire("Deleted!", "The customer has been deleted.", "success");
-                }
+                icon: 'success',
+                title: 'Category Added',
+                text: 'Category added successfully!',
+            }).then(() => {
+                location.reload(); // Optionally refresh the page or update the category list
             });
-        }
-        </script>
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Display error with SweetAlert2
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Something went wrong!',
+            });
+        });
+    }
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
-    <!-- JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    // Function to confirm deletion with SweetAlert2
+    function confirmDelete(event, id) {
+        event.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#D26D69",
+            cancelButtonColor: "#15A362",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Delay before submitting the form
+                setTimeout(() => {
+                    document.getElementById("deleteForm-" + id).submit();
+                }, 1000); // 1000 milliseconds = 1 second
+
+                Swal.fire("Deleted!", "The category has been deleted.", "success");
+            }
+        });
+    }
+</script>
+
+<!-- Display session messages with SweetAlert2 if available -->
+<?php if (isset($_SESSION['message']) && !empty($_SESSION['message'])): ?>
+    <script>
+        Swal.fire({
+            icon: '<?= htmlspecialchars($_SESSION['messageType']) ?>',
+            title: '<?= ucfirst(htmlspecialchars($_SESSION['messageType'])) ?>',
+            text: '<?= htmlspecialchars($_SESSION['message']) ?>',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+    <?php unset($_SESSION['message'], $_SESSION['messageType']); ?>
+<?php endif; ?>
 
 <?php require "views/partials/admin_footer.php"; ?>
