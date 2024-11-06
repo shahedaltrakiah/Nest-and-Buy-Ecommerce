@@ -14,8 +14,8 @@
 </div>
 <div>
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img.PNG" width="400" height="400" >
-<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shope-img2.PNG" width="400" height="400" >
-<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shope-img3.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img2.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img4.PNG" width="400" height="400" >
 </div>
 
 
