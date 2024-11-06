@@ -19,9 +19,11 @@
 
 ### Admin Dashboard
 <div>
-  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/admin-home.PNG" width="400" height="400" >
-  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/admin-products.PNG" width="400" height="400" >
-  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/admin-orders.PNG" width="400" height="400" >
+  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/dashboard.PNG" width="400" height="400" >
+  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/customer.PNG" width="400" height="400" >
+  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/orders.PNG" width="400" height="400" >
+  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/reviews.PNG" width="400" height="400" >
+  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/coupons.PNG" width="400" height="400" >
 </div>
 
 ## Features
