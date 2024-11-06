@@ -19,7 +19,9 @@
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart.PNG" width="400" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart2.PNG" width="500" height="400" >
 </div>
- ### Customer Interface
+
+
+### Admin Dashboard
 <div>
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-image.PNG" width="400" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-image1.PNG" width="400" height="400" >
