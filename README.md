@@ -9,8 +9,7 @@
 ## Screenshots
 <div>
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img.PNG" width="400" height="400" >
-<img src="https://github.com/Mousa-alaaldeen/Weathar-APP/blob/main/assets/images/screen2.jpg" width="100" height="200" >
-<img src="https://github.com/Mousa-alaaldeen/Weathar-APP/blob/main/assets/images/screen3.jpg" width="100" height="200" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-img2.PNG" width="400" height="400" >
 </div>
 
 </div>
