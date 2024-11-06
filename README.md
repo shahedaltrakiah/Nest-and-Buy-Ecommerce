@@ -8,24 +8,28 @@
 
 ## Screenshots
 <div>
+  ### Customer Interface
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-image.PNG" width="400" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-image1.PNG" width="400" height="400" >
-
-</div>
-<div>
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img.PNG" width="400" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img2.PNG" width="400" height="480" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/contact-img.PNG" width="400" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/profile-imge.PNG" width="400" height="400" >
 <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/wishlist.PNG" width="400" height="400" >
-  <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart.PNG" width="400" height="400" >
-   <img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart2.PNG" width="500" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart2.PNG" width="500" height="400" >
 </div>
-
-
-
-<img src="https://github.com/Mousa-alaaldeen/Weathar-APP/blob/main/assets/images/screen5.jpg" width="100" height="200" >
-
+<div>
+  ### Customer Interface
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-image.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/home-image1.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/shop-img2.PNG" width="400" height="480" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/contact-img.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/profile-imge.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/wishlist.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart.PNG" width="400" height="400" >
+<img src="https://github.com/shahedaltrakiah/Ecommerce-website/blob/main/public/images/cart2.PNG" width="500" height="400" >
 </div>
 ## Features
 - **Product Catalog**: Browse a wide range of furniture items with filters and sorting options.
