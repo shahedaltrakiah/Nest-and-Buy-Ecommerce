@@ -1,5 +1,6 @@
 <?php require "views/partials/admin_header.php"; ?>
 <link href="/public/css/user_profile_style.css" rel="stylesheet">
+
 <body>
     <div class="app-wrapper">
         <div class="app-content pt-3 p-md-3 p-lg-4">
@@ -7,62 +8,63 @@
                 <div class="row g-3 mb-4 align-items-center justify-content-between">
                     <div class="main-container">
                         <!-- Profile Section -->
-                        <form action="/admin/customer_update/<?= htmlspecialchars($customer['id']); ?>" method="POST" enctype="multipart/form-data">
+                        <form action="/admin/customer_update/<?= htmlspecialchars($customer['id']); ?>" method="POST"
+                            enctype="multipart/form-data">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editProfileModalLabel">Edit Customer</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
                                     <!-- Customer Details Form Fields -->
                                     <div class="col-md-6">
                                         <label>Customer ID</label>
-                                        <input type="text" class="form-control" name="id" value="<?= htmlspecialchars($customer['id']); ?>" readonly>
+                                        <input type="text" class="form-control" name="id"
+                                            value="<?= htmlspecialchars($customer['id']); ?>" readonly>
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                                <label>Email</label>
-                                                <input type="text" class="form-control" name="email"
-                                                    value="<?= htmlspecialchars($customer['email']); ?>">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label>User Name</label>
-                                                <input type="text" class="form-control" name="username"
-                                                    value="<?= htmlspecialchars($customer['username']); ?>">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label>First Name</label>
-                                                <input type="text" class="form-control" name="first_name"
-                                                    value="<?= htmlspecialchars($customer['first_name']); ?>">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label>Last Name</label>
-                                                <input type="text" class="form-control" name="last_name"
-                                                    value="<?= htmlspecialchars($customer['last_name']); ?>">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label>Phone Number</label>
-                                                <input type="text" class="form-control" name="phone_number"
-                                                    value="<?= htmlspecialchars($customer['phone_number']); ?>">
-                                            </div>
-                                            <div class="col-md-12 mt-3">
-                                                <label>Upload Image</label>
-                                                <input type="file" class="form-control" name="image_url">
-                                                <div class="col-md-12 mt-3 mb-3">
-                                                <label>Address</label>
-                                                <textarea class="form-control" name="address"
-                                                    rows="5"><?= htmlspecialchars($customer['address']); ?></textarea>
-                                            </div>
-                                 
-                                    <div class="col-md-6 mt-3">
-                                        <label>Stock Quantity</label>
-                                        <input type="text" class="form-control" name="stock_quantity" value="<?= htmlspecialchars($customer['stock_quantity']); ?>">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" name="email"
+                                            value="<?= htmlspecialchars($customer['email']); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>User Name</label>
+                                        <input type="text" class="form-control" name="username"
+                                            value="<?= htmlspecialchars($customer['username']); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>First Name</label>
+                                        <input type="text" class="form-control" name="first_name"
+                                            value="<?= htmlspecialchars($customer['first_name']); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>Last Name</label>
+                                        <input type="text" class="form-control" name="last_name"
+                                            value="<?= htmlspecialchars($customer['last_name']); ?>">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label>Phone Number</label>
+                                        <input type="text" class="form-control" name="phone_number"
+                                            value="<?= htmlspecialchars($customer['phone_number']); ?>">
+                                    </div>
+                                    <div class="col-md-12 mt-3">
+                                        <label>Upload Image</label>
+                                        <input type="file" class="form-control" name="image_url">
+
+                                    </div>
+                                
+                                    <div class="col-md-12 mt-3 mb-3">
+                                        <label>Address</label>
+                                        <textarea class="form-control" name="address"
+                                            rows="5"><?= htmlspecialchars($customer['address']); ?></textarea>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Save Changes</button>
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
                         </form>
                     </div>
 
@@ -105,4 +107,5 @@
         </div>
     </div>
 </body>
+
 </html>

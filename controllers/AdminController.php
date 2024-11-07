@@ -158,7 +158,6 @@ class AdminController extends Controller
         $customer = $this->model('Customer')->find($id);
         if (!$customer) {
             $_SESSION['message'] = "Customer not found!";
-
             return $this->view('admin/manage_customers', ['customers' => $this->model('Customer')->all()]);
         }
 
@@ -171,42 +170,48 @@ class AdminController extends Controller
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
-
         if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === 0) {
-            $targetDir = __DIR__ . "public/uploads/";
-
+            $targetDir = 'public/uploads/';
             if (!is_dir($targetDir)) {
                 mkdir($targetDir, 0777, true);
             }
 
-            $targetFile = $targetDir . basename($_FILES['image_url']['name']);
-            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+            $imageName = uniqid() . '-' . basename($_FILES['image_url']['name']);
+            $targetFile = $targetDir . $imageName;
+            $imageFileType = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
             $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
 
+            // Check if the uploaded file type is allowed
             if (in_array($imageFileType, $allowedTypes)) {
                 if (move_uploaded_file($_FILES['image_url']['tmp_name'], $targetFile)) {
-                    $data['image_url'] = "uploads/" . basename($_FILES['image_url']['name']);
+                    // Set the relative path to the uploaded image
+                    $data['image_url'] = 'uploads/' . $imageName;
                 } else {
                     $_SESSION['message'] = "Error uploading image.";
-
+                    $_SESSION['messageType'] = "error";
                     return $this->view('admin/customer_edit', ['customer' => $customer]);
                 }
             } else {
-                $_SESSION['message'] = "Invalid image file type.";
-
+                $_SESSION['message'] = "Invalid image file type. Only JPG, JPEG, PNG, and GIF are allowed.";
+                $_SESSION['messageType'] = "error";
                 return $this->view('admin/customer_edit', ['customer' => $customer]);
             }
         } else {
-
+            // No new image uploaded, keep the existing image URL
             $data['image_url'] = $customer['image_url'];
         }
 
-
+        // Update customer data
         $this->model('Customer')->update($id, $data);
-        $_SESSION['message'] = "Customer updated successfully!";
 
-        return $this->view('admin/customer_edit', ['customer' => $customer]);
+        // Retrieve the updated customer data to reflect the latest changes in the view
+        $updatedCustomer = $this->model('Customer')->find($id);
+        $_SESSION['message'] = "Customer updated successfully!";
+        $_SESSION['messageType'] = "success";
+
+        return $this->view('admin/customer_edit', ['customer' => $updatedCustomer]);
     }
+
 
 
     // Create Product
@@ -522,23 +527,57 @@ class AdminController extends Controller
 
     public function updateCategory($id)
     {
-        
+        // Retrieve the existing category data
+        $category = $this->model('Category')->find($id);
+        if (!$category) {
+            $_SESSION['message'] = "Category not found!";
+            $_SESSION['messageType'] = "error";
+            return $this->view('admin/manage_categories', ['categories' => $this->model('Category')->all()]);
+        }
+
+        // Set up data array with basic information
         $data = [
-            'category_name' => $_POST['category_name'],
-            'image_url' => $_POST['image_url'],
+            'category_name' => $_POST['category_name']
         ];
 
-        $category = $this->model('Category')->find($id);
+        // Check if an image file is uploaded
+        if (!empty($_FILES['image_url']['name'])) {
+            $targetDir = 'public/uploads/';
+            $imageName = uniqid() . '-' . basename($_FILES['image_url']['name']);
+            $targetFile = $targetDir . $imageName;
+            $imageFileType = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
 
+            // Verify that the uploaded file is an allowed image type
+            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+            if (in_array($imageFileType, $allowedTypes)) {
+                if (move_uploaded_file($_FILES['image_url']['tmp_name'], $targetFile)) {
+                    // Set the relative path to the uploaded image in the database
+                    $data['image_url'] = 'uploads/' . $imageName;
+                } else {
+                    $_SESSION['message'] = "Error uploading image.";
+                    $_SESSION['messageType'] = "error";
+                    return $this->view('admin/category_edit', ['category' => $category]);
+                }
+            } else {
+                $_SESSION['message'] = "Invalid image file type. Only JPG, JPEG, PNG, and GIF are allowed.";
+                $_SESSION['messageType'] = "error";
+                return $this->view('admin/category_edit', ['category' => $category]);
+            }
+        } else {
+            // If no new image is uploaded, keep the existing image URL
+            $data['image_url'] = $category['image_url'];
+        }
+
+        // Update the category data in the database
         $this->model('Category')->update($id, $data);
 
-        $_SESSION['message'] = "Category updated successfully!";
+        // Retrieve the updated category data
+        $updatedCategory = $this->model('Category')->find($id);
 
-        $this->view('admin/category_edit', ['category' => $category]);
 
-        // var_dump($_POST);
-        exit;
+        return $this->view('admin/category_edit', ['category' => $updatedCategory]);
     }
+
 
 
     public function deleteCategory()
