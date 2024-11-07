@@ -109,7 +109,7 @@
                     }
                     ?>
                 </div>
-                <div class="d-flex align-items-center mb-3 mt-3 ">
+                <div class="d-flex align-items-center mb-5 mt-3 ">
                     <?php if ($product['stock_quantity'] > 0): ?>
                         <form action="/customer/cart" method="post"
                             class="button-form me-3 d-flex align-items-center gap-2">
@@ -136,13 +136,12 @@
                             Stock</button>
                     <?php endif; ?>
                 </div>
-
             </div>
         </div>
     </div>
 
     <!-- Customer Reviews Section -->
-    <div class="reviews-section my-5">
+    <div class="reviews-section my-5 mt-5" id="reviews-section">
         <div class="row">
             <!-- Left Column for Reviews -->
             <div class="col-md-6">

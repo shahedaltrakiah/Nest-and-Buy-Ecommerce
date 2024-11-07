@@ -32,10 +32,6 @@
                                     <label>Category Name</label>
                                     <input type="text" class="form-control" value="<?= htmlspecialchars($category['category_name']); ?>" readonly>
                                 </div>
-                                <div class="col-md-12 mb-3">
-                                    <label>Image URL</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($category['image_url']); ?>" readonly>
-                                </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Created At</label>
                                     <input type="text" class="form-control" value="<?= htmlspecialchars($category['created_at']); ?>" readonly>
@@ -68,8 +64,8 @@
                                                 <input type="text" class="form-control" name="category_name" value="<?= htmlspecialchars($category['category_name']); ?>">
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                                <label>Image URL</label>
-                                                <textarea class="form-control" name="image_url" rows="2"><?= htmlspecialchars($category['image_url']); ?></textarea>
+                                                <label>Upload Image</label>
+                                                <input type="file" class="form-control" name="image_url">
                                             </div>
                                         </div>
                                     </div>

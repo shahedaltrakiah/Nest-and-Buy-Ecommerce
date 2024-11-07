@@ -173,7 +173,7 @@ class AdminController extends Controller
 
 
         if (isset($_FILES['image_url']) && $_FILES['image_url']['error'] === 0) {
-            $targetDir = __DIR__ . "/../public/uploads/";
+            $targetDir = __DIR__ . "public/uploads/";
 
             if (!is_dir($targetDir)) {
                 mkdir($targetDir, 0777, true);
@@ -392,18 +392,22 @@ class AdminController extends Controller
 
         // Check if an image file is uploaded
         if (!empty($_FILES['image_url']['name'])) {
-            $targetDir = 'uploads/';
-            $targetFile = $targetDir . basename($_FILES['image_url']['name']);
-            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-
-            // Verify the uploaded file type is an image
-            if (in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) {
+            $targetDir = 'public/uploads/';
+            $imageName = uniqid() . '-' . basename($_FILES['image_url']['name']);
+            $targetFile = $targetDir . $imageName;
+            $imageFileType = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+        
+            // Verify that the uploaded file is an allowed image type
+            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+            if (in_array($imageFileType, $allowedTypes)) {
                 if (move_uploaded_file($_FILES['image_url']['tmp_name'], $targetFile)) {
-                    $imageUrl = $targetFile;
-                    // Update the image URL in the database
-                    $this->model('ProductImage')->update($id, $imageUrl);
-                    $_SESSION['message'] = "Product updated successfully!";
+                    // Store only the image name or the path in the database as needed
+                    $imagePath = 'uploads/' . $imageName;
+                    $this->model('ProductImage')->update($id, $imagePath);
+        
+                    $_SESSION['message'] = "Product image updated successfully!";
                     $_SESSION['messageType'] = "success";
+
                 } else {
                     $_SESSION['message'] = "Sorry, there was an error uploading your file.";
                     $_SESSION['messageType'] = "error";
@@ -509,6 +513,7 @@ class AdminController extends Controller
         $category = $this->model('Category')->find($id);
         $this->view('admin/category_view', ['category' => $category]);
     }
+    
     public function editCategory($id)
     {
         $category = $this->model('Category')->find($id);
@@ -517,6 +522,7 @@ class AdminController extends Controller
 
     public function updateCategory($id)
     {
+        
         $data = [
             'category_name' => $_POST['category_name'],
             'image_url' => $_POST['image_url'],
