@@ -79,6 +79,7 @@ class Core
         'customers/thankyou' => ['CustomerController@thankYou', 'GET'],
         'customers/profile/cancelOrder' => ['CustomerController@cancelOrder', ['POST']],
         'customers/cart/update' => ['CartController@updateCart', ['POST']],
+        'chatbot/respond'=>['ChatbotController@respond',['POST']],
         
         
     ];
