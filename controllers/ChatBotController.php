@@ -57,6 +57,11 @@ class ChatbotController extends Controller
         // Convert message to lowercase for simpler matching
         $message = strtolower($message);
 
+        // Handle greetings such as "hey"
+        if (stripos($message, 'hey') !== false) {
+            return $this->handleGreeting();
+        }
+
         // Handle payment on delivery inquiries
         if (stripos($message, 'payment') !== false || stripos($message, 'pay on delivery') !== false) {
             return $this->handlePaymentOnDelivery();
@@ -71,12 +76,15 @@ class ChatbotController extends Controller
         if (stripos($message, 'help') !== false) {
             return $this->handleHelp();
         }
-        if (stripos($message, 'help') !== false) {
-            return $this->handleHelp();
-        }
 
         // Default response for unrecognized inquiries
         return "I'm not sure about that. Can you try asking in another way, or check your profile for more details?";
+    }
+
+    // Helper method for greeting
+    private function handleGreeting()
+    {
+        return "Welcome to Nest and Buy! We're an e-commerce website that offers a wide range of products. Feel free to browse our store, check out your orders, or ask about payment and shipping options. How can I assist you today?";
     }
 
     // Helper method for payment on delivery inquiries
@@ -96,8 +104,5 @@ class ChatbotController extends Controller
     {
         return "I'm here to assist you! Feel free to ask about your order status, payment options, canceling an order, or any other inquiries you might have.";
     }
-    private function handleGreeting()
-{
-    return "Welcome to Nest and Buy! We're an e-commerce website that offers a wide range of products. Feel free to browse our store, check out your orders, or ask about payment and shipping options. How can I assist you today?";
 }
-}
+?>
