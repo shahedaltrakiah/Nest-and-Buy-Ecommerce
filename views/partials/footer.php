@@ -130,9 +130,9 @@
     </div>
 
     <!-- Input and Send button -->
-    <div id="chatbot-input-container" class="chatbot-input-container d-flex p-2" 
+    <div id="chatbot-input-container" class="chatbot-input-container d-flex p-2"
          style="background-color: #f1f1f1; display: none;">
-        <input type="text" id="user-message" class="form-control me-2" placeholder="Type..." 
+        <input type="text" id="user-message" class="form-control me-2" placeholder="Type..."
                style="font-size: 12px; padding: 5px;"/>
         <button id="send-button" class="btn btn-primary btn-sm" onclick="sendMessage()" style="font-size: 12px;">Send</button>
     </div>
@@ -288,6 +288,10 @@
         #chatbot-messages {
             scroll-behavior: smooth;
         }
+        #chatbot-input-container {
+    display: none;
+}
+
     `;
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
