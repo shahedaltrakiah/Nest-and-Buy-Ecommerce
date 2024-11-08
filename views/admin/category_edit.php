@@ -9,8 +9,12 @@
                     <div class="card shadow-lg border-0">
                         <div class="m-4 d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <img src="/public/<?= htmlspecialchars($category['image_url']) ?>"
-                                     alt="Category Image" class="img-thumbnail" style="width: 100px; height: 100px;">
+                                <?php
+                                $imageSrc = !empty($category['image_url']) ? htmlspecialchars($category['image_url']) : 'images/product.png';
+                                ?>
+                                <img src="/public/<?= $imageSrc; ?>" alt="Profile Image" class="img-thumbnail"
+                                     style="width: 100px; height: 100px;">
+
                                 <h3 class="text-success ms-3">
                                     <?php
                                     $formattedName = str_replace('-', ' ', strtolower($category['category_name']));
@@ -18,7 +22,8 @@
                                     ?>
                                 </h3>
                             </div>
-                            <button class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                            <button class="btn btn-success text-white" data-bs-toggle="modal"
+                                    data-bs-target="#editProfileModal">
                                 Edit Category
                             </button>
                         </div>
@@ -26,61 +31,70 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label>Category ID</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($category['id']); ?>" readonly>
+                                    <input type="text" class="form-control"
+                                           value="<?= htmlspecialchars($category['id']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Category Name</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($category['category_name']); ?>" readonly>
-                                </div>
-                                <div class="col-md-12 mb-3">
-                                    <label>Image URL</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($category['image_url']); ?>" readonly>
+                                    <input type="text" class="form-control"
+                                           value="<?= htmlspecialchars($category['category_name']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Created At</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($category['created_at']); ?>" readonly>
+                                    <input type="text" class="form-control"
+                                           value="<?= htmlspecialchars($category['created_at']); ?>" readonly>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label>Updated At</label>
-                                    <input type="text" class="form-control" value="<?= htmlspecialchars($category['updated_at']); ?>" readonly>
+                                    <input type="text" class="form-control"
+                                           value="<?= htmlspecialchars($category['updated_at']); ?>" readonly>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Edit Category Modal -->
-                    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="/admin/category_update/<?= htmlspecialchars($category['id']); ?>" method="POST">
+                                <!-- Updated form tag with enctype attribute -->
+                                <form action="/admin/category_update/<?= htmlspecialchars($category['id']); ?>"
+                                      method="POST" enctype="multipart/form-data">
                                     <div class="modal-header bg-success text-white">
                                         <h5 class="modal-title text-white" id="editProfileModalLabel">Edit Category</h5>
-                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label>Category ID</label>
-                                                <input type="text" class="form-control" name="id" value="<?= htmlspecialchars($category['id']); ?>" readonly>
+                                                <input type="text" class="form-control" name="id"
+                                                       value="<?= htmlspecialchars($category['id']); ?>" readonly>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label>Category Name</label>
-                                                <input type="text" class="form-control" name="category_name" value="<?= htmlspecialchars($category['category_name']); ?>">
+                                                <input type="text" class="form-control" name="category_name"
+                                                       value="<?= htmlspecialchars($category['category_name']); ?>">
                                             </div>
                                             <div class="col-md-12 mb-3">
-                                                <label>Image URL</label>
-                                                <textarea class="form-control" name="image_url" rows="2"><?= htmlspecialchars($category['image_url']); ?></textarea>
+                                                <label>Upload Image</label>
+                                                <input type="file" class="form-control" name="image_url">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit" class="btn btn-success text-white">Save Changes</button>
-                                        <button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-danger text-white" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
                                     </div>
                                 </form>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- JavaScript & SweetAlert -->
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

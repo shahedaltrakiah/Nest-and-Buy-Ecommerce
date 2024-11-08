@@ -10,9 +10,12 @@
                     <div class="card shadow-lg border-0">
                         <div class="m-4 d-flex justify-content-between align-items-center text-start">
                             <div class="d-flex align-items-center text-start">
-                                <img src="/public/<?= !empty($customer['image_url']) ? htmlspecialchars($customer['image_url']) : '/public/images/user-profile.png'; ?>"
-                                    alt="Profile Image" class="img-thumbnail" style="width: 100px; height: 100px;">
-                                <h3 class="text-success ms-3">
+                            <?php
+                                    $imageSrc = !empty($customer['image_url']) ? htmlspecialchars($customer['image_url']) : 'images/user-profile.png';
+                                    ?>
+                                    <img src="/public/<?= $imageSrc; ?>" alt="Profile Image" class="img-thumbnail" style="width: 100px; height: 100px;">
+                               
+                                    <h3 class="text-success ms-3">
                                     <?php
                                     $formattedFirstName = str_replace('-', ' ', strtolower($customer['first_name']));
                                     $formattedFirstName = ucwords($formattedFirstName);
@@ -104,12 +107,12 @@
                                                 <input type="text" class="form-control" name="phone_number"
                                                     value="<?= htmlspecialchars($customer['phone_number']); ?>">
                                             </div>
-                                            <div class="col-md-12 mt-3">
+                                            <div class="col-md-6 mb-3">
                                                 <label>Upload Image</label>
                                                 <input type="file" class="form-control" name="image_url">
                                             </div>
 
-                                            <div class="col-md-12 mt-3 mb-3">
+                                            <div class="col-md-12 mb-3">
                                                 <label>Address</label>
                                                 <textarea class="form-control" name="address"
                                                     rows="5"><?= htmlspecialchars($customer['address']); ?></textarea>

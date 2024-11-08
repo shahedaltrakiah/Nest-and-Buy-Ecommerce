@@ -88,10 +88,12 @@
                                                 <input type="text" class="form-control" name="id"
                                                     value="<?php echo htmlspecialchars($product['id']); ?>" readonly>
                                             </div>
+                                            
                                             <div class="col-md-6 mb-3">
                                                 <label>Upload Image</label>
                                                 <input type="file" class="form-control" name="image_url">
                                             </div>
+
                                             <div class="mb-3">
                                                 <label for="category_id" class="form-label">Category</label>
                                                 <select class="form-select" id="category_id" name="category_id">

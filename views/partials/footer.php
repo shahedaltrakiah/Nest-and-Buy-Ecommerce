@@ -110,137 +110,139 @@
             </div>
         </div>
     </div>
-<!-- Start Chatbot -->
-<div id="chatbot" class="container-fluid d-flex flex-column p-3" 
-     <!-- style="max-width: 300px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); position: fixed; bottom: 20px; right: 20px; display: none; transition: all 0.3s ease;"> -->
-    <!-- Chatbot header with close button -->
-    <div id="chatbot-header" class="chatbot-header p-2 rounded-top" 
-         style="font-size: 14px; display: none; background-color: #f1f1f1; position: relative;">
-        <h4 class="m-0" style="font-size: 14px;">Chat with us!</h4>
-        <button id="close-chatbot" onclick="toggleChat()" 
-                style="position: absolute; top: 5px; right: 10px; font-size: 14px; border: none; background: transparent; cursor: pointer; color: #333;">
-            X
-        </button>
-    </div>
 
-    <!-- Chatbot messages container -->
-    <div id="chatbot-messages" class="chatbot-messages flex-grow-1 p-3" 
-         style="background-color: #f7f7f7; overflow-y: auto; height: 300px; display: none;">
-        <!-- Messages will appear here -->
-    </div>
+    <!-- Start Chatbot -->
+    <div id="chatbot" class="container-fluid d-flex flex-column p-3"
+         style="max-width: 300px; border-radius: 8px; position: fixed; bottom: 20px; right: 20px; display: none; transition: all 0.3s ease;">
+        <!-- Chatbot header with close button -->
+        <div id="chatbot-header" class="chatbot-header p-2 rounded-top d-none"
+             style="font-size: 14px; display: flex; flex-direction: column; background-color: #f1f1f1; position: relative;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="m-0" style="font-size: 14px;">Chat with us!</h4>
+                <!-- Close Button (inside header) -->
+                <button id="close-chatbot" onclick="toggleChat()" class="btn btn-sm btn-link"
+                        style="font-size: 14px; color: #333; border: none; background: transparent;">
+                    X
+                </button>
+            </div>
+
+            <!-- Chatbot messages container -->
+            <div id="chatbot-messages" class="chatbot-messages p-3"
+                 style="background-color: #f7f7f7; overflow-y: auto; height: 200px;">
+                <!-- Messages will appear here -->
+            </div>
 
     <!-- Input and Send button -->
-    <div id="chatbot-input-container" class="chatbot-input-container d-flex p-2"
+    <div id="chatbot-input-container" class="chatbot-input-container d-flex p-2" 
          style="background-color: #f1f1f1; display: none;">
-        <input type="text" id="user-message" class="form-control me-2" placeholder="Type..."
+        <input type="text" id="user-message" class="form-control me-2" placeholder="Type..." 
                style="font-size: 12px; padding: 5px;"/>
         <button id="send-button" class="btn btn-primary btn-sm" onclick="sendMessage()" style="font-size: 12px;">Send</button>
     </div>
 </div>
 <!-- End Chatbot -->
 
-<!-- Robot Icon (Initially small and clickable) -->
-<div id="robot-icon-container" onclick="toggleChat()" 
-     style="position: fixed; bottom: 20px; right: 20px; cursor: pointer; transition: all 0.3s ease;">
-    <span id="robot-icon" class="fas fa-robot" 
-          style="color: #28a745; font-size: 30px; border-radius: 50%; padding: 8px; background-color: #fff; box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);"></span>
-</div>
+    <!-- Robot Icon (Initially small and clickable) -->
+    <div id="robot-icon-container" onclick="toggleChat()"
+         class="position-fixed bottom-0 end-0 mb-3 me-3 cursor-pointer">
+        <span id="robot-icon" class="fas fa-robot"
+              style="color: #3b5d50; font-size: 30px; border-radius: 50%; padding: 8px; background-color: #fff; box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);"></span>
+    </div>
 
-<!-- Add Font Awesome (for the robot icon) -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+    <!-- Add Font Awesome (for the robot icon) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
 
-<script>
-    // Function to send the message
-    function sendMessage() {
-        const message = document.getElementById('user-message').value.trim();
+    <script>
+        // Function to send the message
+        function sendMessage() {
+            const message = document.getElementById('user-message').value.trim();
 
-        if (message === "") {
-            return;
+            if (message === "") {
+                return;
+            }
+
+            // Display the user's message
+            displayMessage(message, 'user');
+
+            // Clear input field
+            document.getElementById('user-message').value = '';
+
+            // Send message to the server via AJAX
+            fetch('/chatbot/respond', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Setting content type to JSON
+                    'X-Requested-With': 'XMLHttpRequest' // To signify it's an AJAX request
+                },
+                body: JSON.stringify({message: message}) // Send message as JSON body
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the bot's response
+                    displayMessage(data.response, 'bot');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    displayMessage("Sorry, something went wrong. Please try again.", 'bot');
+                });
         }
 
-        // Display the user's message
-        displayMessage(message, 'user');
+        // Function to display messages in the chat
+        function displayMessage(message, sender) {
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message', sender);
 
-        // Clear input field
-        document.getElementById('user-message').value = '';
+            const messageText = document.createElement('p');
+            messageText.textContent = message;
+            messageContainer.appendChild(messageText);
 
-        // Send message to the server via AJAX
-        fetch('/chatbot/respond', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', // Setting content type to JSON
-                'X-Requested-With': 'XMLHttpRequest' // To signify it's an AJAX request
-            },
-            body: JSON.stringify({ message: message }) // Send message as JSON body
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Display the bot's response
-            displayMessage(data.response, 'bot');
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            displayMessage("Sorry, something went wrong. Please try again.", 'bot');
-        });
-    }
+            if (sender === 'bot') {
+                // Add a small robot icon for the bot message
+                const robotIcon = document.createElement('span');
+                robotIcon.classList.add('fas', 'fa-robot');  // Font Awesome robot icon
+                robotIcon.classList.add('robot-icon', 'me-2');
+                messageContainer.prepend(robotIcon);
+            }
 
-    // Function to display messages in the chat
-    function displayMessage(message, sender) {
-        const messageContainer = document.createElement('div');
-        messageContainer.classList.add('message', sender);
+            document.getElementById('chatbot-messages').appendChild(messageContainer);
 
-        const messageText = document.createElement('p');
-        messageText.textContent = message;
-        messageContainer.appendChild(messageText);
-
-        if (sender === 'bot') {
-            // Add a small robot icon for the bot message
-            const robotIcon = document.createElement('span');
-            robotIcon.classList.add('fas', 'fa-robot');  // Font Awesome robot icon
-            robotIcon.classList.add('robot-icon', 'me-2');
-            messageContainer.prepend(robotIcon);
+            // Scroll to the bottom
+            const messagesDiv = document.getElementById('chatbot-messages');
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        document.getElementById('chatbot-messages').appendChild(messageContainer);
+        // Function to toggle the chatbot visibility (show and hide)
+        function toggleChat() {
+            const chatbot = document.getElementById('chatbot');
+            const robotIconContainer = document.getElementById('robot-icon-container');
+            const chatbotHeader = document.getElementById('chatbot-header');
+            const chatbotMessages = document.getElementById('chatbot-messages');
+            const chatbotInputContainer = document.getElementById('chatbot-input-container');
 
-        // Scroll to the bottom
-        const messagesDiv = document.getElementById('chatbot-messages');
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-
-    // Function to toggle the chatbot visibility (show and hide)
-    function toggleChat() {
-        const chatbot = document.getElementById('chatbot');
-        const robotIconContainer = document.getElementById('robot-icon-container');
-        const chatbotHeader = document.getElementById('chatbot-header');
-        const chatbotMessages = document.getElementById('chatbot-messages');
-        const chatbotInputContainer = document.getElementById('chatbot-input-container');
-        const closeButton = document.getElementById('close-chatbot');
-
-        if (chatbot.style.display === "none") {
-            // Show the chatbot and expand it
-            chatbot.style.display = "flex";
-            chatbot.style.maxHeight = "600px"; // Increased height
-            chatbot.style.maxWidth = "400px"; // Slightly wider
-            chatbotHeader.style.display = "flex"; // Show the header
-            chatbotMessages.style.display = "flex"; // Show the messages container
-            chatbotMessages.style.height = "350px"; // Increase the message area height
-            chatbotInputContainer.style.display = "flex"; // Show the input and send button
-            robotIconContainer.style.display = "none"; // Hide the robot icon when the chatbot is visible
-        } else {
-            // Hide the chatbot and collapse it back to small size
-            chatbot.style.display = "none";
-            chatbot.style.maxHeight = "100px"; // Keep it small
-            chatbot.style.maxWidth = "300px"; // Keep it narrow
-            chatbotHeader.style.display = "none"; // Hide the header
-            chatbotMessages.style.display = "none"; // Hide the messages container
-            chatbotInputContainer.style.display = "none"; // Hide the input and send button
-            robotIconContainer.style.display = "block"; // Show the robot icon again
+            if (chatbot.style.display === "none" || chatbot.style.display === "") {
+                // Show the chatbot and expand it
+                chatbot.style.display = "flex";
+                chatbot.style.maxHeight = "600px"; // Increased height
+                chatbot.style.maxWidth = "400px"; // Slightly wider
+                chatbotHeader.classList.remove('d-none'); // Show the header
+                chatbotMessages.classList.remove('d-none'); // Show the messages container
+                chatbotMessages.style.height = "350px"; // Increase the message area height
+                chatbotInputContainer.classList.remove('d-none'); // Show the input and send button
+                robotIconContainer.style.display = "none"; // Hide the robot icon when the chatbot is visible
+            } else {
+                // Hide the chatbot and collapse it back to small size
+                chatbot.style.display = "none";
+                chatbot.style.maxHeight = "100px"; // Keep it small
+                chatbot.style.maxWidth = "300px"; // Keep it narrow
+                chatbotHeader.classList.add('d-none'); // Hide the header
+                chatbotMessages.classList.add('d-none'); // Hide the messages container
+                chatbotInputContainer.classList.add('d-none'); // Hide the input and send button
+                robotIconContainer.style.display = "block"; // Show the robot icon again
+            }
         }
-    }
 
-    // CSS class for user and bot messages
-    const styles = `
+        // CSS class for user and bot messages
+        const styles = `
         .message {
             margin-bottom: 10px;
             padding: 10px;
@@ -293,12 +295,11 @@
 }
 
     `;
-    const styleSheet = document.createElement("style");
-    styleSheet.type = "text/css";
-    styleSheet.innerText = styles;
-    document.head.appendChild(styleSheet);
-</script>
-
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = styles;
+        document.head.appendChild(styleSheet);
+    </script>
 
 
 </footer>
